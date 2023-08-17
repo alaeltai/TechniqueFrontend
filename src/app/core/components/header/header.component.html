@@ -1,0 +1,61 @@
+<nav *ngIf="authenticated$ | async" @fadeIn>
+    <li>
+        <img src="assets/logo.svg" />
+        <h1>Technique Platform</h1>
+    </li>
+
+    <li>
+        <nav>
+            <li>
+                <a [routerLink]="['/view-framework']" routerLinkActive="active" target="_blank">View full framework</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" routerLinkActive="active">Roles</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" routerLinkActive="active">Feedback</a>
+            </li>
+            <li>
+                <nav>
+                    <li>
+                        <a href="javascript:void(0)">
+                            Help links
+
+                            <teq-icon type="caret" [orientation]="'bottom'" />
+                        </a>
+
+                        <ul>
+                            <li>
+                                <a href="/faq">FAQ</a>
+                            </li>
+
+                            <li>
+                                <a href="/glossary">Glossary</a>
+                            </li>
+
+                            <li>
+                                <a href="/user-guide">User Guide</a>
+                            </li>
+
+                            <li>
+                                <a href="/artefacts">Artefacts</a>
+                            </li>
+
+                            <li>
+                                <a href="/training">Training</a>
+                            </li>
+
+                            <li>
+                                <a href="/marketing">Marketing</a>
+                            </li>
+
+                            <li>
+                                <a href="/contacts">Contacts</a>
+                            </li>
+                        </ul>
+                    </li>
+                </nav>
+            </li>
+        </nav>
+    </li>
+</nav>

@@ -1,0 +1,40 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: block;
+    margin-bottom: 2.5rem;
+
+    & [data-method-title] {
+        display: flex;
+        align-items: center;
+
+        padding: 0.625rem 1rem;
+        margin-bottom: 0.5rem;
+
+        background: colors.$mid-gray;
+
+        & > span {
+            @include typography.apply('method');
+            color: colors.$method-title-color;
+        }
+    }
+
+    & [data-approach-container] {
+        @include shadows.card-b-shadow();
+
+        & > div {
+            border-top: 1px solid colors.$method-divider-gray;
+            padding-bottom: 1rem;
+        }
+
+        & > div:nth-of-type(1) {
+            border-color: colors.$white-gray;
+        }
+
+        & > div:last-of-type {
+            padding-bottom: 0;
+        }
+    }
+}

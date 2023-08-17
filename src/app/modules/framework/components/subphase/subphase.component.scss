@@ -1,0 +1,22 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: flex;
+    flex: 1;
+
+    height: 3rem;
+    padding: 0 1.5rem;
+
+    align-items: center;
+
+    background: #ffffff;
+
+    @include shadows.subphase-box-shadow();
+
+    & > span {
+        @include typography.apply('subphase');
+        color: colors.$subphase-title-color;
+    }
+}

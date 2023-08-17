@@ -1,0 +1,37 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: flex;
+    flex: 1;
+
+    height: 3rem;
+    padding: 0 1.5rem;
+
+    align-items: center;
+
+    background: #ffffff;
+
+    @include shadows.subphase-box-shadow();
+
+    & > div {
+        display: flex;
+
+        align-items: center;
+
+        padding-top: 2px;
+
+        @include typography.apply('subphase');
+        color: colors.$subphase-title-color;
+
+        & > teq-information-provider {
+            margin-left: .5rem;
+            margin-top: -2px;
+
+            & ::ng-deep path {
+                fill: colors.$light-gray;
+            }
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<div class="controls-wrapper">
+    <div data-back-link>
+        <a (click)="page = undefined">
+            <teq-icon type="arrow" />
+            Go back
+        </a>
+    </div>
+
+    <teq-filters (filtersChanged)="filtersChanged($event)" [phases]="phases"></teq-filters>
+
+    <!-- <div class="v-divider"></div>
+
+    <button>Preview and Generate Framework</button> -->
+</div>
+
+<div data-divider-container>
+    <div class="h-divider"></div>
+</div>
+
+<ng-container *ngIf="page === undefined; else contentTemplate">
+    <h3>{{ "Phases" | uppercase }}</h3>
+
+    <div *ngIf="!page" data-phases @fadeIn>
+        <teq-phase-card *ngFor="let phase of phases; index as i" [phase]="phase" (click)="page = i"></teq-phase-card>
+    </div>
+</ng-container>
+
+<ng-template #contentTemplate>
+    <div data-phase-navigation @fadeIn>
+        <div
+            data-phase-nav-item
+            *ngFor="let phase of phases; index as i"
+            [attr.data-selected]="i === page"
+            [attr.data-first]="i === 0"
+            [attr.data-intermidiate]="i > 0 && i < phases.length - 1"
+            [attr.data-last]="i === phases.length -1"
+        >
+            <teq-phase [phase]="phase" [showArrow]="i !== page" (phaseClicked)="changePage(i)"></teq-phase>
+        </div>
+    </div>
+
+    <div data-content @fadeIn>
+        <div [attr.data-placeholder]="page !== 0"></div>
+        <div data-subphases>
+            <div *ngFor="let subphase of phases[page!]?.subphases">
+                <div *ngFor="let method of subphase?.methods" data-method>
+                    <teq-method [method]="method"></teq-method>
+                </div>
+            </div>
+        </div>
+        <div [attr.data-placeholder]="page !== phases.length -1"></div>
+    </div>
+</ng-template>

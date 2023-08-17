@@ -1,0 +1,22 @@
+<div data-heading-mask="left"></div>
+<div data-heading-mask="right"></div>
+
+<div data-phase-mask>
+    <div data-phase-wrapper @fadeIn>
+        <div data-heading data-svg-ignore>
+            <div *ngFor="let phase of filteredPhases">
+                <teq-phase [phase]="phase"></teq-phase>
+            </div>
+        </div>
+
+        <div data-content>
+            <div *ngFor="let phase of filteredPhases">
+                <div *ngFor="let subphase of phase?.subphases">
+                    <div *ngFor="let method of subphase?.methods" data-method>
+                        <teq-method [method]="method"></teq-method>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    div:first-of-type {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        background: #ffffff;
+
+        padding: .125rem .5rem;
+        gap: .25rem;
+
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        width: fit-content;
+
+        &.bold {
+            @include typography.apply(condensed);
+        }
+
+        &.inverse {
+            background: colors.$dark-gray;
+            border-color: colors.$dark-gray;
+            color: #ffffff;
+        }
+    }
+}

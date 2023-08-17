@@ -1,0 +1,153 @@
+@use 'sass:map';
+@use './util.scss' as util;
+
+@function normalisedValue($value, $pxUnits) {
+    @if not $pxUnits or type-of($value) != 'number' {
+        @return $value;
+    }
+
+    @return util.toFixedUnits($value);
+}
+
+/// Applies the specified typography type into the current block
+/// @param {string} $type type of desired typography
+/// @group typography
+@mixin apply($type, $pxUnits: false) {
+    @if map.has-key($typography, $type) {
+        $t: normalisedValue(map.get($typography, $type), $pxUnits);
+
+        @if map.has-key($t, 'family') {
+            font-family: normalisedValue(map.get($t, 'family'), $pxUnits);
+        }
+
+        @if map.has-key($t, 'size') {
+            font-size: normalisedValue(map.get($t, 'size'), $pxUnits);
+        }
+
+        @if map.has-key($t, 'weight') {
+            font-weight: normalisedValue(map.get($t, 'weight'), $pxUnits);
+        }
+
+        @if map.has-key($t, 'height') {
+            line-height: normalisedValue(map.get($t, 'height'), $pxUnits);
+        }
+
+        @if map.has-key($t, 'spacing') {
+            letter-spacing: normalisedValue(map.get($t, 'spacing'), $pxUnits);
+        }
+
+        @if map.has-key($t, 'transform') {
+            text-transform: normalisedValue(map.get($t, 'transform'), $pxUnits);
+        }
+    }
+}
+
+$primaryFontFace: Arial;
+$secondaryFontFace: Italian Plate No1;
+// $secondaryFontFace: Italian Plate No1;
+$primaryFontFaceBold: Arial Black;
+
+$typography: (
+    'normal': (
+        'family': $primaryFontFace,
+        'weight': 400,
+        'size': 0.75rem,
+        'height': 1rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'content+': (
+        'family': $primaryFontFace,
+        'weight': 400,
+        'size': 0.75rem,
+        'height': 1.25rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'phase-role': (
+        'family': $primaryFontFace,
+        'weight': 400,
+        'size': 0.875rem,
+        'height': 1rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'phase-role-bold': (
+        'family': $primaryFontFaceBold,
+        'weight': 700,
+        'size': 0.75rem,
+        'height': 0.875rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'bold': (
+        'family': $primaryFontFace,
+        'weight': 700,
+        'size': 0.75rem,
+        'height': 1rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'condensed': (
+        'family': $primaryFontFace,
+        'weight': 700,
+        'size': 0.75rem,
+        'height': 0.875rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'title': (
+        'family': $primaryFontFace,
+        'weight': 700,
+        'size': 1rem,
+        'height': 1.125rem,
+        'spacing': inherit,
+        'transform': inherit
+    ),
+    'method': (
+        'family': $secondaryFontFace,
+        'weight': 600,
+        'size': 0.875rem,
+        'height': 0.875rem,
+        'spacing': 0.04em,
+        'transform': uppercase
+    ),
+    'subphase': (
+        'family': $secondaryFontFace,
+        'weight': 600,
+        'size': 1rem,
+        'height': 1rem,
+        'spacing': 0.04em,
+        'transform': uppercase
+    ),
+    'phase': (
+        'family': $secondaryFontFace,
+        'weight': 600,
+        'size': 1.5rem,
+        'height': 1.5rem,
+        'spacing': 0.04em,
+        'transform': uppercase
+    ),
+    'login': (
+        'family': $secondaryFontFace,
+        'weight': 600,
+        'size': 1.5rem,
+        'height': 1.5rem,
+        'spacing': 0.04em
+    ),
+    'heading1': (
+        'family': $secondaryFontFace,
+        'weight': 600,
+        'size': 3.5rem,
+        'height': 3.5rem,
+        'spacing': 0.02em
+    )
+);
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin: 0;
+}

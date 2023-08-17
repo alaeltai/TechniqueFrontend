@@ -1,0 +1,11 @@
+<div [attr.data-phase]="phase.name.toLocaleLowerCase()" data-phase (click)="phaseClicked.emit()">
+    <span>{{ phase.name }}</span>
+    <teq-information-provider [id]="phase.id" [type]="'phase'" [entity]="phase" />
+    <teq-icon *ngIf="showArrow" type="arrow" />
+</div>
+
+<div data-subphase>
+    <div *ngFor="let subphase of phase?.subphases">
+        <teq-subphase [subphase]="subphase"></teq-subphase>
+    </div>
+</div>

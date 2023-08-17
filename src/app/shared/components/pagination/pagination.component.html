@@ -1,0 +1,31 @@
+<nav>
+    <li>
+        <menu>
+            <li>
+                <button (click)="!isFullZoomedOut && zoomOut()" [disabled]="isFullZoomedOut" >
+                    <teq-icon type="minus" [disabled]="isFullZoomedOut" />
+                </button>
+            </li>
+            <li>
+                <button  (click)="!isFullZoomedIn && zoomIn()" [disabled]="isFullZoomedIn">
+                    <teq-icon type="plus" [disabled]="isFullZoomedIn" />
+                </button>
+            </li>
+        </menu>
+    </li>
+    <li data-divider></li>
+    <li>
+        <menu>
+            <button (click)="!isFirstPage && scrollLeft()" [disabled]="isFirstPage">
+                <teq-icon type="caret" [orientation]="'left'" [disabled]="isFirstPage" />
+            </button>
+            <span>
+                Page {{pagination.page}} of {{pagination.zoom}}
+            </span>
+            <button (click)="!isLastPage && scrollRight()" [disabled]="isLastPage">
+                <teq-icon type="caret" [orientation]="'right'" [disabled]="isLastPage" />
+            </button>
+        </menu>
+    </li>
+    <li data-divider></li>
+</nav>

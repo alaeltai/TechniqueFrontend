@@ -1,0 +1,109 @@
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+@use 'variables/page' as page;
+@use 'variables/layers' as layers;
+
+$minPhaseWidth: 78rem;
+$transformOrigin: top left;
+$transitionType: transform .15s linear;
+
+:host {
+    // Define CSS 3 variables for transformations
+    --scale: 1;
+    --translateX: 0;
+
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    & [data-heading-mask] {
+        position: fixed;
+        top: 0;
+        height: 100%;
+        width: page.$page-horizontal-margin;
+        background-color: colors.$pageBackground;
+        z-index: layers.$treeViewFloatingMask;
+        margin-top: -1px;
+    }
+
+    & [data-heading-mask='left'] {
+        left: 0;
+        background: linear-gradient(90deg, rgba(255,255,255,1) 95%, rgba(255,255,255,0) 100%);
+    }
+
+    & [data-heading-mask='right'] {
+        right: 0;
+        background: linear-gradient(95deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 5%);
+    }
+
+    & [data-phase-mask] {
+        padding-top: 4rem;
+        overflow-x: hidden;
+
+        & [data-phase-wrapper] {
+            display: flex;
+
+            & [data-heading] {
+                display: flex;
+
+                position: fixed;
+                top: calc(9rem - 1px);
+
+                gap: 1.5rem;
+
+                background-color: white;
+
+                transform-origin: $transformOrigin;
+                transition: $transitionType;
+                transform: scale(var(--scale),var(--scale)) translateX(var(--translateX));
+
+                padding-top: 1rem;
+
+                z-index: layers.$treeViewFloatingContent;;
+
+                & > div {
+                    display: flex;
+
+                    min-width: $minPhaseWidth;
+
+                    flex-direction: column;
+
+                    width: 100%;
+
+                    & > div {
+                        flex: 1;
+                    }
+                }
+            }
+
+            & [data-content] {
+                display: flex;
+
+                flex-direction: row;
+
+                transform-origin: $transformOrigin;
+                transition: $transitionType;
+                transform: scale(var(--scale),var(--scale)) translateX(var(--translateX));
+
+                align-items: flex-start;
+
+                gap: 1.5rem;
+
+                & > div {
+                    display: flex;
+
+                    gap: 2.125rem;
+
+                    min-width: $minPhaseWidth;
+
+                    padding: 8.375rem 1.5rem 0 1.5rem;
+
+                    & > div {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+}

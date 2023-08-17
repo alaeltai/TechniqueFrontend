@@ -1,0 +1,172 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+@use 'variables/shadows' as shadows;
+@use 'variables/page' as page;
+@use 'variables/layers' as layers;
+
+:host {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    & [data-controls] {
+        position: fixed;
+        z-index: layers.$pageControlsLayer;
+
+        display: flex;
+
+        width: 100%;
+
+        padding: 0 page.$page-horizontal-margin;
+        margin: 0 page.$page-horizontal-margin * -1;
+
+        background-color: colors.$white;
+
+        & > div {
+            display: flex;
+            flex: 1;
+
+            padding-bottom: 10px;
+
+            border-bottom: 1px solid colors.$light-gray;
+
+            & > div {
+                height: 36px;
+            }
+
+            & > [data-back-link] {
+                flex: 1;
+
+                display: flex;
+                align-items: center;
+
+                & > a {
+                    display: flex;
+                    gap: 0.5rem;
+                    align-items: center;
+
+                    padding: 0.5rem 0;
+
+                    @include typography.apply('bold');
+
+                    color: colors.$active-link-item-background;
+                    text-decoration: none;
+
+                    cursor: pointer;
+                }
+            }
+
+            & > [data-pagination] {
+                display: inline-flex;
+            }
+
+            & > [data-printing] {
+                display: inline-flex;
+
+                align-items: center;
+
+                & > button {
+                    height: 32px;
+
+                    padding: 8px 16px;
+
+                    border-style: solid;
+                    border-color: colors.$active-link-item-background;
+                    border-width: 1px;
+
+                    @include typography.apply('condensed', true);
+                    color: colors.$active-link-item-background;
+
+                    background-color: transparent;
+
+                    &:not(:disabled):hover {
+                        cursor: pointer;
+                        background-color: colors.$button-hover-color;
+                    }
+                }
+            }
+        }
+    }
+
+    & [data-phase-mask] {
+        padding-top: 36px;
+        overflow-x: clip;
+
+        & [data-phase-wrapper] {
+            display: flex;
+
+            transform-origin: top left;
+            transition: transform .15s linear;
+            transform: scale(1,1) translateX(4px);
+
+            & > div {
+                display: flex;
+
+                flex-direction: column;
+
+                & [data-phase] {
+                    position: sticky;
+                    top: 143px;
+
+                    transition: top 0 ease-out;
+
+                    padding: 1rem;
+                    padding-bottom: 0;
+                    background-color: white;
+                }
+            }
+
+            & [data-subphase-wrapper] {
+                display: flex;
+
+                flex: 1;
+
+                & > div {
+                    flex: 1;
+                }
+
+                & :first-child > [data-subphase] > teq-subphase {
+                    border-right: 1px solid colors.$light-gray;
+                }
+
+                & [data-subphase] {
+                    position: sticky;
+                    top: 222px;
+
+                    transition: top 0 ease-out;
+                }
+
+                & :first-child > [data-subphase] {
+                    padding-left: 1rem;
+                }
+
+                & :last-child > [data-subphase] {
+                    padding-right: 1rem;
+                }
+
+                & :first-child > [data-method] {
+                    margin-left: 1.5rem;
+                    padding: 0 1rem;
+                }
+
+                & :last-child > [data-method] {
+                    margin-right: 1.5rem;
+                    padding: 0 1rem;
+                }
+            }
+        }
+    }
+
+    teq-phase {
+        margin-bottom: 8px;
+    }
+
+    teq-subphase {
+        margin-bottom: 2rem;
+    }
+
+    teq-svg {
+        display: none;
+    }
+}

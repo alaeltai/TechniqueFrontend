@@ -1,0 +1,66 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: flex;
+
+    flex-direction: column;
+
+    & [data-subphase] {
+        display: flex;
+
+        & > div {
+            flex: 1;
+        }
+    }
+
+    & [data-phase] {
+        display: flex;
+
+        align-items: center;
+
+        margin-bottom: .5rem;
+        padding: 1rem 1.5rem;
+
+        @include typography.apply('phase');
+
+        color: colors.$phase-title-color;
+
+        @include shadows.phase-box-shadow();
+
+        & > span {
+            padding-top: 3.5px;
+        }
+
+        & > teq-information-provider {
+            margin-left: .5rem;
+
+            & ::ng-deep path {
+                fill: colors.$white;
+            }
+        }
+    }
+
+    & [data-phase="understand"] {
+        background-color: colors.$phaseColorUnderstand;
+    }
+
+    & [data-phase="innovate"] {
+        background-color: colors.$phaseColorInnovate;
+    }
+
+    & [data-phase="execute"] {
+        background-color: colors.$phaseColorExecute;
+    }
+
+    & [data-phase="improve"] {
+        background-color: colors.$phaseColorImprove;
+    }
+
+    & [data-subphase] {
+        &:first-of-type {
+            border-right: 1px solid colors.$light-gray;
+        }
+    }
+}

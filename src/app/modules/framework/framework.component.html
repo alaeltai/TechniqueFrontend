@@ -1,0 +1,24 @@
+<div data-controls @fadeIn>
+    <div>
+        <div data-back-link>
+        </div>
+
+        <div data-pagination>
+            <teq-pagination [pagination]="pagination" (paginationChanged)="paginationChanged($event)" [maxPages]="maxPhases" />
+        </div>
+
+        <div data-printing>
+            <button (click)="generateSVG()">Export full framework</button>
+        </div>
+    </div>
+</div>
+
+<teq-tree-viewer [zoom]="pagination.zoom" [page]="pagination.page" [phases]="phases$ | async" (scaleChanged)="scaleChanged($event)"></teq-tree-viewer>
+
+<teq-svg [attr.data-svg-renderer]="true" *ngIf="(svgOptions$ | async)?.contents?.length" [options]="svgOptions$ | async"></teq-svg>
+
+<teq-overlay [active]="overlay() !== null" [loading]="overlay() !== null && (overlay() === 'data' || overlay() === 'svg')">
+    <div *ngIf="overlay() === 'data'" explanation>Loading data...</div>
+    <div *ngIf="overlay() === 'svg'" explanation>Generating SVG...</div>
+    <div *ngIf="overlay() !== 'data' &&  overlay() !== 'svg'">Add the modal here</div>
+</teq-overlay>

@@ -1,0 +1,63 @@
+@use 'typography' as typography;
+@use 'variables/shadows' as shadows;
+@use 'variables/colors' as colors;
+
+:host {
+    display: flex;
+    flex-direction: column;
+
+    & > :hover {
+        transition: all 0.2s ease-out;
+        transform: scale(1.01);
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        width: 21.125rem;
+        height: 100%;
+        padding: 3rem 2rem 2.5rem 2rem;
+        @include shadows.phase-box-shadow();
+        border: 1px solid colors.$white-gray;
+
+        & > div:first-of-type {
+            flex-grow: 1;
+
+            & > img {
+                width: 8.75rem;
+                height: 5.875rem;
+            }
+
+            & > h3 {
+                margin: 3rem 0 1rem 0;
+                @include typography.apply('phase');
+            }
+
+            & > p {
+                margin: 0;
+                @include typography.apply('content+');
+            }
+        }
+
+        & > div:last-of-type {
+            & > button {
+                height: 3rem;
+                padding: 1rem 1.5rem;
+                cursor: pointer;
+
+                background-color: colors.$white;
+                color: colors.$active-link-item-background;
+                border: 1px solid colors.$active-link-item-background;
+                margin-top: 1.25rem;
+
+                @include typography.apply('bold', true);
+
+                transition: all 0.3s ease-out;
+            }
+            & > button:hover {
+                background-color: colors.$button-hover-color-primary;
+                color: colors.$active-link-item-color;
+            }
+        }
+    }
+}

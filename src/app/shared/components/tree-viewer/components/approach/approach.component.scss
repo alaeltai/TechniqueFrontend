@@ -1,0 +1,55 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+
+:host {
+    display: block;
+    padding: 1.5rem 1rem 1rem 1rem;
+
+    & > [data-approach-title] {
+        display: flex;
+        align-items: center;
+
+        padding-bottom: 1rem;
+
+        @include typography.apply('bold');
+        color: colors.$dark-gray;
+
+        & > teq-information-provider {
+            margin-left: .5rem;
+
+            & ::ng-deep path {
+                fill: colors.$light-gray2;
+            }
+        }
+    }
+
+    & > [data-approach-roles-wrapper] {
+        display: flex;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+
+        flex-wrap: wrap;
+
+        & > teq-label {
+            @include typography.apply('content+');
+
+            cursor: default;
+
+            & div {
+                padding: 0.25rem 0.125rem;
+                display: flex;
+                justify-content: center;
+
+                & > span {
+                    text-wrap: nowrap;
+                }
+            }
+        }
+    }
+
+    & > [data-approach-tasks] {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

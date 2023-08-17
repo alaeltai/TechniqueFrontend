@@ -1,0 +1,24 @@
+<svg [attr.width]="iconDimensions.width" [attr.height]="iconDimensions.height" [attr.viewBox]="iconDimensions.viewBox"
+    fill="none" xmlns="http://www.w3.org/2000/svg" [attr.data-type]="type" [attr.data-orientation]="caretOrientation"
+    [attr.disabled]="disabled" [attr.data-type]="type">
+    <defs>
+        <clipPath id="clip0_2866_17714">
+            <rect width="20" height="20" fill="white" />
+        </clipPath>
+    </defs>
+
+    <path *ngIf="type === 'caret'"
+        d="M3.58687 0.706145L0.996875 3.29615C0.606875 3.68615 0.606875 4.31615 0.996875 4.70615L3.58688 7.29615C4.21688 7.92615 5.29688 7.47615 5.29688 6.58615L5.29688 1.40615C5.29688 0.516145 4.21687 0.0761452 3.58687 0.706145Z" />
+
+    <path *ngIf="type === 'plus'" fill-rule="evenodd" clip-rule="evenodd"
+        d="M6.5 0H5.5V5.5H0V6.5H5.5V12H6.5V6.5H12V5.5H6.5V0Z" />
+
+    <path *ngIf="type === 'minus'" d="M12 0.500001V1.5L-4.37103e-08 1.5L0 0.5L12 0.500001Z" />
+
+    <g *ngIf="type === 'information'" clip-path="url(#clip0_2866_17714)">
+        <path
+            d="M9.16797 5.83366H10.8346V7.50033H9.16797V5.83366ZM9.16797 9.16699H10.8346V14.167H9.16797V9.16699ZM10.0013 1.66699C5.4013 1.66699 1.66797 5.40033 1.66797 10.0003C1.66797 14.6003 5.4013 18.3337 10.0013 18.3337C14.6013 18.3337 18.3346 14.6003 18.3346 10.0003C18.3346 5.40033 14.6013 1.66699 10.0013 1.66699ZM10.0013 16.667C6.3263 16.667 3.33464 13.6753 3.33464 10.0003C3.33464 6.32533 6.3263 3.33366 10.0013 3.33366C13.6763 3.33366 16.668 6.32533 16.668 10.0003C16.668 13.6753 13.6763 16.667 10.0013 16.667Z" />
+    </g>
+
+    <path *ngIf="type === 'arrow'" d="M-3.49691e-07 4L4 8L4 5L19 5L19 3L4 3L4 1.31134e-06L-3.49691e-07 4Z" />
+</svg>

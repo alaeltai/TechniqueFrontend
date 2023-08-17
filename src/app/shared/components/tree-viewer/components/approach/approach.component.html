@@ -1,0 +1,19 @@
+<div data-approach-title>
+    {{ approach.name }}
+
+    <teq-information-provider [id]="approach.id" [type]="'approach'" [entity]="approach" />
+</div>
+
+<div data-approach-roles-wrapper>
+    <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
+        <div>
+            <span>{{ role.name }}</span>
+        </div>
+    </teq-label>
+</div>
+
+<div data-approach-tasks>
+    <div *ngFor="let task of approach?.tasks">
+        <teq-task [task]="task"></teq-task>
+    </div>
+</div>

@@ -1,0 +1,238 @@
+@use 'typography' as typography;
+@use 'variables/shadows' as shadows;
+@use 'variables/colors' as colors;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-width: 22.625rem;
+    flex: 1;
+
+    [data-wrapper] {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        & > div:first-of-type {
+            display: flex;
+            flex-direction: column;
+            padding-top: 1.5rem;
+            min-height: 28.625rem;
+
+            border: 1px solid colors.$white-gray;
+            border-bottom: 0;
+            @include shadows.phase-box-shadow();
+
+            transition: ease-in-out 0.5s background-color;
+
+            & > img {
+                width: 10.875rem;
+                height: 8.375rem;
+                place-self: end;
+                margin-bottom: 7.4357rem;
+                transition: ease-in-out 0.7s opacity;
+            }
+
+            & > div {
+                padding: 0 1.5rem;
+
+                [data-title] {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                    @include typography.apply('phase');
+
+                    & ::ng-deep teq-information-provider > teq-icon > svg {
+                        width: 1rem;
+                        height: 1rem;
+
+                        & > g > path {
+                            fill: colors.$active-link-item-background;
+                        }
+                    }
+                }
+
+                [data-completion] {
+                    display: flex;
+
+                    & > div {
+                        display: flex;
+                        flex-direction: column;
+
+                        gap: 0.5rem;
+
+                        &:first-of-type {
+                            align-items: flex-end;
+                        }
+
+                        & > div {
+                            & > span:nth-child(2) {
+                                color: colors.$gray;
+                                margin-right: 0.5rem;
+                            }
+                        }
+
+                        &[data-labels] {
+                            & > div {
+                                & > span:last-child {
+                                    @include typography.apply('phase-role');
+                                }
+                            }
+                        }
+                    }
+
+                    @include typography.apply('phase-role-bold');
+                    font-size: 0.875rem;
+                    line-height: 1rem;
+                }
+
+                [data-completion]:last-child {
+                    margin-bottom: 1.5rem;
+                }
+
+                [data-roles] {
+                    margin-bottom: 1rem;
+
+                    & > span {
+                        display: block;
+                        @include typography.apply('condensed');
+                        color: colors.$light-gray;
+                        margin-bottom: 0.75rem;
+                    }
+
+                    & > div {
+                        display: flex;
+                        flex-wrap: wrap;
+                        @include typography.apply('content+');
+                        gap: 0.75rem;
+                    }
+                }
+
+                ::ng-deep teq-label > div {
+                    & > teq-badge > span {
+                        color: white;
+                    }
+                }
+
+                teq-label:last-child {
+                    display: flex;
+                }
+
+                ::ng-deep teq-label > div {
+                    background: transparent;
+                }
+            }
+
+            [data-bar] {
+                height: 0.5rem;
+            }
+
+            & > [data-cta] {
+                padding: 1.5rem;
+                display: none;
+                opacity: 0;
+
+                transition: ease-in-out 0.5s opacity;
+            }
+
+            &:hover {
+                transition: ease-in-out 0.5s background-color;
+
+                color: colors.$white;
+
+                & > img {
+                    opacity: 0;
+                    position: absolute;
+                    transition: ease-in-out 0s opacity;
+                }
+
+                & > div:first-of-type {
+                    margin-top: auto;
+                }
+
+                & [data-title] {
+                    & teq-information-provider > ::ng-deep teq-icon > svg {
+                        & > g > path {
+                            fill: colors.$white;
+                        }
+                    }
+                }
+
+                & > [data-bar] {
+                    display: none;
+                }
+
+                & > [data-cta] {
+                    display: flex;
+                    justify-content: space-between;
+                    opacity: 1;
+
+                    transition: ease-in-out 0.5s opacity;
+
+                    gap: 3.375rem;
+
+                    color: colors.$white;
+                    border-top: 1px solid colors.$white;
+
+                    & > span {
+                        @include typography.apply('title');
+                    }
+                }
+
+                ::ng-deep teq-label > div {
+                    border-color: white !important;
+
+                    & > teq-badge > span {
+                        background: white !important;
+                    }
+                }
+
+                & [data-completion] > div > div > span:last-child {
+                    color: colors.$white !important;
+                }
+
+                & [data-roles] > [data-role-name] {
+                    @include typography.apply('phase-role-bold');
+                    color: colors.$white;
+                    opacity: 0.5;
+
+                    & > div {
+                        margin-bottom: 0.6875;
+                    }
+                }
+            }
+        }
+
+        & > div:last-of-type {
+            margin-top: auto;
+
+            [data-subphases-wrapper] {
+                display: flex;
+                margin-bottom: 3rem;
+                margin-top: auto;
+            }
+
+            & > h3 {
+                @include typography.apply('title');
+                color: colors.$light-gray;
+                margin: 1.5rem 0 1rem 0;
+                margin-top: 2.625rem;
+            }
+
+            [data-reduce-padding]:first-of-type {
+                padding: 0.725rem 1.5rem 0.725rem 1.375rem;
+            }
+
+            [data-reduce-padding]:last-of-type {
+                padding: 0.725rem 1.375rem 0.725rem 1.5rem;
+            }
+
+            & .d-none {
+                display: none;
+                margin: 1.5rem 0 1rem 0;
+                margin-top: 2.625rem;
+            }
+        }
+    }
+}

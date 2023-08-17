@@ -1,0 +1,36 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+        box-sizing: border-box;
+
+        & path {
+            transition: fill .15s linear;
+            fill: colors.$dark-gray;
+        }
+
+        &[disabled='true'] > path {
+            fill: colors.$mid-gray;
+        }
+
+        &[data-orientation='left'] {
+            transform: rotate(0deg);
+        }
+
+        &[data-orientation='top'] {
+            transform: rotate(90deg);
+        }
+
+        &[data-orientation='right'] {
+            transform: rotate(180deg);
+        }
+
+        &[data-orientation='bottom'] {
+            transform: rotate(270deg);
+        }
+    }
+}

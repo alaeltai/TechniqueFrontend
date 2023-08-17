@@ -1,0 +1,21 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    min-width: 78rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+
+    @include shadows.phase-box-shadow();
+
+    & > div {
+        flex: 1;
+
+        @include typography.apply('phase');
+        color: colors.$phase-title-color;
+
+        padding: 0 1.5rem;
+    }
+}

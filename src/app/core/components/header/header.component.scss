@@ -1,0 +1,102 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+@use 'variables/page' as page;
+@use 'variables/layers' as layers;
+
+:host {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    display: block;
+
+    z-index: layers.$navigationLayer;
+
+    width: 100%;
+
+    padding: 0 page.$page-horizontal-margin;
+    padding-bottom: 48px;
+
+    background-color: colors.$white;
+
+    nav {
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+
+        height: 48px;
+        align-items: center;
+
+        & > li:first-of-type {
+            display: flex;
+
+            align-items: center;
+
+            margin-right: auto;
+
+            & > img {
+                margin-top: -4px;
+                padding-right: 6px;
+            }
+
+            & > h1 {
+                display: inline-flex;
+
+                letter-spacing: -1%;
+
+                @include typography.apply('condensed', true);
+                color: colors.$dark-gray;
+            }
+        }
+
+        & > li {
+            list-style: none;
+
+            @include typography.apply('bold', true);
+
+            & > a ~ ul {
+                display: none;
+
+                top: 100%;
+                right: 0;
+
+                list-style: none;
+
+                padding: 0;
+                margin: 0;
+            }
+
+            & > a,
+            & > ul > li > a {
+                display: block;
+
+                height: 48px;
+
+                box-sizing: border-box;
+
+                padding: 16px 24px;
+
+                text-decoration: none;
+                color: colors.$dark-gray;
+            }
+
+            & > a:hover {
+                background-color: rgba(colors.$button-hover-color-primary, 0.25);
+                transition: ease-in-out 0.3s;
+            }
+
+            & > ul > li > a,
+            & > a.active {
+                background-color: colors.$active-link-item-background;
+                color: colors.$active-link-item-color;
+            }
+
+            & > a.active ~ ul {
+                position: absolute;
+
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+@use 'typography' as typography;
+
+:host {
+    span:first-of-type {
+        display: flex;
+        align-items: center;
+        padding: .125rem .375rem;
+        margin: .25rem 0;
+        border-radius: 2px;
+        @include typography.apply(normal);
+    }
+}

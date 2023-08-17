@@ -1,0 +1,38 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 6rem);
+
+    & > div:first-of-type {
+        flex: .5;
+    }
+
+    & > div:last-of-type {
+        flex: 1;
+    }
+
+    & > div:first-of-type,
+    & > div:last-of-type {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & > [data-content] {
+        position: relative;
+
+        & > h1 {
+            margin-bottom: 2rem;
+            @include typography.apply('heading1');
+            color: colors.$dark-gray;
+        }
+
+        & > div {
+            display: flex;
+            padding-top: 3rem;
+            gap: 2.5rem;
+        }
+    }
+}

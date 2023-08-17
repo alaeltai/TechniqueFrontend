@@ -1,0 +1,65 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+$gap: 0.75rem;
+
+:host {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: $gap;
+    padding: $gap;
+
+    background: colors.$white-gray;
+
+    & > div {
+        display: flex;
+        flex-direction: row;
+
+        gap: $gap;
+
+        & > div {
+            display: flex;
+
+            gap: $gap;
+
+            &:first-of-type {
+                min-width: 6rem;
+            }
+
+            & > teq-label div {
+                display: flex;
+                justify-content: center;
+
+                cursor: default;
+
+                &[data-role] {
+                    min-width: 1.5rem;
+                }
+            }
+
+            &[data-icon-container] {
+                justify-content: flex-end;
+                align-items: center;
+            }
+
+            &[data-artefacts-container] {
+                display: block;
+            }
+
+            min-width: 1.5rem;
+
+            & > svg {
+                height: 1rem;
+                margin-right: 1rem;
+            }
+
+            & > span,
+            &[data-artefacts-container] > div {
+                @include typography.apply('content+');
+                color: colors.$text-color-dark;
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+<div [attr.data-active]="active">
+    <div *ngIf="loading" data-loading>
+        <img src="assets/img/spinner.svg" />
+        <div data-explanation>
+            <ng-content select="[explanation]"></ng-content>
+        </div>
+    </div>
+    <ng-content *ngIf="!loading"></ng-content>
+</div>

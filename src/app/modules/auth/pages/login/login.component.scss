@@ -1,0 +1,59 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+@use 'variables/page' as pageVariables;
+@use 'variables/layers' as layers;
+
+:host {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: calc(50% - 13.125rem);
+
+    & > div {
+        height: inherit;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & div:first-of-type {
+            display: flex;
+            flex-direction: column;
+            width: 460px;
+            height: 208px;
+            background-color: colors.$white;
+            border: 1px solid;
+            border-color: colors.$white-gray;
+            @include shadows.card-b-shadow();
+            z-index: layers.$loginContainerLayer;
+
+            h3 {
+                text-align: center;
+                margin-top: 3.5rem;
+                margin-bottom: 1.5rem;
+                @include typography.apply('login');
+                color: colors.$text-color-dark;
+            }
+
+            button {
+                place-self: center;
+                width: 219px;
+                height: 48px;
+                padding: 1rem 1.5rem;
+                border: none;
+                cursor: pointer;
+
+                @include typography.apply('bold');
+
+                background-color: colors.$active-link-item-background;
+                color: colors.$active-link-item-color;
+                transition: opacity 0.5s ease-in-out;
+            }
+
+            button:hover {
+                opacity: 0.6;
+            }
+        }
+    }
+}

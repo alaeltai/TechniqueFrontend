@@ -1,0 +1,71 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    nav {
+        display: flex;
+
+        height: 100%;
+
+        & > li {
+            display: inline-flex;
+
+            list-style: none;
+
+            & > menu {
+                display: inline-flex;
+                align-items: center;
+
+                gap: 8px;
+
+                padding: 0;
+
+                & > li {
+                    display: inline-flex;
+                }
+            }
+
+            &[data-divider] {
+                width: 1px;
+                margin: 0 24px;
+
+                background: colors.$mid-gray;
+            }
+        }
+    }
+
+    button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 32px;
+        height: 32px;
+
+        background-color: transparent;
+        border-style: solid;
+        border-color: colors.$mid-gray;
+        border-width: 1px;
+
+        padding: 8px 16px;
+
+        @include typography.apply('normal', true);
+
+        color: colors.$active-link-item-background;
+
+        &.disabled {
+            color: colors.$light-gray;
+        }
+
+        &:not(:disabled):hover {
+            cursor: pointer;
+            background-color: colors.$button-hover-color;
+        }
+    }
+
+    span {
+        @include typography.apply('normal', true);
+        color: colors.$dark-gray;
+    }
+}

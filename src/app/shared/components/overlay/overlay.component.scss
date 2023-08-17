@@ -1,0 +1,57 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'typography' as typography;
+
+@keyframes spin {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+:host {
+    position: fixed;
+    display: none;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    &[data-active='true'] {
+        display: flex;
+
+        background-color: colors.$overlayColor;
+        z-index: layers.$overlayLayer;
+    }
+
+    & > div {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        align-items: center;
+        justify-content: center;
+
+        & > [data-loading] {
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            & > img {
+                aspect-ratio: 4/3;
+
+                padding: .5rem;
+
+                animation: spin 1s infinite;
+            }
+
+            & > [data-explanation] {
+                padding-top: 1rem;
+                @include typography.apply('content+');
+            }
+        }
+    }
+}
