@@ -5,3 +5,4 @@
 dist
 src/gen
 node_modules
+src/app/shared/states/api/mock.ts

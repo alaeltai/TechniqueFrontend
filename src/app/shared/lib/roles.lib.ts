@@ -54,12 +54,12 @@ export function determineRoleColor(role: IRole): IRole {
 }
 
 export function convertRole(role: IAPIRole): IRole {
-    const name = normalizeName(role.Name);
+    const name = normalizeName(role.name);
 
     return determineRoleColor({
-        id: role.Id,
+        id: role.id,
         name,
-        description: role.Description,
-        skills: role.Skills
+        description: role.description,
+        skills: role.skills
     });
 }

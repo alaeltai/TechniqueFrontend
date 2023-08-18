@@ -1,12 +1,12 @@
 import type { IAPISubPhase } from './subphase.type';
 
 export interface IAPIBasePhase {
-    Id: string;
-    Name: string;
-    Order: number;
-    Description: string;
+    id: string;
+    name: string;
+    order: number;
+    description: string;
 }
 
 export interface IAPIPhase extends IAPIBasePhase {
-    SubPhases: IAPISubPhase[];
+    subPhases: IAPISubPhase[];
 }

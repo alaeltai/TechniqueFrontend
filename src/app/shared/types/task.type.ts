@@ -10,4 +10,6 @@ export interface ITask extends Omit<BasePhase, 'description'> {
     responsible: IRole;
     category: ICategory;
     artefacts: IArtefact[];
+    inputDescription: string;
+    outputDescription: string;
 }

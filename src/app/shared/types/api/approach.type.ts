@@ -4,8 +4,8 @@ import type { IAPIRole } from './role.type';
 import type { IAPITask } from './task.type';
 
 export interface IAPIApproach extends IAPIBasePhase {
-    Templates: IAPITemplate[];
-    Accountable: IAPIRole;
-    Responsibles: IAPIRole[];
-    Tasks: IAPITask[];
+    templates: IAPITemplate[];
+    accountable: IAPIRole;
+    responsibles: IAPIRole[];
+    tasks: IAPITask[];
 }
