@@ -24,13 +24,13 @@ trigger:
 pool: 'Linux'
 
 extends:
-  template: backend/backend-azure-template.yaml@templates
+  template: frontend/backend-azure-template.yaml@templates
   parameters:
-    projectKey: "Technique.Backend"
-    projectName: "Technique Backend"
-    repositoryName: "Technique Backend"
+    projectKey: "Technique.Frontend"
+    projectName: "Technique Frontend"
+    repositoryName: "Technique Frontend"
     #containerize: true
-    imageName: "technique-backend"
+    imageName: "technique-frontend"
     ## Where to push ?!
     #containerRegistry: "technique.azurecr.io"
     #containerRegistryServiceName: "Azure Container Registry"
