@@ -1,4 +1,6 @@
 @use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
 @use 'typography' as typography;
 
 @mixin hidden() {
@@ -15,51 +17,90 @@
     display: block;
     position: relative;
 
-    .controls-wrapper {
+    & [data-controls] {
+        position: fixed;
         display: flex;
-        align-items: center;
+
+        top: 6rem;
 
         width: 100%;
 
-        left: 0;
-        top: 4.5rem;
+        padding: 0 page.$page-horizontal-margin;
+        margin: 0 page.$page-horizontal-margin * -1;
 
-        position: fixed;
-        padding: 3rem 2.5rem 0 2.5rem;
-        margin-bottom: 0.625rem;
+        z-index: layers.$pageControlsLayer;
 
-        gap: 2rem;
+        background-color: colors.$white;
 
-        background: white;
-        fill: white;
+        &[data-page] {
+            & > div {
+                border-width: .25rem;
+            }
 
-        z-index: 2;
+            &[data-page='0'] {
+                & > div {
+                    border-color: colors.$phaseColorUnderstand;
+                }
+            }
 
-        button,
-        [data-back-link] > a {
+            &[data-page='1'] {
+                & > div {
+                    border-color: colors.$phaseColorInnovate;
+                }
+            }
+
+            &[data-page='2'] {
+                & > div {
+                    border-color: colors.$phaseColorExecute;
+                }
+            }
+
+            &[data-page='3'] {
+                & > div {
+                    border-color: colors.$phaseColorImprove;
+                }
+            }
+        }
+
+        & > div {
             display: flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border: none;
-            cursor: pointer;
-            @include typography.apply('bold');
-        }
+            flex: 1;
 
-        [data-back-link] > a {
-            background-color: transparent;
-            color: colors.$active-link-item-background;
-            gap: 0.5rem;
-            padding-left: 0;
-            text-decoration: none;
-        }
+            padding-bottom: 10px;
 
-        button:last-child {
-            background-color: colors.$active-link-item-background;
-            color: colors.$active-link-item-color;
-        }
+            border-bottom: 1px solid colors.$light-gray;
+            transition: border-color, border-width .25s linear;
 
-        & > teq-filters {
-            margin-left: auto;
+            & > div {
+                height: 36px;
+            }
+
+            & [data-back-link] {
+                flex: 1;
+            }
+
+            & button,
+            & [data-back-link] > a {
+                display: flex;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                border: none;
+                cursor: pointer;
+                @include typography.apply('bold');
+            }
+
+            & [data-back-link] > a {
+                background-color: transparent;
+                color: colors.$active-link-item-background;
+                gap: 0.5rem;
+                padding-left: 0;
+                text-decoration: none;
+            }
+
+            & button:last-child {
+                background-color: colors.$active-link-item-background;
+                color: colors.$active-link-item-color;
+            }
         }
     }
 
@@ -74,17 +115,6 @@
         margin-top: 2.625rem;
     }
 
-    & > [data-divider-container] {
-        position: fixed;
-        width: 100%;
-        z-index: 2;
-        top: 9.5rem;
-        left: 0;
-        height: 1rem;
-        padding: 0 2.5rem;
-        background-color: colors.$white;
-    }
-
     & > [data-phases] {
         display: flex;
         flex-wrap: wrap;
@@ -96,14 +126,16 @@
         position: fixed;
         width: 100%;
 
-        top: calc(10.5rem - 1px);
+        top: calc(9rem - 1px);
         left: 0;
 
         gap: 1.5rem;
 
         z-index: 1;
 
-        padding: 0rem 2.5rem 0 2.5rem;
+        padding: 1rem 2.5rem 0 2.5rem;
+
+        background-color: colors.$pageBackground;
 
         & > [data-phase-nav-item] {
             flex: 1;

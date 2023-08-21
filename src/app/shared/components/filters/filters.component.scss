@@ -8,4 +8,8 @@
     .v-divider {
         height: 1.875rem;
     }
+
+    & teq-select[data-for='role'] {
+        min-width: 10.5rem;
+    }
 }

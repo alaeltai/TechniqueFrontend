@@ -13,19 +13,20 @@ interface IRoleCount {
 })
 export class PhaseCardComponent implements OnChanges {
     private _methodsCount = 0;
-    private _methodsCountAll = 0;
     private _approachesCount = 0;
-    private _approachesCountAll = 0;
     private _roles: IRoleCount[] = [];
 
     @Input() phase!: IPhase;
+
+    @Input() methods!: number;
+    @Input() approaches!: number;
 
     get methodsCount(): number {
         return this._methodsCount;
     }
 
     get methodsCountAll(): number {
-        return this._methodsCountAll;
+        return this.methods ?? 0;
     }
 
     get approachesCount(): number {
@@ -33,7 +34,7 @@ export class PhaseCardComponent implements OnChanges {
     }
 
     get approachesCountAll(): number {
-        return this._approachesCountAll;
+        return this.approaches ?? 0;
     }
 
     get roles(): IRoleCount[] {
@@ -49,9 +50,7 @@ export class PhaseCardComponent implements OnChanges {
             const phase = changes['phase'].currentValue as IPhase;
 
             if (phase) {
-                let methods = 0;
                 let enabledMethods = 0;
-                let approaches = 0;
                 let enabledApproaches = 0;
                 const roles: IRoleCount[] = [];
                 const rolesMap: Record<IRole['id'], IRole> = {};
@@ -59,15 +58,11 @@ export class PhaseCardComponent implements OnChanges {
 
                 phase.subphases?.forEach(s => {
                     s.methods.forEach(m => {
-                        methods += 1;
-
                         if (!(m.disabled ?? m.filtered)) {
                             enabledMethods += 1;
                         }
 
                         m.approaches.forEach(a => {
-                            approaches += 1;
-
                             if (!(a.disabled ?? a.filtered)) {
                                 enabledApproaches += 1;
                             }
@@ -86,9 +81,7 @@ export class PhaseCardComponent implements OnChanges {
                     });
                 });
 
-                this._methodsCountAll = methods;
                 this._methodsCount = enabledMethods;
-                this._approachesCountAll = approaches;
                 this._approachesCount = enabledApproaches;
                 this._roles = roles.sort((a, b) => {
                     if (a.role.name.length < b.role.name.length) {

@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
-import { IFilters } from '@teq/shared/components/filters/types/filters.type';
+import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
 import { APIService } from '@teq/shared/states/api/api.service';
 import type { IPhase } from '@teq/shared/types/phase.type';
+import { Observable } from 'rxjs';
 @UntilDestroy()
 @Component({
     selector: 'teq-explore',
@@ -13,23 +13,47 @@ import type { IPhase } from '@teq/shared/types/phase.type';
     styleUrls: ['./explore.component.scss'],
     animations: [fadeIn]
 })
-export class ExploreComponent implements OnInit {
-    public phases!: IPhase[];
+export class ExploreComponent {
+    public phases$: Observable<IPhase[]>;
     public showTree = false;
     public page?: number;
 
+    private _aggregatedCounts: Array<{ methods: number; approaches: number }> = [];
+
     @ViewChild(TreeViewerComponent) treeViewer!: TreeViewerComponent;
 
-    constructor(private readonly _apiService: APIService, public readonly router: Router, private readonly _element: ElementRef<HTMLElement>) {}
+    constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService) {
+        this.phases$ = this._filtersService.phases$;
 
-    ngOnInit(): void {
-        this._apiService.getDataTree();
+        // Compute the total amounts for cards
+        this._apiService.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
+            this._aggregatedCounts = [];
 
-        this._apiService.phases$.pipe(untilDestroyed(this)).subscribe(phases => (this.phases = phases));
+            phases.forEach(phase => {
+                let methods = 0;
+                let approaches = 0;
+
+                phase.subphases?.forEach(s => {
+                    s.methods.forEach(m => {
+                        methods += 1;
+
+                        m.approaches.forEach(a => {
+                            approaches += 1;
+                        });
+                    });
+                });
+
+                this._aggregatedCounts.push({ methods, approaches });
+            });
+        });
     }
 
-    filtersChanged(filters: IFilters): void {
-        console.log(filters);
+    getCardMethods(i: number): number {
+        return this._aggregatedCounts[i]?.methods ?? 0;
+    }
+
+    getCardApproaches(i: number): number {
+        return this._aggregatedCounts[i]?.approaches ?? 0;
     }
 
     changePage(page: number): void {

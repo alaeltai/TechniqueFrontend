@@ -39,7 +39,6 @@ export class FrameworkComponent implements OnInit {
 
     ngOnInit(): void {
         this._overlay.set('data'); // Mark initial loading
-        this._apiService.getDataTree();
 
         this.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
             this._maxPhases = phases.length;

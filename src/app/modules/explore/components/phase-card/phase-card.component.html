@@ -39,9 +39,9 @@
                         </div>
                         <teq-badge #badge *ngIf="role.count !== undefined" [backgroundColor]="role.role.color" [color]="'#ffffff'">{{ role.count }}</teq-badge>
                     </teq-label>
-                    <teq-label [borderColor]="'#bdbcbc'">
+                    <teq-label [borderColor]="'#bdbcbc'" *ngIf="roles.length > 2">
                         <div>
-                            <span>{{ 3 }} more...</span>
+                            <span>{{ roles.length - 2 }} more...</span>
                         </div>
                     </teq-label>
                 </div>

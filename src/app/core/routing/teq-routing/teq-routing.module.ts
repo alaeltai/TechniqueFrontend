@@ -30,11 +30,6 @@ const routes: Routes = [
         loadChildren: async () => (await import('@teq/modules/explore/explore.module')).ExploreModule
     },
     {
-        path: '',
-        redirectTo: TeqRoutesEnum.LANDING_PAGE,
-        pathMatch: 'full'
-    },
-    {
         path: '**',
         redirectTo: TeqRoutesEnum.LANDING_PAGE
     }

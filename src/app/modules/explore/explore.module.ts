@@ -15,6 +15,7 @@ import { PhaseHoverDirective } from '@teq/modules/explore/directives/phase-hover
 import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
 import { MethodComponent } from '@teq/shared/components/tree-viewer/components/method/method.component';
 import { PhaseComponent } from '@teq/shared/components/tree-viewer/components/phase/phase.component';
+import { FiltersService } from '@teq/shared/components/filters/filters.service';
 
 @NgModule({
     declarations: [ExploreComponent, PhaseCardComponent, SubphaseTabComponent, PhaseHoverDirective],
@@ -31,6 +32,7 @@ import { PhaseComponent } from '@teq/shared/components/tree-viewer/components/ph
         MethodComponent,
         PhaseComponent
     ],
+    providers: [FiltersService],
     exports: [ExploreComponent]
 })
 export class ExploreModule {}

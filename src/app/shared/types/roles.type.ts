@@ -9,7 +9,7 @@ export type RoleType =
     | 'Manager'
     | 'Opportunity Owner'
     | 'Project Lead'
-    | 'Service Manager'
+    | 'Service Team'
     | 'Solution Architect'
     | 'Solution Lead'
     | 'Consultant (Testing)'

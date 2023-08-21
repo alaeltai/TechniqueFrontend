@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { IToggle } from './types/toggle.type';
 
 @Component({
     selector: 'teq-toggle',
     standalone: true,
-    imports: [NgFor, NgIf],
+    imports: [CommonModule, NgFor, NgIf],
     templateUrl: './toggle.component.html',
     styleUrls: ['./toggle.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,9 +19,18 @@ import { IToggle } from './types/toggle.type';
 })
 export class ToggleComponent implements ControlValueAccessor {
     @Input() disabled = false;
-    @Input() toggle!: IToggle;
+    @Input() value?: boolean;
+    @Input() label?: string;
 
     onChange: (value: boolean) => void = () => undefined;
+
+    change(event: Event): void {
+        const checked = (event.target as HTMLInputElement).checked;
+
+        this.value = checked;
+
+        this.onChange(this.value);
+    }
 
     onTouched: () => void = () => undefined;
 

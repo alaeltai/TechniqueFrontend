@@ -18,7 +18,7 @@ const rolesMap: RolesMap = {
     'Consultant (Testing)': { color: '#6FCF97' },
     'Opportunity Owner': { color: '#219653' },
     'Project Lead': { color: '#6FCF97' },
-    'Service Manager': { color: '#BB6BD9' },
+    'Service Team': { color: '#BB6BD9' },
     'Solution Architect': { color: '#F2C94C' },
     'Solution Lead': { color: '#F2994A' },
     Manager: { color: '#EB5757' }

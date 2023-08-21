@@ -1,14 +1,13 @@
-import { NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { CommonModule, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { SearchComponent } from '../search/search.component';
 import type { IFilters } from '@teq/shared/components/filters/types/filters.type';
 import { SelectComponent } from '@teq/shared/components/select/select.component';
 import { ToggleComponent } from '../toggle/toggle.component';
-import { take } from 'rxjs';
-import { FiltersService } from '@teq/shared/components/filters/filters.service';
+import { Observable } from 'rxjs';
+import { FilterType, FiltersService } from '@teq/shared/components/filters/filters.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { IPhase } from '@teq/shared/types/phase.type';
 
 @UntilDestroy()
 @Component({
@@ -17,50 +16,58 @@ import { IPhase } from '@teq/shared/types/phase.type';
     templateUrl: './filters.component.html',
     styleUrls: ['./filters.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgFor, NgIf, NgStyle, FormsModule, ReactiveFormsModule, ToggleComponent, SelectComponent, SearchComponent],
-    providers: [FiltersService]
+    imports: [CommonModule, NgFor, NgIf, NgStyle, FormsModule, ReactiveFormsModule, ToggleComponent, SelectComponent, SearchComponent]
 })
 export class FiltersComponent implements OnInit {
     public filtersForm!: FormGroup;
-    public filtersData!: IFilters;
 
-    @Input({ required: true }) phases!: IPhase[];
     @Input() enableToggles?: boolean;
     @Input() enableVisibility?: boolean;
     @Input() complexity?: string;
 
-    @Output() filtersChanged: EventEmitter<IFilters> = new EventEmitter<IFilters>();
-
-    constructor(private readonly _fb: FormBuilder, private readonly _filtersService: FiltersService) {
-        this._initForm();
-    }
+    constructor(private readonly _fb: FormBuilder, private readonly _filtersService: FiltersService) {}
 
     ngOnInit(): void {
-        this._filtersService
-            .getFilters()
-            .pipe(take(1))
-            .subscribe(filters => (this.filtersData = filters));
+        const filters = this._filtersService.addFilters(
+            ...[
+                ...(this.enableVisibility ? [FilterType.ToggleFilterDisabled] : []),
+                ...(this.enableToggles ? [FilterType.ToggleDisableControl] : []),
+                FilterType.SelectRoles,
+                ...(this.complexity ? [FilterType.SelectComplexity] : []),
+                FilterType.SelectCategory,
+                FilterType.Search
+            ].filter(Boolean)
+            // TODO: Add the ability to restore filter selections for page restores at this point once needed
+        );
+
+        this._initForm(filters);
 
         this.filtersForm.valueChanges.pipe(untilDestroyed(this)).subscribe(filters => {
             if (filters) {
-                this.filtersChanged.emit(filters as IFilters);
+                // Refilter data based on current filter values
+                this._filtersService.filter(filters as Record<string, string | number | boolean | Array<string | number | boolean>>);
             }
         });
-
-        this.filtersData = {
-            selects: [],
-            toggles: []
-        };
     }
 
-    private _initForm(): void {
-        this.filtersForm = this._fb.group({
-            searchText: '',
-            category: '',
-            role: '',
-            complexity: this.complexity ?? '',
-            showToggles: false,
-            hideDisables: false
-        });
+    get filters(): Observable<IFilters> {
+        return this._filtersService.filters$.asObservable();
+    }
+
+    private _initForm(filters: IFilters): void {
+        const formControls: Record<string, string | string[] | boolean> = {};
+
+        filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
+        filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : '-1'));
+
+        if (this.complexity) {
+            // Ensure enforcing the prior selected complexity for create cases
+            formControls[FilterType.SelectComplexity] = this.complexity;
+        }
+
+        this.filtersForm = this._fb.group(formControls);
+
+        // Filter the data based on initial filters
+        this._filtersService.filter(formControls);
     }
 }

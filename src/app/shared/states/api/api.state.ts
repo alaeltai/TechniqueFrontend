@@ -63,6 +63,7 @@ export class APIState {
 
     public static convertPhase(phase: IAPIPhase): IPhase {
         return {
+            type: 'phase',
             id: phase.id,
             name: phase.name,
             description: phase.description,
@@ -73,6 +74,7 @@ export class APIState {
 
     public static convertSubPhase(subPhase: IAPISubPhase): ISubphase {
         return {
+            type: 'subphase',
             id: subPhase.id,
             name: subPhase.name,
             description: subPhase.description,
@@ -83,6 +85,7 @@ export class APIState {
 
     public static convertMethod(method: IAPIMethod): IMethod {
         return {
+            type: 'method',
             id: method.id,
             name: method.name,
             description: method.description,
@@ -93,6 +96,7 @@ export class APIState {
 
     public static convertApproach(approach: IAPIApproach): IApproach {
         return {
+            type: 'approach',
             id: approach.id,
             name: approach.name,
             description: approach.description,
@@ -126,6 +130,7 @@ export class APIState {
 
     public static convertTask(task: IAPITask): ITask {
         return {
+            type: 'task',
             id: task.id,
             name: task.name,
             order: task.order,
@@ -172,8 +177,8 @@ export class APIState {
             .get<IAPIPhase[]>(`${environment.apiConfig.uri}/fullframework`, {
                 responseType: 'json',
                 context: new HttpContext()
-                    .set(CacheStorage, CacheType.FULL_FRAMEWORK)
-                    .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                    // .set(CacheStorage, CacheType.FULL_FRAMEWORK)
+                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
                     .set(AuthenticatedRequest, true)
             })
             .pipe(catchError(this.handleError('tree')));
