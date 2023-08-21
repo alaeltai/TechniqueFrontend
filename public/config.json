@@ -1,8 +1,0 @@
-{
-  "KEYCLOAK_URL": "http://keycloak-spctrm-keycloak-spectrm.apps.ocp4.bpe.local/auth/",
-  "KEYCLOAK_REALM": "spectrm",
-  "KEYCLOAK_CLIENT_ID": "spectrm-back",
-  "LANDING_PAGE_URL": "http://localhost:8083/home",
-  "THEME_API": "http://localhost:5121",
-  "API_URL": "/frameworknavigator/api"
-}
