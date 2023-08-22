@@ -1,0 +1,11 @@
+<div data-progress>
+    <div data-progress-bar></div>
+</div>
+
+<div data-content>
+    <div data-percentage>
+        <span *ngFor="let number of numbers">({{ number }}%)</span>
+    </div>
+    <span data-action>uploading</span>
+    <span data-name>{{ fileName }}</span>
+</div>

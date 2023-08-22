@@ -27,7 +27,7 @@ export const cards = [
         description: 'Import a .teq file that you or someone else created, to view its details.',
         button: {
             name: 'Upload a framework',
-            link: '/landing-page'
+            link: '/import'
         },
         image: 'assets/img/import.svg'
     }

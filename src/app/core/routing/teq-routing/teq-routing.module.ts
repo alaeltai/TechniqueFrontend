@@ -30,6 +30,11 @@ const routes: Routes = [
         loadChildren: async () => (await import('@teq/modules/explore/explore.module')).ExploreModule
     },
     {
+        path: TeqRoutesEnum.IMPORT,
+        canActivate: [isAuthenticatedGuard],
+        loadChildren: async () => (await import('@teq/modules/import-framework/import-framework.module')).ImportFrameworkModule
+    },
+    {
         path: '**',
         redirectTo: TeqRoutesEnum.LANDING_PAGE
     }

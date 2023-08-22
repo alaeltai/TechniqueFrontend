@@ -1,0 +1,91 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+
+:host {
+    & [data-dropzone] {
+        height: 100px;
+
+        display: flex;
+
+        align-items: center;
+
+        padding: 2.5rem 1.5rem;
+
+        border: 2px dashed colors.$light-gray;
+
+        &.invalid {
+            border-color: colors.$red;
+        }
+
+        & > [data-content] {
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.2rem;
+
+            & > teq-icon {
+                margin: 0 1.5rem 0 0;
+
+                place-self: center;
+
+                ::ng-deep path {
+                    fill: transparent !important;
+                }
+            }
+
+            & > span {
+                @include typography.apply('content+');
+                color: colors.$dark-gray;
+            }
+
+            & > input {
+                display: none;
+            }
+
+            & > label {
+                cursor: pointer;
+
+                @include typography.apply('bold');
+                color: colors.$active-link-item-background;
+                text-decoration: underline;
+            }
+        }
+
+        & > [invalid-content] {
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.2rem;
+
+            & > teq-icon {
+                margin: 0 1.5rem 0 0;
+
+                place-self: center;
+
+                ::ng-deep path {
+                    stroke: colors.$red;
+                    fill: transparent !important;
+                }
+            }
+
+            & > span {
+                @include typography.apply('content+');
+                color: colors.$red;
+            }
+
+            & > input {
+                display: none;
+            }
+
+            & > label {
+                cursor: pointer;
+
+                @include typography.apply('bold');
+                color: colors.$active-link-item-background;
+                text-decoration: underline;
+            }
+        }
+    }
+}

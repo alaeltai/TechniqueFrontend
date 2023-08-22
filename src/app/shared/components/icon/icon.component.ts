@@ -20,7 +20,7 @@ export class IconComponent {
 
     @Input() orientation?: CaretOrientation;
 
-    @Input() type!: 'caret' | 'minus' | 'plus' | 'information' | 'arrow' | 'cancel';
+    @Input() type!: 'caret' | 'minus' | 'plus' | 'information' | 'arrow' | 'cancel' | 'import' | 'alert';
 
     get caretOrientation(): CaretOrientation {
         return this.orientation ?? 'left';
@@ -45,6 +45,12 @@ export class IconComponent {
 
             case 'cancel':
                 return this.asDimensions(15, 14);
+
+            case 'import':
+                return this.asDimensions(25, 20);
+
+            case 'alert':
+                return this.asDimensions(24, 24);
         }
     }
 

@@ -1,0 +1,20 @@
+<div data-dropzone [class.invalid]="invalidFormat" teqDragAndDrop (file)="onDrop($event)" (invalidFormat)="invalidFormat = $event">
+    <ng-container *ngIf="invalidFormat; else content">
+        <div invalid-content>
+            <teq-icon type="alert"></teq-icon>
+            <span>The file you've selected is not compatible.</span>
+            <input id="upload" type="file" accept=".teq" (change)="onFileSelected($event)" />
+            <label for="upload">Please select another</label>
+        </div>
+    </ng-container>
+
+    <ng-template #content>
+        <div data-content>
+            <teq-icon type="import"></teq-icon>
+            <span>Drag and drop a <b>.teq</b> file or </span>
+            <input id="upload" type="file" accept=".teq" (change)="onFileSelected($event)" />
+            <label for="upload">choose file</label>
+            <span> from your computer</span>
+        </div>
+    </ng-template>
+</div>
