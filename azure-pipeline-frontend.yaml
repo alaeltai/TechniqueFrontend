@@ -26,9 +26,9 @@ pool: 'Linux'
 extends:
   template: frontend/frontend-ionos-template.yaml@templates
   parameters:
-    projectKey: "Technique.Frontend "
-    projectName: "Technique Frontend"
-    repositoryName: "Technique Frontend"
+    projectKey: "technique.frontend "
+    projectName: "technique-frontend"
+    repositoryName: "technique-frontend"
     containerize: true
     imageName: "technique-frontend"
     containerRegistry: "spctrm.cr.de-fra.ionos.com"
