@@ -5,6 +5,29 @@
     display: block;
     padding: 1.5rem 1rem 1rem 1rem;
 
+    &[data-disabled='true'] {
+        transition: color, background-color .5s linear;
+        background-color: colors.$mid-gray;
+
+        & > [data-approach-title] {
+            color: colors.$light-gray2;
+        }
+
+        & > [data-approach-roles-wrapper] {
+            & > teq-label {
+                & ::ng-deep {
+                    & > div {
+                        border-color: colors.$light-gray2 !important;
+
+                        & > div > span {
+                            color: colors.$light-gray2 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     & > [data-approach-title] {
         display: flex;
         align-items: center;
@@ -19,6 +42,20 @@
 
             & ::ng-deep path {
                 fill: colors.$light-gray2;
+            }
+        }
+
+        & [data-controls] {
+            display: flex;
+
+            flex: 1;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
             }
         }
     }

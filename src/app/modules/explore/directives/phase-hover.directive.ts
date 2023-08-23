@@ -1,7 +1,6 @@
 import { Directive, Input, ElementRef, HostBinding, HostListener, ContentChildren, QueryList } from '@angular/core';
 import { BadgeComponent } from '@teq/shared/components/badge/badge.component';
 import { PhasesColors } from '@teq/shared/lib/colors.lib';
-import { style } from '@angular/animations';
 
 @Directive({
     selector: '[teqPhaseHover]'

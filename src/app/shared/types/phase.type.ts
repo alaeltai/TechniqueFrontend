@@ -12,6 +12,16 @@ export interface BasePhase {
     disabled?: boolean;
 
     /**
+     * Original disable status keeper  in case of manual adjustment from parent level
+     */
+    _disabled?: boolean;
+
+    /**
+     * Parent reference keeper
+     */
+    parent?: BasePhase;
+
+    /**
      * Determines if the data should be omitted from rendering
      */
     filtered?: boolean;

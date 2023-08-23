@@ -1,7 +1,11 @@
 <div data-approach-title>
     {{ approach.name }}
 
-    <teq-information-provider [id]="approach.id" [type]="'approach'" [entity]="approach" />
+    <teq-information-provider data-svg-ignore-all [id]="approach.id" [type]="'approach'" [entity]="approach" />
+
+    <div data-controls data-svg-ignore-all>
+        <teq-toggle *ngIf="disableable" [value]="!(approach.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+    </div>
 </div>
 
 <div data-approach-roles-wrapper>

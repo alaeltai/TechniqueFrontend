@@ -1,0 +1,7 @@
+<label>
+    <span *ngIf="label" data-label>{{ label }}</span>
+
+    <input type="checkbox" [checked]="value" (change)="change($event)" [disabled]="disabled" />
+
+    <div data-checkbox></div>
+</label>

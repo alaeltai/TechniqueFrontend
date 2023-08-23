@@ -16,9 +16,10 @@ import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-vie
 import { MethodComponent } from '@teq/shared/components/tree-viewer/components/method/method.component';
 import { PhaseComponent } from '@teq/shared/components/tree-viewer/components/phase/phase.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
+import { RolesContainerComponent } from './components/roles-container/roles-container.component';
 
 @NgModule({
-    declarations: [ExploreComponent, PhaseCardComponent, SubphaseTabComponent, PhaseHoverDirective],
+    declarations: [ExploreComponent, PhaseCardComponent, SubphaseTabComponent, PhaseHoverDirective, RolesContainerComponent],
     imports: [
         CommonModule,
         ExploreRoutingModule,

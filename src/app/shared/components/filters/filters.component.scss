@@ -9,7 +9,13 @@
         height: 1.875rem;
     }
 
-    & teq-select[data-for='role'] {
-        min-width: 10.5rem;
+    & teq-select[data-for='4'] {
+        // Roles select min width
+        min-width: 11.5rem;
+    }
+
+    & teq-select[data-for='3'] {
+        // Complexity select min width
+        min-width: 8rem;
     }
 }

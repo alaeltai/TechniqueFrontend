@@ -1,5 +1,5 @@
-<div #wrapper data-wrapper>
-    <div teqPhaseHover [name]="phase.name">
+<div #wrapper data-wrapper [attr.data-phase]="phase.name | lowercase">
+    <div (mouseenter)="hover = true" (mouseleave)="hover = false">
         <img src="{{ image }}" alt="" />
 
         <div>
@@ -32,19 +32,8 @@
 
             <div data-roles>
                 <span data-role-name>{{ "Roles" | uppercase }}</span>
-                <div>
-                    <teq-label *ngFor="let role of roles | slice:0:2" [borderColor]="role.role.color">
-                        <div>
-                            <span>{{ role.role.name }}</span>
-                        </div>
-                        <teq-badge #badge *ngIf="role.count !== undefined" [backgroundColor]="role.role.color" [color]="'#ffffff'">{{ role.count }}</teq-badge>
-                    </teq-label>
-                    <teq-label [borderColor]="'#bdbcbc'" *ngIf="roles.length > 2">
-                        <div>
-                            <span>{{ roles.length - 2 }} more...</span>
-                        </div>
-                    </teq-label>
-                </div>
+
+                <teq-roles-container [roles]="roles" [phase]="phase" [unlimited]="hover" />
             </div>
         </div>
 
@@ -52,8 +41,6 @@
             <span>Explore</span>
             <img src="/assets/img/caret-outlined.svg" alt="" />
         </div>
-
-        <div data-bar class="{{ phase.name | lowercase }}"></div>
     </div>
 
     <div>

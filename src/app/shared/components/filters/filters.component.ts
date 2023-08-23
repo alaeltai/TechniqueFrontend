@@ -1,8 +1,8 @@
 import { CommonModule, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { SearchComponent } from '../search/search.component';
-import type { IFilters } from '@teq/shared/components/filters/types/filters.type';
+import type { FiltersValue, IFilters } from '@teq/shared/components/filters/types/filters.type';
 import { SelectComponent } from '@teq/shared/components/select/select.component';
 import { ToggleComponent } from '../toggle/toggle.component';
 import { Observable } from 'rxjs';
@@ -25,10 +25,12 @@ export class FiltersComponent implements OnInit {
     @Input() enableVisibility?: boolean;
     @Input() complexity?: string;
 
+    @Output() filtersChanged = new EventEmitter<FiltersValue>();
+
     constructor(private readonly _fb: FormBuilder, private readonly _filtersService: FiltersService) {}
 
     ngOnInit(): void {
-        const filters = this._filtersService.addFilters(
+        const originalFilters = this._filtersService.addFilters(
             ...[
                 ...(this.enableVisibility ? [FilterType.ToggleFilterDisabled] : []),
                 ...(this.enableToggles ? [FilterType.ToggleDisableControl] : []),
@@ -40,10 +42,13 @@ export class FiltersComponent implements OnInit {
             // TODO: Add the ability to restore filter selections for page restores at this point once needed
         );
 
-        this._initForm(filters);
+        this._initForm(originalFilters);
 
-        this.filtersForm.valueChanges.pipe(untilDestroyed(this)).subscribe(filters => {
+        this.filtersForm.valueChanges.pipe(untilDestroyed(this)).subscribe((filters: FiltersValue) => {
             if (filters) {
+                // Provide outside world with updated filter values
+                this.filtersChanged.emit(filters);
+
                 // Refilter data based on current filter values
                 this._filtersService.filter(filters as Record<string, string | number | boolean | Array<string | number | boolean>>);
             }
@@ -69,5 +74,7 @@ export class FiltersComponent implements OnInit {
 
         // Filter the data based on initial filters
         this._filtersService.filter(formControls);
+
+        this.filtersChanged.emit(this.filtersForm.value as FiltersValue);
     }
 }

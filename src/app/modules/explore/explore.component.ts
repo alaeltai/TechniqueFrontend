@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
-import { FiltersService } from '@teq/shared/components/filters/filters.service';
+import { FilterType, FiltersService } from '@teq/shared/components/filters/filters.service';
+import { FiltersValue } from '@teq/shared/components/filters/types/filters.type';
 import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
 import { APIService } from '@teq/shared/states/api/api.service';
 import type { IPhase } from '@teq/shared/types/phase.type';
@@ -20,6 +21,11 @@ export class ExploreComponent {
 
     private _aggregatedCounts: Array<{ methods: number; approaches: number }> = [];
 
+    private _aggregatedPhases: Record<number, string> = {};
+
+    private _disableable!: boolean;
+    private _filterDisabled!: boolean;
+
     @ViewChild(TreeViewerComponent) treeViewer!: TreeViewerComponent;
 
     constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService) {
@@ -29,9 +35,11 @@ export class ExploreComponent {
         this._apiService.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
             this._aggregatedCounts = [];
 
-            phases.forEach(phase => {
+            phases.forEach((phase, i) => {
                 let methods = 0;
                 let approaches = 0;
+
+                this._aggregatedPhases[i] = phase.name.toLowerCase(); // Remember the phase name
 
                 phase.subphases?.forEach(s => {
                     s.methods.forEach(m => {
@@ -48,12 +56,24 @@ export class ExploreComponent {
         });
     }
 
+    get disableable(): boolean {
+        return this._disableable;
+    }
+
+    get filterDisabled(): boolean {
+        return this._filterDisabled;
+    }
+
     getCardMethods(i: number): number {
         return this._aggregatedCounts[i]?.methods ?? 0;
     }
 
     getCardApproaches(i: number): number {
         return this._aggregatedCounts[i]?.approaches ?? 0;
+    }
+
+    getPagePhase(page = -1): string {
+        return this._aggregatedPhases[page] ?? '';
     }
 
     changePage(page: number): void {
@@ -64,5 +84,19 @@ export class ExploreComponent {
             left: 0,
             behavior: 'smooth'
         });
+    }
+
+    filtersChanged(filters: FiltersValue): void {
+        console.log('Filters after changed', filters);
+
+        if (FilterType.ToggleDisableControl in filters) {
+            // Update disableable
+            this._disableable = filters[FilterType.ToggleDisableControl] as boolean;
+        }
+
+        if (FilterType.ToggleFilterDisabled in filters) {
+            // Update disableable
+            this._filterDisabled = filters[FilterType.ToggleFilterDisabled] as boolean;
+        }
     }
 }

@@ -1,9 +1,13 @@
 <div data-method-title>
-    <span>{{ method?.name }}</span>
+    <span>{{ method.name }}</span>
+
+    <div data-controls data-svg-ignore-all>
+        <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+    </div>
 </div>
 
 <div data-approach-container>
     <div *ngFor="let approach of method?.approaches">
-        <teq-approach [approach]="approach"></teq-approach>
+        <teq-approach *ngIf="!(filterDisabled && approach.disabled)" [approach]="approach" [disableable]="disableable" [disabled]="disabled"></teq-approach>
     </div>
 </div>

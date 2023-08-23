@@ -1,20 +1,24 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { IRole } from '@teq/shared/types/roles.type';
 
-interface IRoleCount {
+export interface IRoleCount {
     count: number;
     role: IRole;
 }
+
 @Component({
     selector: 'teq-phase-card',
     templateUrl: './phase-card.component.html',
-    styleUrls: ['./phase-card.component.scss']
+    styleUrls: ['./phase-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PhaseCardComponent implements OnChanges {
     private _methodsCount = 0;
     private _approachesCount = 0;
     private _roles: IRoleCount[] = [];
+
+    hover = false;
 
     @Input() phase!: IPhase;
 

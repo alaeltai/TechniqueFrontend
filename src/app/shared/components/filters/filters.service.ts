@@ -89,6 +89,84 @@ export class FiltersService {
         return this._addFilters();
     }
 
+    enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
+        // Enforce the new status on the entity itself
+        entity.disabled = disabled;
+
+        // Enforce the new status on all children
+        this.enforceDisabledOnChildren(entity, disabled);
+
+        // Enforce the new status on affected parents
+        this.enforceDisabledOnParents(entity, disabled);
+    }
+
+    private enforceDisabledOnChildren(entity: EntityDataType, disabled: boolean): void {
+        if (entity.type === 'phase') {
+            entity.subphases?.forEach(s => this.enforceDisabledOnChildren(s, disabled));
+        } else if (entity.type === 'subphase') {
+            entity.methods?.forEach(m => this.enforceDisabledOnChildren(m, disabled));
+        } else if (entity.type === 'method') {
+            entity.approaches?.forEach(a => this.enforceDisabledOnChildren(a, disabled));
+        } else if (entity.type === 'approach' || entity.type === 'task') {
+            // No task level disable status
+        }
+
+        entity.disabled = disabled;
+    }
+
+    enforceDisabledOnParents(entity: EntityDataType, disabled: boolean): void {
+        if (entity.type === 'phase') {
+            // No phase level parents
+            return;
+        }
+
+        if (!disabled) {
+            // Ensure enablement regardless of prior status
+            const parent = entity.parent;
+
+            if (parent) {
+                parent.disabled = disabled;
+
+                this.enforceDisabledOnParents(parent, disabled);
+            }
+        } else {
+            // Only disable parent levels when all children of same type are disabled
+            const parent = entity.parent as EntityDataType;
+            if (parent) {
+                let children: EntityDataType[] = [];
+
+                switch (parent.type) {
+                    case 'phase':
+                        children = parent.subphases ?? [];
+
+                        break;
+
+                    case 'subphase':
+                        children = parent.methods ?? [];
+
+                        break;
+
+                    case 'method':
+                        children = parent.approaches ?? [];
+
+                        break;
+
+                    default:
+                        // No disalble status at task
+                        break;
+                }
+
+                if (!children.some(c => !c.disabled)) {
+                    // All children are disabled, disable the paret as well
+                    parent.disabled = disabled;
+
+                    // Ensure disabling further in the parent chain
+                    this.enforceDisabledOnParents(parent, disabled);
+                }
+            }
+        }
+    }
+
     private _addFilters(): IFilters {
         const types = this._registeredFilters;
 
@@ -114,7 +192,7 @@ export class FiltersService {
             switch (type) {
                 case FilterType.ToggleFilterDisabled:
                     filters.toggles.push({
-                        controlName: FilterType.ToggleDisableControl,
+                        controlName: FilterType.ToggleFilterDisabled,
                         value: false,
                         label: 'Hide disabled'
                     });
@@ -123,7 +201,7 @@ export class FiltersService {
 
                 case FilterType.ToggleDisableControl:
                     filters.toggles.push({
-                        controlName: FilterType.ToggleFilterDisabled,
+                        controlName: FilterType.ToggleDisableControl,
                         value: true,
                         label: 'Show disable/enable toggles'
                     });
@@ -150,7 +228,7 @@ export class FiltersService {
                 case FilterType.SelectRoles:
                     filters.selects.push({
                         controlName: FilterType.SelectRoles,
-                        multiple: true,
+                        // multiple: true,
                         options: [
                             {
                                 value: MatchAllOfType,
@@ -210,31 +288,41 @@ export class FiltersService {
         return filters;
     }
 
-    private _filterInDepth(entity: EntityDataType, criterias: IFilterCriteria[]): EntityDataType | null {
+    private _filterInDepth(entity: EntityDataType, criterias: IFilterCriteria[], parent?: EntityDataType): EntityDataType | null {
         // Filter all entities in depth while deep clonning results at the same time
         if (entity.type === 'phase') {
             // Phase level, filter subphases but ignore the phase itself (non filterable)
-            const subphases = entity.subphases?.map(s => this._filterInDepth(s, criterias)) as ISubphase[];
-
-            return {
+            const cloned: IPhase = {
                 ...entity,
-                subphases
+                subphases: []
             };
+
+            cloned.subphases = entity.subphases?.map(s => this._filterInDepth(s, criterias, cloned)) as ISubphase[];
+
+            return cloned;
         } else if (entity.type === 'subphase') {
-            // SubPhase level, filter methods but ignore the subphase itself (non filterable)
-            const methods = entity.methods?.map(m => this._filterInDepth(m, criterias)).filter(Boolean) as IMethod[];
-
-            return {
+            const cloned: ISubphase = {
                 ...entity,
-                methods
+                parent,
+                methods: []
             };
+
+            // SubPhase level, filter methods but ignore the subphase itself (non filterable)
+            cloned.methods = entity.methods?.map(m => this._filterInDepth(m, criterias)).filter(Boolean) as IMethod[];
+
+            return cloned;
         } else if (entity.type === 'method') {
             // Method level, filter approaches and the method itself
-            const approaches = entity.approaches?.map(a => this._filterInDepth(a, criterias)).filter(Boolean) as IApproach[];
+            const cloned: IMethod = {
+                ...entity,
+                approaches: []
+            };
+
+            cloned.approaches = entity.approaches?.map(a => this._filterInDepth(a, criterias, cloned)).filter(Boolean) as IApproach[];
             let matchAllSearch = false;
             let searchMatch = false;
 
-            if (!approaches.length) {
+            if (!cloned.approaches.length) {
                 // Filter method level only if it has no approaches
                 for (const criteria of criterias) {
                     if (criteria.filter === FilterType.Search) {
@@ -251,11 +339,8 @@ export class FiltersService {
             }
 
             // Known side effect: emptyu approaches are not displayed at all
-            if ((!matchAllSearch && searchMatch) || approaches.length) {
-                return {
-                    ...entity,
-                    approaches
-                };
+            if ((!matchAllSearch && searchMatch) || cloned.approaches.length) {
+                return cloned;
             }
         } else if (entity.type === 'approach') {
             // Approach level, filter tasks and the approach itself

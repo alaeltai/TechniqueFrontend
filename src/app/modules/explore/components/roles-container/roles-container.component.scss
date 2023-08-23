@@ -1,0 +1,26 @@
+@use 'typography' as typography;
+
+:host {
+    & > div {
+        display: flex;
+        flex-wrap: nowrap;
+        @include typography.apply('content+');
+        gap: 0.75rem;
+
+        opacity: 0;
+        transition: opacity .5s linear;
+
+        &[data-initialised='true'] {
+            opacity: 1;
+            flex-wrap: wrap;
+        }
+
+        & > teq-label ::ng-deep div {
+            display: flex;
+
+            height: 100%;
+
+            align-items: center;
+        }
+    }
+}

@@ -33,4 +33,20 @@ $phaseColorImprove: #f12938;
 
 $pageBackground: $white;
 
-$overlayColor: rgba($dark-gray, 0.9);
+// $overlayColor: rgba($pageBackground, .85); // TODO: Use this for loading state
+$overlayColor: rgba($dark-gray, 0.9); // TODO: Use this only for data modal
+
+$phases: (
+    'understand': #009ddc,
+    'innovate': #8fd400,
+    'execute': #ff7900,
+    'improve': #f12938
+);
+
+@mixin phase-color($attr) {
+    @each $phase, $color in $phases {
+        &[#{$attr}='#{$phase}'] {
+            @content($color);
+        }
+    }
+}

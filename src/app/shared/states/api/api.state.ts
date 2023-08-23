@@ -62,52 +62,71 @@ export class APIState {
     }
 
     public static convertPhase(phase: IAPIPhase): IPhase {
-        return {
+        const converted: IPhase = {
             type: 'phase',
             id: phase.id,
             name: phase.name,
             description: phase.description,
             order: phase.order,
-            subphases: phase.subPhases.map(APIState.convertSubPhase).sort(APIState.sortByOrder)
+            subphases: []
         };
+
+        converted.subphases = phase.subPhases.map(s => APIState.convertSubPhase(s, converted)).sort(APIState.sortByOrder);
+
+        return converted;
     }
 
-    public static convertSubPhase(subPhase: IAPISubPhase): ISubphase {
-        return {
+    public static convertSubPhase(subPhase: IAPISubPhase, parent?: IPhase): ISubphase {
+        const converted: ISubphase = {
             type: 'subphase',
             id: subPhase.id,
             name: subPhase.name,
             description: subPhase.description,
             order: subPhase.order,
-            methods: subPhase.methods.map(APIState.convertMethod).sort(APIState.sortByOrder)
+            parent,
+            methods: []
         };
+
+        converted.methods = subPhase.methods.map(m => APIState.convertMethod(m, converted)).sort(APIState.sortByOrder);
+
+        return converted;
     }
 
-    public static convertMethod(method: IAPIMethod): IMethod {
-        return {
+    public static convertMethod(method: IAPIMethod, parent?: ISubphase): IMethod {
+        const converted: IMethod = {
             type: 'method',
             id: method.id,
             name: method.name,
             description: method.description,
             order: method.order,
-            approaches: method.approaches.map(APIState.convertApproach).sort(APIState.sortByOrder)
+            parent,
+            approaches: []
         };
+
+        converted.approaches = method.approaches.map(a => APIState.convertApproach(a, converted)).sort(APIState.sortByOrder);
+
+        return converted;
     }
 
-    public static convertApproach(approach: IAPIApproach): IApproach {
-        return {
+    public static convertApproach(approach: IAPIApproach, parent?: IMethod): IApproach {
+        const converted: IApproach = {
             type: 'approach',
             id: approach.id,
             name: approach.name,
             description: approach.description,
             order: approach.order,
+            parent,
             roles: [approach.accountable, ...approach.responsibles].filter(Boolean).map(APIState.convertRole),
-            tasks: approach.tasks
-                .filter(t => t.name !== null)
-                .map(APIState.convertTask)
-                .sort(APIState.sortByOrder),
+            tasks: [],
             templates: approach.templates?.map(APIState.convertTemplate) ?? [] // TODO: Determine missing reason
         };
+
+        converted.tasks = approach.tasks
+            .filter(t => t.name !== null)
+            .map(t => APIState.convertTask(t, converted))
+            .sort(APIState.sortByOrder);
+
+        return converted;
     }
 
     public static convertTemplate(template: IAPITemplate): ITemplate {
@@ -128,12 +147,13 @@ export class APIState {
         });
     }
 
-    public static convertTask(task: IAPITask): ITask {
+    public static convertTask(task: IAPITask, parent?: IApproach): ITask {
         return {
             type: 'task',
             id: task.id,
             name: task.name,
             order: task.order,
+            parent,
             responsible: APIState.convertRole(task.responsible),
             purpose: task.purpose,
             how: task.how,

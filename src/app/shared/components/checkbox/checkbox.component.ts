@@ -1,23 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
-import { NgIf, NgFor, CommonModule } from '@angular/common';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
 
 @Component({
-    selector: 'teq-toggle',
+    selector: 'teq-checkbox',
     standalone: true,
+    templateUrl: './checkbox.component.html',
+    styleUrls: ['./checkbox.component.scss'],
     imports: [CommonModule, NgFor, NgIf],
-    templateUrl: './toggle.component.html',
-    styleUrls: ['./toggle.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ToggleComponent),
-            multi: true
-        }
-    ]
+    changeDetection: ChangeDetectionStrategy.OnPush
+    // providers: [
+    //     {
+    //         provide: NG_VALUE_ACCESSOR,
+    //         useExisting: forwardRef(() => ToggleComponent),
+    //         multi: true
+    //     }
+    // ]
 })
-export class ToggleComponent implements ControlValueAccessor {
+export class CheckboxComponent implements ControlValueAccessor {
     @Input() disabled?: boolean = false;
     @Input() value?: boolean;
     @Input() label?: string;

@@ -15,8 +15,14 @@
 
     @include shadows.subphase-box-shadow();
 
+    &[data-disabled='true'] {
+        background-color: #F5F5F5;
+    }
+
     & > div {
         display: flex;
+
+        flex: 1;
 
         align-items: center;
 
@@ -31,6 +37,20 @@
 
             & ::ng-deep path {
                 fill: colors.$light-gray;
+            }
+        }
+
+        & [data-controls] {
+            display: flex;
+
+            flex: 1;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
             }
         }
     }

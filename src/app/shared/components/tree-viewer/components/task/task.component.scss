@@ -17,6 +17,11 @@ $gap: 0.75rem;
         cursor: pointer;
     }
 
+    &[data-disabled='true'] {
+        transition: color, background-color .5s linear;
+        background-color: red !important;
+    }
+
     & > div {
         display: flex;
         flex-direction: row;

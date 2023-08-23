@@ -22,6 +22,11 @@
 
     & teq-icon {
         width: 100%;
+        transition: opacity .25s linear;
+
+        & ::ng-deep svg > g > path {
+            transition: fill .25s linear;
+        }
     }
 
     & [data-modal] {

@@ -18,6 +18,8 @@
     & [data-phase] {
         display: flex;
 
+        transition: background-color .25s linear;
+
         align-items: center;
 
         margin-bottom: .5rem;
@@ -28,6 +30,14 @@
         color: colors.$phase-title-color;
 
         @include shadows.phase-box-shadow();
+
+        @include colors.phase-color(data-phase) using ($color) {
+            background-color: $color;
+        }
+
+        &[data-disabled='true'] {
+            background-color: #E8E5E5; // Todo: Determine if this case actually exists
+        }
 
         & > span {
             padding-top: 3.5px;
@@ -40,22 +50,20 @@
                 fill: colors.$white;
             }
         }
-    }
 
-    & [data-phase="understand"] {
-        background-color: colors.$phaseColorUnderstand;
-    }
+        & [data-controls] {
+            display: flex;
 
-    & [data-phase="innovate"] {
-        background-color: colors.$phaseColorInnovate;
-    }
+            flex: 1;
 
-    & [data-phase="execute"] {
-        background-color: colors.$phaseColorExecute;
-    }
+            align-items: center;
+            justify-content: flex-end;
 
-    & [data-phase="improve"] {
-        background-color: colors.$phaseColorImprove;
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
+            }
+        }
     }
 
     & [data-subphase] {

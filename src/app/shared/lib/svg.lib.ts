@@ -28,6 +28,11 @@ export function asSVGRenderingOptions(
         let touched = false;
         let child: SVGNode | null = null;
 
+        if (el.hasAttribute('data-svg-ignore-all')) {
+            // Skip subtrees marked for complete filtering from processing
+            return svgContents;
+        }
+
         if (el.tagName === 'svg') {
             // Embedded SVG
             const svg: ISVGEmbedded = {

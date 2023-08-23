@@ -1,7 +1,7 @@
 <label class="toggle">
-    <span class="toggle-label">{{ label }}</span>
+    <span *ngIf="label" class="toggle-label">{{ label }}</span>
 
-    <input class="toggle-checkbox" type="checkbox" [checked]="value" (change)="change($event)" />
+    <input class="toggle-checkbox" type="checkbox" [checked]="value" (change)="change($event)" [disabled]="disabled" />
 
     <div class="toggle-switch"></div>
 </label>

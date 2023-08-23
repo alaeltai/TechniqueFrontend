@@ -1,16 +1,17 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, forwardRef, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, forwardRef, OnInit, signal, HostListener, ElementRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IOption, OptionValueType } from '@teq/shared/components/select/types/option.type';
 import { IconComponent } from '../icon/icon.component';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
 
 const MinLettersTreshold = 3;
 
 @Component({
     selector: 'teq-select',
     standalone: true,
-    imports: [CommonModule, NgFor, NgIf, FormsModule, IconComponent],
+    imports: [CommonModule, NgFor, NgIf, FormsModule, IconComponent, CheckboxComponent],
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,12 +32,39 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     @Input() searchable?: boolean;
     @Input() searchIcon?: boolean;
     @Input() options!: IOption[];
+    @Input() multiple?: boolean;
 
     private readonly _filteredOptions$ = new BehaviorSubject<IOption[]>([]);
 
     displayLabel = '';
 
     public opened = signal(false);
+
+    @HostListener('document:click', ['$event'])
+    unfocus(event: Event): void {
+        console.log('Event', event.target);
+        let unfocus = true;
+
+        if (event.target) {
+            let target: HTMLElement | null = event.target as HTMLElement;
+
+            while (target) {
+                if (target === this._element.nativeElement) {
+                    // Inside the container
+                    unfocus = false;
+                    break;
+                }
+
+                target = target.parentElement;
+            }
+        }
+
+        if (unfocus) {
+            this.opened.set(false);
+        }
+    }
+
+    constructor(private readonly _element: ElementRef) {}
 
     get filteredOptions$(): Observable<IOption[]> {
         return this._filteredOptions$.pipe(distinctUntilChanged());
@@ -109,6 +137,12 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
         if (this._filteredOptions$.value.length) {
             this.opened.update(value => !value);
         }
+    }
+
+    isSelected(value: OptionValueType): boolean {
+        const values = (Array.isArray(this.value) ? this.value : [this.value]) as OptionValueType[];
+
+        return values.includes(value);
     }
 
     private _ensureValue(): void {

@@ -1,4 +1,4 @@
-<div data-controls [attr.data-page]="page">
+<div data-controls [attr.data-page]="getPagePhase(page)">
     <div>
         <div data-back-link>
             <a *ngIf="page === undefined" [routerLink]="['/landing-page']">
@@ -13,7 +13,7 @@
         </div>
 
         <div>
-            <teq-filters [enableToggles]="true" [enableVisibility]="true" [complexity]="'-1'" />
+            <teq-filters [enableToggles]="true" [enableVisibility]="true" [complexity]="'-1'" (filtersChanged)="filtersChanged($event)" />
         </div>
 
         <div class="v-divider"></div>
@@ -40,7 +40,7 @@
             [attr.data-intermidiate]="i > 0 && i < ((phases$ | async)?.length || 0) - 1"
             [attr.data-last]="i === ((phases$ | async)?.length || 0) -1"
         >
-            <teq-phase [phase]="phase" [showArrow]="i !== page" (phaseClicked)="changePage(i)"></teq-phase>
+            <teq-phase [phase]="phase" [showArrow]="i !== page" (phaseClicked)="changePage(i)" [disableable]="i === page && disableable" />
         </div>
     </div>
 
@@ -49,7 +49,7 @@
         <div data-subphases>
             <div *ngFor="let subphase of (phases$ | async)?.[page!]?.subphases">
                 <div *ngFor="let method of subphase?.methods" data-method>
-                    <teq-method [method]="method"></teq-method>
+                    <teq-method *ngIf="!(subphase.disabled && filterDisabled)" [filterDisabled]="filterDisabled" [method]="method" [disableable]="disableable"></teq-method>
                 </div>
             </div>
         </div>

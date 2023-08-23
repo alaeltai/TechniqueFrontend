@@ -33,33 +33,12 @@
         background-color: colors.$white;
 
         &[data-page] {
-            & > div {
-                border-width: .25rem;
-            }
-
-            &[data-page='0'] {
+            @include colors.phase-color(data-page) using ($color) {
                 & > div {
-                    border-color: colors.$phaseColorUnderstand;
+                    border-width: .25rem;
+                    border-color: $color;
                 }
-            }
-
-            &[data-page='1'] {
-                & > div {
-                    border-color: colors.$phaseColorInnovate;
-                }
-            }
-
-            &[data-page='2'] {
-                & > div {
-                    border-color: colors.$phaseColorExecute;
-                }
-            }
-
-            &[data-page='3'] {
-                & > div {
-                    border-color: colors.$phaseColorImprove;
-                }
-            }
+            };
         }
 
         & > div {

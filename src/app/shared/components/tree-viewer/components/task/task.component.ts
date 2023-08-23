@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input } from '@angular/core';
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
 import { ITask } from '@teq/shared/types/task.type';
@@ -23,6 +23,11 @@ export class TaskComponent {
     }
 
     constructor(private readonly _overlayService: OverlayService) {}
+
+    @HostBinding('attr.data-disabled')
+    get disabledHost(): boolean {
+        return this.task?.disabled ?? false;
+    }
 
     get category(): string {
         return (this.task.category.name ?? '')
