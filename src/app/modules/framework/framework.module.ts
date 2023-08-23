@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FrameworkComponent } from '@teq/modules/framework/framework.component';
-import { PhaseComponent } from '@teq/modules/framework/components/phase/phase.component';
-import { SubphaseComponent } from '@teq/modules/framework/components/subphase/subphase.component';
-import { ApproachComponent } from '@teq/modules/framework/components/approach/approach.component';
-import { MethodComponent } from '@teq/modules/framework/components/method/method.component';
-import { TaskComponent } from '@teq/modules/framework/components/task/task.component';
 import { FrameworkRoutingModule } from '@teq/modules/framework/framework-routing.module';
 import { FrameworkService } from '@teq/modules/framework/state/framework.service';
 import { FrameworkState } from '@teq/modules/framework/state/framework.state';
@@ -21,7 +16,7 @@ import { IconComponent } from '@teq/shared/components/icon/icon.component';
 import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
 
 @NgModule({
-    declarations: [FrameworkComponent, PhaseComponent, SubphaseComponent, ApproachComponent, MethodComponent, TaskComponent],
+    declarations: [FrameworkComponent],
     imports: [
         CommonModule,
         FrameworkRoutingModule,
