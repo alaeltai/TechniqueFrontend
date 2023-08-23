@@ -24,7 +24,7 @@ trigger:
 pool: 'Linux'
 
 extends:
-  template: frontend/frontend-azure-template.yaml@templates
+  template: frontend/frontend-ionos-template.yaml@templates
   parameters:
     projectKey: "Technique.Frontend "
     projectName: "Technique Frontend"
