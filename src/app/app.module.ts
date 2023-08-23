@@ -11,6 +11,8 @@ import { MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
 import { MSALInstanceFactory } from './app.msal.factory';
 import { httpInterceptorProviders } from './core/inteceptors';
 import { IntersectionObserverDirective } from './shared/directives/intersection-observer';
+import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
+import { OverlayService } from '@teq/shared/services/overlay.service';
 
 @NgModule({
     declarations: [AppComponent, IntersectionObserverDirective],
@@ -20,7 +22,8 @@ import { IntersectionObserverDirective } from './shared/directives/intersection-
         NgxsModule.forRoot(),
         NgxsResetPluginModule.forRoot(),
         NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
-        MsalModule
+        MsalModule,
+        OverlayComponent
     ],
     providers: [
         {
@@ -28,7 +31,8 @@ import { IntersectionObserverDirective } from './shared/directives/intersection-
             useFactory: MSALInstanceFactory
         },
         httpInterceptorProviders,
-        MsalService
+        MsalService,
+        OverlayService
     ],
     bootstrap: [AppComponent]
 })

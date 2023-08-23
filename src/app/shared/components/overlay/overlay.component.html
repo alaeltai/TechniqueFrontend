@@ -1,9 +1,20 @@
 <div [attr.data-active]="active">
     <div *ngIf="loading" data-loading>
-        <img src="assets/img/spinner.svg" />
-        <div data-explanation>
-            <ng-content select="[explanation]"></ng-content>
-        </div>
+        <teq-spinner></teq-spinner>
+        <div data-explanation *ngIf="message">{{ message }}</div>
     </div>
-    <ng-content *ngIf="!loading"></ng-content>
+
+    <ng-container *ngIf="data" [ngSwitch]="data.template">
+        <ng-container
+            *ngSwitchCase="OverlayTemplate.TaskDetails"
+            [ngTemplateOutlet]="taskModal"
+            [ngTemplateOutletContext]="{task: data.data, registrationId: currentDataId}"
+        ></ng-container>
+    </ng-container>
 </div>
+
+<ng-template #taskModal let-task="task" let-registration="registrationId">
+    <teq-modal [title]="getTitle(task)" [registrationId]="registration">
+        <teq-task-details [task]="task"></teq-task-details>
+    </teq-modal>
+</ng-template>

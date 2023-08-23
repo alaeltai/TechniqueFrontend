@@ -1,31 +1,28 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Input, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
 import { ITask } from '@teq/shared/types/task.type';
+import { OverlayService, OverlayTemplate, OverlayType } from '../../../../services/overlay.service';
 
 @Component({
     selector: 'teq-task',
     standalone: true,
     templateUrl: './task.component.html',
     styleUrls: ['./task.component.scss'],
-    imports: [NgIf, NgFor, LabelComponent, OverlayComponent]
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    imports: [NgIf, NgFor, LabelComponent, OverlayComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskComponent {
     @Input() task!: ITask;
 
-    private readonly _modal: WritableSignal<boolean> = signal(false);
-
     @HostListener('click', [])
     onClick(): void {
         console.log('task activated', this.task.id);
-        this._modal.set(true);
+        this._overlayService.add(OverlayType.Data, { template: OverlayTemplate.TaskDetails, data: this.task });
     }
 
-    get modal(): WritableSignal<boolean> {
-        return this._modal;
-    }
+    constructor(private readonly _overlayService: OverlayService) {}
 
     get category(): string {
         return (this.task.category.name ?? '')

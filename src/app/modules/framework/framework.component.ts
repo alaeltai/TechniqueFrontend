@@ -3,6 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FrameworkService } from '@teq/modules/framework/state/framework.service';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { asSVGRenderingOptions, sortSVGOptions } from '@teq/shared/lib/svg.lib';
+import { OverlayService, OverlayType } from '@teq/shared/services/overlay.service';
 import { APIService } from '@teq/shared/states/api/api.service';
 import { IPagination } from '@teq/shared/types/pagination.type';
 import type { SVGNode } from '@teq/shared/types/svg.type';
@@ -23,34 +24,33 @@ export class FrameworkComponent implements OnInit {
 
     public readonly svgOptions$ = this._frameworkService.svgOptions$;
 
-    private readonly _overlay: WritableSignal<null | 'data' | 'svg' | ITask> = signal('data');
-
     private _scale = 1;
 
     private _maxPhases = 0;
 
     private _pagination: IPagination = { page: 1, zoom: 4 };
 
+    private _dataLoadingOverlay!: number;
+
+    private _svgGenerationOverlay!: number;
+
     constructor(
         private readonly _frameworkService: FrameworkService,
         private readonly _apiService: APIService,
+        private readonly _overlayService: OverlayService,
         private readonly _element: ElementRef<HTMLElement>
     ) {}
 
     ngOnInit(): void {
-        this._overlay.set('data'); // Mark initial loading
+        this._dataLoadingOverlay = this._overlayService.add(OverlayType.Loading, {
+            message: 'Loading data...'
+        });
 
         this.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
             this._maxPhases = phases.length;
 
-            setTimeout(() => {
-                this._overlay.set(null); // Close the overlay
-            }, 100);
+            this._overlayService.remove(this._dataLoadingOverlay);
         });
-    }
-
-    get overlay(): WritableSignal<null | 'data' | 'svg' | ITask> {
-        return this._overlay;
     }
 
     get page(): number {
@@ -81,7 +81,9 @@ export class FrameworkComponent implements OnInit {
 
         if (wrapper && contentWrapper && headingsWrapper) {
             // Set loading status
-            this._overlay.set('svg');
+            this._svgGenerationOverlay = this._overlayService.add(OverlayType.Loading, {
+                message: 'Generating SVG...'
+            });
 
             setTimeout(() => {
                 const svgContents: SVGNode[] = [];
@@ -129,7 +131,7 @@ export class FrameworkComponent implements OnInit {
 
                         URL.revokeObjectURL(url);
 
-                        this._overlay.set(null); // Close the overlay
+                        this._overlayService.remove(this._svgGenerationOverlay);
                     }
                 }, 1000);
             }, 100);

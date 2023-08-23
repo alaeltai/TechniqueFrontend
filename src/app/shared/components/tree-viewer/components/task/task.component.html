@@ -32,14 +32,6 @@
         <div>{{ artefacts }}</div>
         <!-- <span *ngFor="let artefact of task.artefacts; index as i">{{ i > 0 ? '; ' + artefact.name : artefact.name }}</span> -->
 
-        <span *ngIf="!task.artefacts?.length">
-            No artefacts
-        </span>
+        <span *ngIf="!task.artefacts?.length"> No artefacts </span>
     </div>
 </div>
-
-<teq-overlay *ngIf="modal()" [active]="modal() !== null" [loading]="false">
-    <div>
-        Add the modal here {{ task.id }}
-    </div>
-</teq-overlay>
