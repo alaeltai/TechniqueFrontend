@@ -24,13 +24,12 @@ trigger:
 pool: 'Linux'
 
 extends:
-  template: frontend/frontend-azure-template.yaml@templates
+  template: frontend/frontend-ionos-template.yaml@templates
   parameters:
-    projectKey: "Technique.Frontend "
-    projectName: "Technique Frontend"
-    repositoryName: "Technique Frontend"
-    #containerize: true
+    projectKey: "technique.frontend "
+    projectName: "technique-frontend"
+    repositoryName: "technique-frontend"
+    containerize: true
     imageName: "technique-frontend"
-    ## Where to push ?!
-    #containerRegistry: "technique.azurecr.io"
-    #containerRegistryServiceName: "Azure Container Registry"
+    containerRegistry: "spctrm.cr.de-fra.ionos.com"
+    containerRegistryServiceName: "Ionos Container Registry"
