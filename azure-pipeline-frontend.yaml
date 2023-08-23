@@ -29,8 +29,7 @@ extends:
     projectKey: "Technique.Frontend "
     projectName: "Technique Frontend"
     repositoryName: "Technique Frontend"
-    #containerize: true
+    containerize: true
     imageName: "technique-frontend"
-    ## Where to push ?!
-    #containerRegistry: "technique.azurecr.io"
-    #containerRegistryServiceName: "Azure Container Registry"
+    containerRegistry: "spctrm.cr.de-fra.ionos.com"
+    containerRegistryServiceName: "Ionos Container Registry"
