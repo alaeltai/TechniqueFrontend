@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input } from '@angular/core';
+import { Component, HostBinding, HostListener, Input } from '@angular/core';
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
 import { ITask } from '@teq/shared/types/task.type';
@@ -10,11 +10,12 @@ import { OverlayService, OverlayTemplate, OverlayType } from '../../../../servic
     standalone: true,
     templateUrl: './task.component.html',
     styleUrls: ['./task.component.scss'],
-    imports: [NgIf, NgFor, LabelComponent, OverlayComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    imports: [NgIf, NgFor, LabelComponent, OverlayComponent]
 })
 export class TaskComponent {
     @Input() task!: ITask;
+
+    @Input() disabled?: boolean;
 
     @HostListener('click', [])
     onClick(): void {
@@ -22,12 +23,12 @@ export class TaskComponent {
         this._overlayService.add(OverlayType.Data, { template: OverlayTemplate.TaskDetails, data: this.task });
     }
 
-    constructor(private readonly _overlayService: OverlayService) {}
-
     @HostBinding('attr.data-disabled')
     get disabledHost(): boolean {
-        return this.task?.disabled ?? false;
+        return this.disabled ?? this.task.disabled ?? false;
     }
+
+    constructor(private readonly _overlayService: OverlayService) {}
 
     get category(): string {
         return (this.task.category.name ?? '')

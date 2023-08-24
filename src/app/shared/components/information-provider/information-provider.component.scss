@@ -1,6 +1,7 @@
 @use 'variables/shadows' as shadows;
 @use 'variables/colors' as colors;
 @use 'typography' as typography;
+@use 'variables/layers' as layers;
 
 :host {
     display: inline-flex;
@@ -57,6 +58,8 @@
         color: colors.$dark-gray;
 
         text-transform: initial;
+
+        z-index: layers.$treeViewFloatingContent;
 
         & > h3 {
             @include typography.apply('bold');

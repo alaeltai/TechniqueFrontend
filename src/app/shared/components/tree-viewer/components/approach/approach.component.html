@@ -18,6 +18,6 @@
 
 <div data-approach-tasks>
     <div *ngFor="let task of approach?.tasks">
-        <teq-task [task]="task"></teq-task>
+        <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>
     </div>
 </div>
