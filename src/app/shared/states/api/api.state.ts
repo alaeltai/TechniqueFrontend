@@ -160,6 +160,7 @@ export class APIState {
             how: task.how,
             category: APIState.convertCategory(task.category),
             artefacts: APIState.convertArtefacts(task.artefactsOutput),
+            inputArtefacts: APIState.convertArtefacts(task.artefactsInput),
             inputDescription: task.inputDescription,
             outputDescription: task.outputDescription
         };
