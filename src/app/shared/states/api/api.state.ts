@@ -158,7 +158,7 @@ export class APIState {
             purpose: task.purpose,
             how: task.how,
             category: APIState.convertCategory(task.category),
-            artefacts: APIState.convertArtefacts(task.artefactsOutput),
+            artefacts: APIState.convertArtefacts(task.artefactsOutput, 'output').concat(APIState.convertArtefacts(task.artefactsInput, 'input')),
             inputDescription: task.inputDescription,
             outputDescription: task.outputDescription
         };
@@ -171,11 +171,12 @@ export class APIState {
         };
     }
 
-    public static convertArtefacts(artefacts: IAPIArtefact[]): IArtefact[] {
+    public static convertArtefacts(artefacts: IAPIArtefact[], type: string): IArtefact[] {
         return artefacts?.map<IArtefact>(artefact => {
             return {
                 id: artefact.id,
                 name: artefact.name.trim(),
+                type: type,
                 description: artefact.description,
                 owner: artefact.owner,
                 refNo: artefact.refNo,

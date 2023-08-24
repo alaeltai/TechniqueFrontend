@@ -1,4 +1,5 @@
 export interface IArtefact {
+    type: string;
     id: string;
     name: string;
     description: string;

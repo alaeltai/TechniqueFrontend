@@ -1,0 +1,13 @@
+<div data-collapsible>
+    <div data-title (click)="toggleContent()">
+        <h2 data-title-text>{{ title }}</h2>
+        <teq-icon type="collapse" [orientation]="isExpanded ? 'right' : 'left'"></teq-icon>
+    </div>
+
+    <div [attr.data-content-collapsed]="isExpanded ? null : ''" [attr.data-content-expanded]="isExpanded ? '' : null" (click)="toggleContent()">
+        <p>{{content}}</p>
+        <span *ngIf="url && (url.uk || url.de)">Supporting links:</span>
+        <a *ngIf="url && url.uk" [href]="url.uk" rel="noopener noreferrer" target="”_blank”" (click)="$event.stopPropagation()">[UK] [{{title}}]</a>
+        <a *ngIf="url && url.de" [href]="url.de" rel="noopener noreferrer" target="”_blank”" (click)="$event.stopPropagation()">[DE] [{{title}}]</a>
+    </div>
+</div>

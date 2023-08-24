@@ -1,0 +1,65 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    width: 100%;
+    background-color: colors.$white-gray;
+
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+
+    & > [data-collapsible] {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        & > [data-title] {
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+
+            & > h2 {
+                @include typography.apply('bold');
+            }
+        }
+    }
+
+    & [data-content-collapsed],
+    & [data-content-expanded] {
+        cursor: pointer;
+
+        & > p {
+            margin: 0;
+            @include typography.apply('normal');
+        }
+
+        & span {
+            @include typography.apply('normal');
+            margin-top: 0.5rem;
+
+            display: block;
+        }
+
+        & a {
+            @include typography.apply('bold');
+            text-decoration: none;
+            color: colors.$light-blue;
+
+            display: block;
+            margin-top: 0.25rem;
+        }
+    }
+
+    & [data-content-collapsed] {
+        display: none;
+        transition: transform 0.5s linear;
+        transform: scale(0, 0);
+    }
+
+    & [data-content-expanded] {
+        padding-top: 0.5rem;
+        transition: transform 0.5s linear;
+        transform: scale(1, 1);
+    }
+}

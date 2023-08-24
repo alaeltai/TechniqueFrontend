@@ -10,21 +10,27 @@
 
     <div data-purpose>
         <div data-section-title>{{ 'Purpose' | uppercase }}</div>
-        <p>{{ task.purpose }}</p>
+        <p data-section-text>{{ task.purpose }}</p>
     </div>
 
     <div data-how>
         <div data-section-title>{{ 'How' | uppercase }}</div>
-        <ng-container *ngFor="let howToken of task.how.split('/\w*/g')">
-            <p>{{ howToken }}</p>
+        <ng-container *ngFor="let howToken of task.how.split('. ')">
+            <p data-section-text>{{ howToken }}</p>
         </ng-container>
     </div>
 
     <div data-wyn>
         <div data-section-title>{{ 'What you need' | uppercase }}</div>
+        <ng-container *ngFor="let artefact of inputArtefacts">
+            <teq-collapsible [title]="artefact.name" [content]="artefact.description"></teq-collapsible>
+        </ng-container>
     </div>
 
     <div data-results>
         <div data-section-title>{{ 'Results' | uppercase }}</div>
+        <ng-container *ngFor="let artefact of outputArtefacts">
+            <teq-collapsible [title]="artefact.name" [content]="artefact.description" [url]="artefact.url"></teq-collapsible>
+        </ng-container>
     </div>
 </div>

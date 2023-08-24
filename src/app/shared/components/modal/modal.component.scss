@@ -2,7 +2,7 @@
 @use 'typography' as typography;
 
 :host {
-    width: 30.625rem;
+    width: 61.25rem;
     min-height: 34.125rem;
     max-height: 44.75rem;
     height: fit-content;
@@ -13,8 +13,6 @@
 
     & > article {
         & > section {
-            width: 27.625rem;
-
             min-height: 24.375rem;
             max-height: 34.6875rem;
             height: fit-content;
@@ -23,19 +21,23 @@
             overflow-wrap: break-word;
         }
 
-        & > header,
-        & > footer {
+        & > header {
             padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+
+            & > teq-icon ::ng-deep svg {
+                & path {
+                    fill: colors.$active-link-item-background !important;
+                }
+
+                cursor: pointer;
+                width: 1.25rem;
+                height: 1.25rem;
+            }
 
             & > h2 {
                 @include typography.apply('login');
-            }
-
-            & > a {
-                @include typography.apply('bold');
-                color: colors.$active-link-item-background;
-
-                text-decoration: none;
             }
         }
     }
