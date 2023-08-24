@@ -195,7 +195,7 @@ export class APIState {
         console.log('In handler getter');
 
         const response = this._http
-            .get<IAPIPhase[]>(`${environment.apiConfig.uri}/fullframework`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.FULL_FRAMEWORK)
