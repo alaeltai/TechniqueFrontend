@@ -18,6 +18,11 @@ export interface BasePhase {
     disabled?: boolean;
 
     /**
+     * Determines if the data should be rendered as collapsed
+     */
+    collapsed?: boolean;
+
+    /**
      * Original disable status keeper  in case of manual adjustment from parent level
      */
     _disabled?: boolean;

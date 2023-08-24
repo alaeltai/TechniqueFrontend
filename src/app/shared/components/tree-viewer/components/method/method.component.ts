@@ -30,4 +30,10 @@ export class MethodComponent {
 
         this._filtersService.enforceDisabledStatusAtLocation(this.method, disabled);
     }
+
+    toggleCollapseState(): void {
+        const collapsed = !this.method.collapsed;
+
+        this._filtersService.ensureCollapsedStatusAtLocation(this.method, collapsed);
+    }
 }

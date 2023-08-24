@@ -5,6 +5,7 @@
 
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(approach.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+        <!-- <teq-entity-collpse [value]="approach.collapsed" (change)="toggleCollapseState()"></teq-entity-collpse> -->
     </div>
 </div>
 
@@ -16,7 +17,7 @@
     </teq-label>
 </div>
 
-<div data-approach-tasks>
+<div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
     <div *ngFor="let task of approach?.tasks">
         <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>
     </div>

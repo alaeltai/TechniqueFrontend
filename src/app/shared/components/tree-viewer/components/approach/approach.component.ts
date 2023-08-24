@@ -6,6 +6,7 @@ import { TaskComponent } from '../task/task.component';
 import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
+import { EntityType } from '@teq/shared/types/types';
 
 @Component({
     selector: 'teq-approach',
@@ -30,5 +31,11 @@ export class ApproachComponent {
         const disabled = !this.approach.disabled;
 
         this._filtersService.enforceDisabledStatusAtLocation(this.approach, disabled);
+    }
+
+    toggleCollapseState(): void {
+        const collapsed = !this.approach.collapsed;
+
+        this._filtersService.ensureCollapsedStatusAtLocation(this.approach, collapsed);
     }
 }

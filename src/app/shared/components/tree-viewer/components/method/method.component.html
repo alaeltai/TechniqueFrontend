@@ -3,10 +3,11 @@
 
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+        <!-- <teq-entity-collpse [value]="method.collapsed" (change)="toggleCollapseState()"></teq-entity-collpse> -->
     </div>
 </div>
 
-<div data-approach-container>
+<div data-approach-container [attr.data-collapsed]="method.collapsed">
     <div *ngFor="let approach of method?.approaches">
         <teq-approach *ngIf="!(filterDisabled && approach.disabled)" [approach]="approach" [disableable]="disableable" [disabled]="disabled"></teq-approach>
     </div>

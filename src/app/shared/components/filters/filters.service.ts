@@ -56,6 +56,7 @@ export class FiltersService {
     private _registeredFilters!: FilterType[];
 
     private readonly _disableMap: Record<string, boolean> = {};
+    private readonly _collapsedMap: Record<string, boolean> = {};
 
     private _filteredMap: Record<string, EntityDataType> = {};
 
@@ -93,6 +94,11 @@ export class FiltersService {
         return this._addFilters();
     }
 
+    ensureCollapsedStatusAtLocation(entity: EntityDataType, collapsed: boolean): void {
+        // Enforce the new status on the entity itself
+        this.enforceCollapseStatus(entity, collapsed);
+    }
+
     enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
         // Enforce the new status on the entity itself
         this.enforceDisableStatus(entity, disabled);
@@ -102,6 +108,11 @@ export class FiltersService {
 
         // Enforce the new status on affected parents
         this.enforceDisabledOnParents(entity, disabled);
+    }
+
+    private enforceCollapseStatus(entity: EntityDataType, collapsed: boolean): void {
+        entity.collapsed = collapsed;
+        this._collapsedMap[entity._locator] = collapsed; // Cache the collapsed status change at disable Map level
     }
 
     private enforceDisableStatus(entity: EntityDataType, disabled: boolean): void {
@@ -359,6 +370,7 @@ export class FiltersService {
                 return {
                     ...entity,
                     disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
+                    collapsed: entity._locator in this._collapsedMap ? this._collapsedMap[entity._locator] : entity.collapsed,
                     approaches
                 } satisfies IMethod;
             }
@@ -440,6 +452,7 @@ export class FiltersService {
                 const cloned = {
                     ...entity,
                     disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
+                    collapsed: entity._locator in this._collapsedMap ? this._collapsedMap[entity._locator] : entity.collapsed,
                     tasks,
                     templates,
                     roles
