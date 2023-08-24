@@ -11,6 +11,6 @@ export const environment: EnvironmentTypeModel = {
     },
     apiConfig: {
         scopes: ['api://5959ac77-d979-4a98-a27c-b6d473649578/Read'],
-        uri: 'https://racoons.computacenter.io/api'
+        uri: 'https://technique.qa.spctrm.computacenter.com/api'
     }
 };
