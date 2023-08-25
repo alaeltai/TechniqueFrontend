@@ -37,7 +37,7 @@ export class ApproachComponent {
 
     @HostBinding('attr.data-collapsed')
     get collapsedApproach(): boolean {
-        return (this.approach?.collapsed as boolean) ?? true;
+        return (this.approach?.collapsed as boolean) ?? false;
     }
 
     constructor(private readonly _filtersService: FiltersService) {}

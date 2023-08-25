@@ -9,15 +9,15 @@
     </div>
 </div>
 
-<teq-entity-collapse [collapse]="approach.collapsed!" data-svg-ignore>
-    <div data-approach-roles-wrapper>
-        <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
-            <div>
-                <span>{{ role.name }}</span>
-            </div>
-        </teq-label>
-    </div>
+<div data-approach-roles-wrapper>
+    <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
+        <div>
+            <span>{{ role.name }}</span>
+        </div>
+    </teq-label>
+</div>
 
+<teq-entity-collapse [collapse]="approach.collapsed!" data-svg-ignore>
     <div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
         <div *ngFor="let task of approach?.tasks">
             <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>

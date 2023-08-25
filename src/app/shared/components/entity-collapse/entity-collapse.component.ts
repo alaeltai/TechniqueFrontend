@@ -10,7 +10,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         trigger('collapse', [
             state('0', style({ height: '*', opacity: '1' })),
             state('1', style({ height: '0', opacity: '0' })),
-            transition('1 <=> 0', animate('{{duration}}ms {{easing}}'), {
+            transition('0 <=> 1', animate('{{duration}}ms {{easing}}'), {
                 params: {
                     duration: 500,
                     easing: 'ease-in-out'

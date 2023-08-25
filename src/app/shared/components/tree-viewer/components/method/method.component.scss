@@ -21,6 +21,10 @@
         transition: 0.5s ease-in-out margin;
     }
 
+    &[data-collapsed='false'] {
+        transition: 0.5s ease-in-out margin;
+    }
+
     & [data-method-title] {
         display: flex;
         align-items: center;

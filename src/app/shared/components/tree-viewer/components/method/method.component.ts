@@ -28,7 +28,7 @@ export class MethodComponent {
 
     @HostBinding('attr.data-collapsed')
     get collapsedApproach(): boolean {
-        return (this.method?.collapsed as boolean) ?? true;
+        return (this.method?.collapsed as boolean) ?? false;
     }
 
     constructor(private readonly _filtersService: FiltersService) {}
