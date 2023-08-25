@@ -1,0 +1,28 @@
+@use 'variables/colors' as colors;
+
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 1rem;
+    height: 1rem;
+
+    margin-left: 1rem;
+
+    background-color: colors.$white-gray;
+
+    border: 1px solid colors.$light-gray;
+
+    cursor: pointer;
+
+    & > span {
+        color: colors.$active-link-item-background;
+
+        line-height: 1rem;
+    }
+
+    & > [data-collapsed='false'] {
+        font-family: monospace;
+    }
+}
