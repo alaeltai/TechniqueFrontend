@@ -3,11 +3,11 @@
 
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
-        <teq-icon type="collapse" [orientation]="method.collapsed ? 'left' : 'right'" (click)="toggleCollapseState()"></teq-icon>
+        <teq-expand-collapse-button [collapsed]="method.collapsed" (click)="toggleCollapseState()"></teq-expand-collapse-button>
     </div>
 </div>
 
-<teq-entity-collapse [collapse]="method.collapsed!">
+<teq-entity-collapse [collapse]="method.collapsed!" data-svg-ignore>
     <div data-approach-container [attr.data-collapsed]="method.collapsed">
         <div *ngFor="let approach of method?.approaches">
             <teq-approach

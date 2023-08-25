@@ -1,4 +1,4 @@
-<div #wrapper data-wrapper [attr.data-phase]="phase.name | lowercase">
+<div #wrapper data-wrapper [attr.data-phase]="phase.name | lowercase" [attr.data-disabled]="phase.disabled ?? 'false'">
     <div (mouseenter)="hover = true" (mouseleave)="hover = false">
         <img src="{{ image }}" alt="" />
 
@@ -33,13 +33,19 @@
             <div data-roles>
                 <span data-role-name>{{ "Roles" | uppercase }}</span>
 
-                <teq-roles-container [roles]="roles" [phase]="phase" [unlimited]="hover" />
+                <teq-roles-container [roles]="roles" [phase]="phase" [unlimited]="phase.disabled ?? hover" />
             </div>
         </div>
 
-        <div data-cta>
-            <span>Explore</span>
+        <div data-cta *ngIf="!phase.disabled">
+            <ng-content select="[cta]"></ng-content>
             <img src="/assets/img/caret-outlined.svg" alt="" />
+        </div>
+        <div data-cta *ngIf="phase.disabled">
+            <div data-controls>
+                <div>Enable this phase</div>
+                <teq-toggle *ngIf="disableable" [value]="!(phase.disabled)" (change)="toggleDisableState()" />
+            </div>
         </div>
     </div>
 

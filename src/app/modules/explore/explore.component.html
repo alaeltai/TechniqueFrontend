@@ -26,7 +26,9 @@
     <h3>{{ "Phases" | uppercase }}</h3>
 
     <div *ngIf="!page" data-phases @fadeIn>
-        <teq-phase-card *ngFor="let phase of (phases$ | async); index as i" [phase]="phase" (click)="page = i" [methods]="getCardMethods(i)" [approaches]="getCardApproaches(i)"></teq-phase-card>
+        <teq-phase-card [disableable]="disableable" *ngFor="let phase of (phases$ | async); index as i" [phase]="phase" (click)="page = i" [methods]="getCardMethods(i)" [approaches]="getCardApproaches(i)">
+            <span cta>Explore</span>
+        </teq-phase-card>
     </div>
 </ng-container>
 

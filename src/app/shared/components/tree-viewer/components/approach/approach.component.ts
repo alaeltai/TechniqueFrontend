@@ -7,13 +7,22 @@ import { InformationProviderComponent } from '@teq/shared/components/information
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
-import { IconComponent } from '../../../icon/icon.component';
+import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-collapse-button/expand-collapse-button.component';
 
 @Component({
     selector: 'teq-approach',
     standalone: true,
     templateUrl: './approach.component.html',
-    imports: [NgIf, NgFor, IconComponent, LabelComponent, TaskComponent, InformationProviderComponent, ToggleComponent, EntityCollapseComponent],
+    imports: [
+        NgIf,
+        NgFor,
+        LabelComponent,
+        TaskComponent,
+        InformationProviderComponent,
+        ToggleComponent,
+        EntityCollapseComponent,
+        ExpandCollapseButtonComponent
+    ],
     styleUrls: ['./approach.component.scss']
 })
 export class ApproachComponent {

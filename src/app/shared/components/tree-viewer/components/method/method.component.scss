@@ -19,11 +19,6 @@
     &[data-collapsed='true'] {
         margin-bottom: 0;
         transition: 0.5s ease-in-out margin;
-
-        // & > [data-approach-title] {
-        //     padding-bottom: 0;
-        //     transition: 0.5s ease-in-out padding;
-        // }
     }
 
     & [data-method-title] {
