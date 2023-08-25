@@ -5,20 +5,22 @@
 
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(approach.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
-        <!-- <teq-entity-collpse [value]="approach.collapsed" (change)="toggleCollapseState()"></teq-entity-collpse> -->
+        <teq-icon type="collapse" [orientation]="approach.collapsed ? 'left' : 'right'" (click)="toggleCollapseState()"></teq-icon>
     </div>
 </div>
 
-<div data-approach-roles-wrapper>
-    <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
-        <div>
-            <span>{{ role.name }}</span>
+<teq-entity-collapse [collapse]="approach.collapsed!">
+    <div data-approach-roles-wrapper>
+        <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
+            <div>
+                <span>{{ role.name }}</span>
+            </div>
+        </teq-label>
+    </div>
+
+    <div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
+        <div *ngFor="let task of approach?.tasks">
+            <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>
         </div>
-    </teq-label>
-</div>
-
-<div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
-    <div *ngFor="let task of approach?.tasks">
-        <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>
     </div>
-</div>
+</teq-entity-collapse>

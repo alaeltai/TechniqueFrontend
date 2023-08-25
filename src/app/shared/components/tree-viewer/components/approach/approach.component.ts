@@ -6,13 +6,14 @@ import { TaskComponent } from '../task/task.component';
 import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
-import { EntityType } from '@teq/shared/types/types';
+import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
+import { IconComponent } from '../../../icon/icon.component';
 
 @Component({
     selector: 'teq-approach',
     standalone: true,
     templateUrl: './approach.component.html',
-    imports: [NgIf, NgFor, LabelComponent, TaskComponent, InformationProviderComponent, ToggleComponent],
+    imports: [NgIf, NgFor, IconComponent, LabelComponent, TaskComponent, InformationProviderComponent, ToggleComponent, EntityCollapseComponent],
     styleUrls: ['./approach.component.scss']
 })
 export class ApproachComponent {
@@ -23,6 +24,11 @@ export class ApproachComponent {
     @HostBinding('attr.data-disabled')
     get disabledHost(): boolean {
         return this.disabled ?? this.approach?.disabled ?? false;
+    }
+
+    @HostBinding('attr.data-collapsed')
+    get collapsedApproach(): boolean {
+        return (this.approach?.collapsed as boolean) ?? true;
     }
 
     constructor(private readonly _filtersService: FiltersService) {}
