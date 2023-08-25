@@ -14,12 +14,4 @@ import { CollapsibleComponent } from '../collapsible-component/collapsible/colla
 })
 export class TaskDetailsComponent {
     @Input() task!: ITask;
-
-    get inputArtefacts() {
-        return this.task.artefacts.filter(art => art.type === 'input');
-    }
-
-    get outputArtefacts() {
-        return this.task.artefacts.filter(art => art.type === 'output');
-    }
 }

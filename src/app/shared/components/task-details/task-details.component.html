@@ -22,14 +22,14 @@
 
     <div data-wyn>
         <div data-section-title>{{ 'What you need' | uppercase }}</div>
-        <ng-container *ngFor="let artefact of inputArtefacts">
+        <ng-container *ngFor="let artefact of task.inputArtefacts">
             <teq-collapsible [title]="artefact.name" [content]="artefact.description"></teq-collapsible>
         </ng-container>
     </div>
 
     <div data-results>
         <div data-section-title>{{ 'Results' | uppercase }}</div>
-        <ng-container *ngFor="let artefact of outputArtefacts">
+        <ng-container *ngFor="let artefact of task.artefacts">
             <teq-collapsible [title]="artefact.name" [content]="artefact.description" [url]="artefact.url"></teq-collapsible>
         </ng-container>
     </div>

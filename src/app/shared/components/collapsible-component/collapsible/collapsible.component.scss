@@ -27,6 +27,8 @@
 
     & [data-content-collapsed],
     & [data-content-expanded] {
+        transform-origin: top left;
+        transition: transform 500ms linear;
         cursor: pointer;
 
         & > p {
@@ -41,25 +43,26 @@
             display: block;
         }
 
+        & [data-url] {
+            display: block;
+        }
+
         & a {
             @include typography.apply('bold');
             text-decoration: none;
             color: colors.$light-blue;
 
-            display: block;
             margin-top: 0.25rem;
         }
     }
 
     & [data-content-collapsed] {
-        display: none;
-        transition: transform 0.5s linear;
-        transform: scale(0, 0);
+        transform: scaleY(0);
+        height: 0;
     }
 
     & [data-content-expanded] {
         padding-top: 0.5rem;
-        transition: transform 0.5s linear;
-        transform: scale(1, 1);
+        transform: scaleY(1);
     }
 }
