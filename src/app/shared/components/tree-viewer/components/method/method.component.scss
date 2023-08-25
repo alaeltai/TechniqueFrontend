@@ -69,9 +69,9 @@
     }
 
     & > teq-entity-collapse {
-        & [data-approach-container] {
-            @include shadows.card-b-shadow();
+        @include shadows.card-b-shadow();
 
+        & [data-approach-container] {
             & > div > teq-approach {
                 border-top: 1px solid colors.$method-divider-gray;
                 padding-bottom: 2rem;
