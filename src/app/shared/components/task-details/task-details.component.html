@@ -2,9 +2,7 @@
     <div data-role>
         <div data-section-title>{{ 'Responsible Role' | uppercase }}</div>
         <teq-label [borderColor]="task.responsible.color">
-            <div>
-                <span>{{ task.responsible.name }}</span>
-            </div>
+            <div data-role-name>{{ task.responsible.name }}</div>
         </teq-label>
     </div>
 

@@ -11,6 +11,8 @@
 
     background: colors.$white;
 
+    position: relative;
+
     & > article {
         & > section {
             min-height: 24.375rem;
@@ -28,12 +30,16 @@
 
             & > teq-icon ::ng-deep svg {
                 & path {
-                    fill: colors.$active-link-item-background !important;
+                    fill: colors.$black !important;
                 }
 
                 cursor: pointer;
-                width: 1.25rem;
-                height: 1.25rem;
+                width: 1.75rem;
+                height: 1.75rem;
+
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
             }
 
             & > h2 {

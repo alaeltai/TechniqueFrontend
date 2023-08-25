@@ -4,7 +4,7 @@
         <teq-icon type="collapse" [orientation]="isExpanded ? 'right' : 'left'"></teq-icon>
     </div>
 
-    <div [attr.data-content-collapsed]="isExpanded ? null : ''" [attr.data-content-expanded]="isExpanded ? '' : null" (click)="toggleContent()">
+    <teq-entity-collapse [collapse]="!isExpanded" (click)="toggleContent()">
         <p>{{content}}</p>
         <span *ngIf="url && (url.uk || url.de)">Supporting links:</span>
         <div data-url *ngIf="url && url.uk">
@@ -13,5 +13,5 @@
         <div data-url *ngIf="url && url.de">
             <a [href]="url.de" rel="noopener noreferrer" target="”_blank”" (click)="$event.stopPropagation()">[DE] [{{title}}]</a>
         </div>
-    </div>
+    </teq-entity-collapse>
 </div>

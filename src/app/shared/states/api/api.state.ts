@@ -101,8 +101,7 @@ export class APIState {
             name: method.name,
             description: method.description,
             order: method.order,
-            approaches: [],
-            collapsed: true
+            approaches: []
         };
 
         converted.approaches = method.approaches.map(a => APIState.convertApproach(a, converted._locator)).sort(APIState.sortByOrder);
@@ -120,8 +119,7 @@ export class APIState {
             _locator: [_locator, approach.id].join('.'),
             roles: [approach.accountable, ...approach.responsibles].filter(Boolean).map(APIState.convertRole),
             tasks: [],
-            templates: approach.templates?.map(APIState.convertTemplate) ?? [], // TODO: Determine missing reason
-            collapsed: true
+            templates: approach.templates?.map(APIState.convertTemplate) ?? [] // TODO: Determine missing reason
         };
 
         converted.tasks = approach.tasks

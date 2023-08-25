@@ -25,11 +25,9 @@
         }
     }
 
-    & [data-content-collapsed],
-    & [data-content-expanded] {
-        transform-origin: top left;
-        transition: transform 500ms linear;
+    & teq-entity-collapse {
         cursor: pointer;
+        padding-top: 0.5rem;
 
         & > p {
             margin: 0;
