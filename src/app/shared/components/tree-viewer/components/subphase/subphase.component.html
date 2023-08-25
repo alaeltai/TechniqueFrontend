@@ -1,5 +1,5 @@
 <div [attr.data-disabled]="disabled || subphase.disabled">
-    {{ subphase.name }}
+    <span [innerHTML]=" subphase.name | highlighter: term"></span>
     <teq-information-provider data-svg-ignore-all [id]="subphase.id" [type]="'subphase'" [entity]="subphase" />
 
     <!-- <div data-controls data-svg-ignore-all>

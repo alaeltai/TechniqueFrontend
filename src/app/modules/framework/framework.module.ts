@@ -13,7 +13,6 @@ import { APIService } from '@teq/shared/states/api/api.service';
 import { APIState } from '@teq/shared/states/api/api.state';
 import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
 import { IconComponent } from '@teq/shared/components/icon/icon.component';
-import { OverlayComponent } from '@teq/shared/components/overlay/overlay.component';
 
 @NgModule({
     declarations: [FrameworkComponent],
@@ -27,8 +26,7 @@ import { OverlayComponent } from '@teq/shared/components/overlay/overlay.compone
         PaginationComponent,
         SVGRendererComponent,
         IconComponent,
-        TreeViewerComponent,
-        OverlayComponent
+        TreeViewerComponent
     ],
     exports: [FrameworkComponent],
     providers: [FrameworkService, APIService]

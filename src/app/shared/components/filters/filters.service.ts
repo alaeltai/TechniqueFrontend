@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IFilters } from '@teq/shared/components/filters/types/filters.type';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { APIService } from '../../states/api/api.service';
@@ -47,6 +47,9 @@ const valueExtractableTypes = {
 })
 export class FiltersService {
     public filters$ = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
+    public term = signal('');
+    public term$ = new BehaviorSubject('');
+
     private readonly _phases: BehaviorSubject<IPhase[]> = new BehaviorSubject<IPhase[]>([]);
 
     private _originalPhases!: IPhase[];
@@ -549,6 +552,8 @@ export class FiltersService {
     }
 
     filter(filters: Record<string, IFilterCriteria['value']>): void {
+        this.term.update(() => filters[6] as string);
+        this.term$.next(filters[6] as string);
         const filterTypes = Object.keys(filters) as unknown as FilterType[];
         const filterCriterias: IFilterCriteria[] = filterTypes.map(filter => {
             const filterValue = filters[filter];

@@ -1,5 +1,5 @@
 <div data-method-title>
-    <span>{{ method.name }}</span>
+    <span [innerHTML]=" method.name | highlighter: term"></span>
 
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
@@ -16,6 +16,7 @@
                 [approach]="approach"
                 [disableable]="disableable"
                 [disabled]="disabled"
+                [term]="term"
             ></teq-approach>
         </div>
     </div>

@@ -8,13 +8,13 @@
         <ng-container
             *ngSwitchCase="OverlayTemplate.TaskDetails"
             [ngTemplateOutlet]="taskModal"
-            [ngTemplateOutletContext]="{task: data.data, registrationId: currentDataId}"
+            [ngTemplateOutletContext]="{task: data.data, registrationId: currentDataId, term: term}"
         ></ng-container>
     </ng-container>
 </div>
 
 <ng-template #taskModal let-task="task" let-registration="registrationId">
-    <teq-modal [title]="getTitle(task)" [registrationId]="registration">
-        <teq-task-details [task]="task"></teq-task-details>
+    <teq-modal [title]="getTitle(task)" [registrationId]="registration" [term]="term()">
+        <teq-task-details [task]="task" [term]="term()"></teq-task-details>
     </teq-modal>
 </ng-template>

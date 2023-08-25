@@ -7,15 +7,28 @@ import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { IconComponent } from '@teq/shared/components/icon/icon.component';
 import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
 import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-collapse-button/expand-collapse-button.component';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 @Component({
     selector: 'teq-method',
     standalone: true,
-    imports: [NgIf, NgFor, IconComponent, ApproachComponent, ToggleComponent, EntityCollapseComponent, ExpandCollapseButtonComponent, CommonModule],
+    imports: [
+        NgIf,
+        NgFor,
+        IconComponent,
+        ApproachComponent,
+        ToggleComponent,
+        EntityCollapseComponent,
+        ExpandCollapseButtonComponent,
+        CommonModule,
+        HighlighterPipe
+    ],
     templateUrl: './method.component.html',
     styleUrls: ['./method.component.scss']
 })
 export class MethodComponent {
+    public term = this._filtersService.term();
+
     @Input() method!: IMethod;
     @Input() disabled?: boolean;
     @Input() disableable?: boolean;

@@ -7,15 +7,18 @@ import { InformationProviderComponent } from '@teq/shared/components/information
 import { IconComponent } from '@teq/shared/components/icon/icon.component';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 @Component({
     selector: 'teq-phase',
     standalone: true,
-    imports: [NgIf, NgFor, SubphaseComponent, MethodComponent, InformationProviderComponent, IconComponent, ToggleComponent],
+    imports: [NgIf, NgFor, SubphaseComponent, MethodComponent, InformationProviderComponent, IconComponent, ToggleComponent, HighlighterPipe],
     templateUrl: './phase.component.html',
     styleUrls: ['./phase.component.scss']
 })
 export class PhaseComponent {
+    public term = this._filtersService.term();
+
     @Input() phase!: IPhase;
 
     @Input() disabled?: boolean;

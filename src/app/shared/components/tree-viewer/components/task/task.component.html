@@ -2,7 +2,7 @@
     <div>
         <teq-label [borderColor]="task.responsible.color" [color]="task.responsible.color" [bold]="true" [attr.title]="task.responsible.name">
             <div data-role>
-                <span>{{ responsible }}</span>
+                <span [innerHTML]=" responsible | highlighter: term"></span>
             </div>
         </teq-label>
 
@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        <span>{{ task.name }}</span>
+        <span [innerHTML]=" task.name | highlighter: term"></span>
     </div>
 </div>
 
@@ -29,7 +29,7 @@
     </div>
 
     <div data-artefacts-container>
-        <div>{{ artefacts }}</div>
+        <div [innerHTML]=" artefacts | highlighter: term"></div>
         <!-- <span *ngFor="let artefact of task.artefacts; index as i">{{ i > 0 ? '; ' + artefact.name : artefact.name }}</span> -->
 
         <span *ngIf="!task.artefacts?.length"> No artefacts </span>

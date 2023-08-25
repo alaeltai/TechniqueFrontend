@@ -4,14 +4,16 @@ import { LandingPageModule } from '@teq/modules/landing-page/landing-page.module
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { ITask } from '@teq/shared/types/task.type';
 import { CollapsibleComponent } from '../collapsible-component/collapsible/collapsible.component';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 @Component({
     selector: 'teq-task-details',
     standalone: true,
     templateUrl: './task-details.component.html',
-    imports: [NgIf, NgFor, LabelComponent, LandingPageModule, CommonModule, CollapsibleComponent],
+    imports: [NgIf, NgFor, LabelComponent, LandingPageModule, CommonModule, CollapsibleComponent, HighlighterPipe],
     styleUrls: ['./task-details.component.scss']
 })
 export class TaskDetailsComponent {
     @Input() task!: ITask;
+    @Input() term!: string;
 }

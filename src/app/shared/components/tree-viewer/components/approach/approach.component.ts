@@ -6,8 +6,9 @@ import { TaskComponent } from '../task/task.component';
 import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
-import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
 import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-collapse-button/expand-collapse-button.component';
+import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 @Component({
     selector: 'teq-approach',
@@ -21,11 +22,13 @@ import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-col
         InformationProviderComponent,
         ToggleComponent,
         EntityCollapseComponent,
-        ExpandCollapseButtonComponent
+        ExpandCollapseButtonComponent,
+        HighlighterPipe
     ],
     styleUrls: ['./approach.component.scss']
 })
 export class ApproachComponent {
+    @Input() term!: string;
     @Input() approach!: IApproach;
     @Input() disabled?: boolean;
     @Input() disableable?: boolean;
