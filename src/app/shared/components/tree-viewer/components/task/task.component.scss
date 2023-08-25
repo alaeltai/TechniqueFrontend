@@ -19,7 +19,32 @@ $gap: 0.75rem;
 
     &[data-disabled='true'] {
         transition: color, background-color .5s linear;
-        background-color: red !important;
+        background-color: colors.$white-gray;
+
+        & > div > div {
+            & > teq-label:first-of-type {
+                & ::ng-deep > div {
+                    border-color: colors.$light-gray2 !important;
+                    color: colors.$light-gray2 !important;
+                }
+            }
+
+            & > teq-label:last-of-type {
+                & ::ng-deep > div {
+                    background-color: colors.$light-gray2;
+                    border-color: colors.$light-gray2;
+                }
+            }
+
+            & > span,
+            &[data-artefacts-container] > div {
+                color: colors.$text-color-dark;
+            }
+
+            & > svg > path {
+                fill: colors.$light-gray2;
+            }
+        }
     }
 
     & > div {

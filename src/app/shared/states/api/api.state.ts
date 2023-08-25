@@ -65,57 +65,58 @@ export class APIState {
         const converted: IPhase = {
             type: 'phase',
             id: phase.id,
+            _locator: phase.id,
             name: phase.name,
             description: phase.description,
             order: phase.order,
             subphases: []
         };
 
-        converted.subphases = phase.subPhases.map(s => APIState.convertSubPhase(s, converted)).sort(APIState.sortByOrder);
+        converted.subphases = phase.subPhases.map(s => APIState.convertSubPhase(s, converted._locator)).sort(APIState.sortByOrder);
 
         return converted;
     }
 
-    public static convertSubPhase(subPhase: IAPISubPhase, parent?: IPhase): ISubphase {
+    public static convertSubPhase(subPhase: IAPISubPhase, _locator = ''): ISubphase {
         const converted: ISubphase = {
             type: 'subphase',
             id: subPhase.id,
+            _locator: [_locator, subPhase.id].join('.'),
             name: subPhase.name,
             description: subPhase.description,
             order: subPhase.order,
-            parent,
             methods: []
         };
 
-        converted.methods = subPhase.methods.map(m => APIState.convertMethod(m, converted)).sort(APIState.sortByOrder);
+        converted.methods = subPhase.methods.map(m => APIState.convertMethod(m, converted._locator)).sort(APIState.sortByOrder);
 
         return converted;
     }
 
-    public static convertMethod(method: IAPIMethod, parent?: ISubphase): IMethod {
+    public static convertMethod(method: IAPIMethod, _locator = ''): IMethod {
         const converted: IMethod = {
             type: 'method',
             id: method.id,
+            _locator: [_locator, method.id].join('.'),
             name: method.name,
             description: method.description,
             order: method.order,
-            parent,
             approaches: []
         };
 
-        converted.approaches = method.approaches.map(a => APIState.convertApproach(a, converted)).sort(APIState.sortByOrder);
+        converted.approaches = method.approaches.map(a => APIState.convertApproach(a, converted._locator)).sort(APIState.sortByOrder);
 
         return converted;
     }
 
-    public static convertApproach(approach: IAPIApproach, parent?: IMethod): IApproach {
+    public static convertApproach(approach: IAPIApproach, _locator = ''): IApproach {
         const converted: IApproach = {
             type: 'approach',
             id: approach.id,
             name: approach.name,
             description: approach.description,
             order: approach.order,
-            parent,
+            _locator: [_locator, approach.id].join('.'),
             roles: [approach.accountable, ...approach.responsibles].filter(Boolean).map(APIState.convertRole),
             tasks: [],
             templates: approach.templates?.map(APIState.convertTemplate) ?? [] // TODO: Determine missing reason
@@ -123,7 +124,7 @@ export class APIState {
 
         converted.tasks = approach.tasks
             .filter(t => t.name !== null)
-            .map(t => APIState.convertTask(t, converted))
+            .map(t => APIState.convertTask(t, converted._locator))
             .sort(APIState.sortByOrder);
 
         return converted;
@@ -147,18 +148,19 @@ export class APIState {
         });
     }
 
-    public static convertTask(task: IAPITask, parent?: IApproach): ITask {
+    public static convertTask(task: IAPITask, _locator = ''): ITask {
         return {
             type: 'task',
             id: task.id,
             name: task.name,
             order: task.order,
-            parent,
+            _locator: [_locator, task.id].join('.'),
             responsible: APIState.convertRole(task.responsible),
             purpose: task.purpose,
             how: task.how,
             category: APIState.convertCategory(task.category),
-            artefacts: APIState.convertArtefacts(task.artefactsOutput, 'output').concat(APIState.convertArtefacts(task.artefactsInput, 'input')),
+            artefacts: APIState.convertArtefacts(task.artefactsOutput),
+            inputArtefacts: APIState.convertArtefacts(task.artefactsInput),
             inputDescription: task.inputDescription,
             outputDescription: task.outputDescription
         };
@@ -171,12 +173,11 @@ export class APIState {
         };
     }
 
-    public static convertArtefacts(artefacts: IAPIArtefact[], type: string): IArtefact[] {
+    public static convertArtefacts(artefacts: IAPIArtefact[]): IArtefact[] {
         return artefacts?.map<IArtefact>(artefact => {
             return {
                 id: artefact.id,
                 name: artefact.name.trim(),
-                type: type,
                 description: artefact.description,
                 owner: artefact.owner,
                 refNo: artefact.refNo,
@@ -195,7 +196,7 @@ export class APIState {
         console.log('In handler getter');
 
         const response = this._http
-            .get<IAPIPhase[]>(`${environment.apiConfig.uri}/fullframework`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.FULL_FRAMEWORK)
@@ -204,6 +205,7 @@ export class APIState {
             })
             .pipe(catchError(this.handleError('tree')));
 
+        // TODO: Compute locators here in order to determine parent-child relationships
         response.subscribe(rawPhases => {
             // Convert IAPIPhase to IPhase
             const phases = (rawPhases as IAPIPhase[]).map(APIState.convertPhase).sort(APIState.sortByOrder);

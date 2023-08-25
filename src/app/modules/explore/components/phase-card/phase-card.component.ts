@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { IRole } from '@teq/shared/types/roles.type';
 
@@ -24,6 +25,10 @@ export class PhaseCardComponent implements OnChanges {
 
     @Input() methods!: number;
     @Input() approaches!: number;
+
+    @Input() disableable?: boolean;
+
+    constructor(private readonly _filtersService: FiltersService) {}
 
     get methodsCount(): number {
         return this._methodsCount;
@@ -97,6 +102,12 @@ export class PhaseCardComponent implements OnChanges {
                 });
             }
         }
+    }
+
+    toggleDisableState(): void {
+        const disabled = !this.phase.disabled;
+
+        this._filtersService.enforceDisabledStatusAtLocation(this.phase, disabled);
     }
 
     private _agregateRole(r: IRole, rolesMap: Record<IRole['id'], IRole>, rolesCount: Record<IRole['id'], number>): void {

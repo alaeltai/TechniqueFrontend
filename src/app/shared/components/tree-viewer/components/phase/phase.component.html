@@ -1,11 +1,11 @@
-<div [attr.data-phase]="phase.name.toLowerCase()" data-phase (click)="phaseClicked.emit()" [attr.data-disabled]="phase.disabled">
+<div [attr.data-phase]="phase.name.toLowerCase()" data-phase (click)="phaseClicked.emit()" [attr.data-disabled]="disabled || phase.disabled">
     <span>{{ phase.name }}</span>
     <teq-information-provider data-svg-ignore-all [id]="phase.id" [type]="'phase'" [entity]="phase" />
     <teq-icon data-svg-ignore-all *ngIf="showArrow" type="arrow" />
 
-    <div *ngIf="!showArrow" data-controls data-svg-ignore-all>
+    <!-- <div *ngIf="!showArrow" data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(phase.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
-    </div>
+    </div> -->
 </div>
 
 <div data-subphase>

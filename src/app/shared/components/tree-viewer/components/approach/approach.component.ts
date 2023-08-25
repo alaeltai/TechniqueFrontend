@@ -4,8 +4,8 @@ import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { IApproach } from '@teq/shared/types/approach.type';
 import { TaskComponent } from '../task/task.component';
 import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
-import { enforceDisabledStatusAtLocation } from '@teq/shared/lib/disable.lib';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
+import { FiltersService } from '@teq/shared/components/filters/filters.service';
 
 @Component({
     selector: 'teq-approach',
@@ -24,9 +24,17 @@ export class ApproachComponent {
         return this.disabled ?? this.approach?.disabled ?? false;
     }
 
+    constructor(private readonly _filtersService: FiltersService) {}
+
     toggleDisableState(): void {
         const disabled = !this.approach.disabled;
 
-        enforceDisabledStatusAtLocation(this.approach, disabled);
+        this._filtersService.enforceDisabledStatusAtLocation(this.approach, disabled);
+    }
+
+    toggleCollapseState(): void {
+        const collapsed = !this.approach.collapsed;
+
+        this._filtersService.ensureCollapsedStatusAtLocation(this.approach, collapsed);
     }
 }

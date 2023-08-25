@@ -15,7 +15,7 @@ export type RoleType =
     | 'Consultant (Testing)'
     | 'Unknown';
 
-export interface IRole extends Omit<BasePhase, 'order'> {
+export interface IRole extends Omit<BasePhase, 'order' | '_locator'> {
     color?: string;
     count?: number;
     skills: string;

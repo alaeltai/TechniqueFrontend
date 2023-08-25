@@ -8,11 +8,7 @@
     min-width: 22.625rem;
     flex: 1;
 
-    [data-wrapper] {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-
+    & [data-wrapper][data-disabled='false'] {
         @include colors.phase-color(data-phase) using ($color) {
             & > div:first-of-type {
                 border-bottom-color: $color;
@@ -33,6 +29,164 @@
                 }
             }
         };
+
+        & > div:first-of-type {
+            &:hover {
+                transition: linear 0.5s background-color;
+
+                color: colors.$white;
+
+                border-bottom: none;
+
+                & > img {
+                    opacity: 0;
+                    position: absolute;
+                    transition: linear 0s opacity;
+                }
+
+                & > div:first-of-type {
+                    margin-top: auto;
+                }
+
+                & [data-title] {
+                    & teq-information-provider > ::ng-deep teq-icon > svg {
+                        & > g > path {
+                            fill: colors.$white;
+                        }
+                    }
+                }
+
+                & > [data-bar] {
+                    display: none;
+                }
+
+                & > [data-cta] {
+                    display: flex;
+                    justify-content: space-between;
+                    opacity: 1;
+
+                    transition: linear 0.5s opacity;
+
+                    gap: 3.375rem;
+
+                    color: colors.$white;
+                    border-top: 1px solid colors.$white;
+
+                    & > span {
+                        @include typography.apply('title');
+                    }
+                }
+
+                ::ng-deep teq-label > div {
+                    border-color: white !important;
+
+                    & > teq-badge {
+                        &  > span {
+                            background: white !important;
+                        }
+
+                        @include colors.phase-color(data-phase) using ($color) {
+                            & > span {
+                                color: $color !important;
+                            }
+                        };
+                    }
+                }
+
+                & [data-completion] > div > div > span:last-child {
+                    color: colors.$white !important;
+                }
+
+                & [data-roles] > [data-role-name] {
+                    @include typography.apply('phase-role-bold');
+                    color: colors.$white;
+                    opacity: 0.5;
+
+                    & > div {
+                        margin-bottom: 0.6875;
+                    }
+                }
+            }
+        }
+    }
+
+    & [data-wrapper] {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        &[data-disabled='true'] {
+            & > div:first-of-type {
+                background-color: colors.$mid-gray !important;
+
+                border-bottom-width: 1px;
+
+                & > div:first-of-type {
+                    margin-top: auto;
+                }
+
+                & + div {
+                    & > div {
+                        border-color: colors.$mid-gray !important;
+                        background-color: colors.$white-gray;
+
+                        & > teq-subphase-tab ::ng-deep > div > span {
+                            color: colors.$light-gray2 !important;
+                        }
+                    }
+                }
+
+                & > img {
+                    display: none;
+                }
+
+                & > div {
+                    [data-title] {
+                        color: colors.$light-gray2;
+                    }
+
+                    [data-roles] {
+                        & > span {
+                            color: colors.$light-gray2 !important;
+                        }
+
+                        ::ng-deep teq-label > div {
+                            border-color: white !important;
+                            color: colors.$light-gray2;
+
+                            & > teq-badge {
+                                &  > span {
+                                    background: colors.$light-gray2 !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                & > [data-cta] {
+                    display: flex;
+                    opacity: 1;
+
+                    & [data-controls] {
+                        display: flex;
+                        flex: 1;
+
+                        & > div {
+                            flex: 1;
+
+                            @include typography.apply('condensed');
+                            color: colors.$light-gray2;
+                        }
+
+                        & > teq-toggle ::ng-deep > label {
+                            padding: 0;
+                            border: none;
+                            margin: none;
+                        }
+                    }
+                }
+            }
+        }
 
         & > div:first-of-type {
             display: flex;
@@ -147,83 +301,6 @@
                 opacity: 0;
 
                 transition: linear 0.5s opacity;
-            }
-
-            &:hover {
-                transition: linear 0.5s background-color;
-
-                color: colors.$white;
-
-                border-bottom: none;
-
-                & > img {
-                    opacity: 0;
-                    position: absolute;
-                    transition: linear 0s opacity;
-                }
-
-                & > div:first-of-type {
-                    margin-top: auto;
-                }
-
-                & [data-title] {
-                    & teq-information-provider > ::ng-deep teq-icon > svg {
-                        & > g > path {
-                            fill: colors.$white;
-                        }
-                    }
-                }
-
-                & > [data-bar] {
-                    display: none;
-                }
-
-                & > [data-cta] {
-                    display: flex;
-                    justify-content: space-between;
-                    opacity: 1;
-
-                    transition: linear 0.5s opacity;
-
-                    gap: 3.375rem;
-
-                    color: colors.$white;
-                    border-top: 1px solid colors.$white;
-
-                    & > span {
-                        @include typography.apply('title');
-                    }
-                }
-
-                ::ng-deep teq-label > div {
-                    border-color: white !important;
-
-                    & > teq-badge {
-                        &  > span {
-                            background: white !important;
-                        }
-
-                        @include colors.phase-color(data-phase) using ($color) {
-                            & > span {
-                                color: $color !important;
-                            }
-                        };
-                    }
-                }
-
-                & [data-completion] > div > div > span:last-child {
-                    color: colors.$white !important;
-                }
-
-                & [data-roles] > [data-role-name] {
-                    @include typography.apply('phase-role-bold');
-                    color: colors.$white;
-                    opacity: 0.5;
-
-                    & > div {
-                        margin-bottom: 0.6875;
-                    }
-                }
             }
         }
 

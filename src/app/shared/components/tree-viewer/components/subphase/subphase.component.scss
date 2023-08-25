@@ -3,28 +3,24 @@
 @use 'variables/shadows' as shadows;
 
 :host {
-    display: flex;
-    flex: 1;
-
-    height: 3rem;
-    padding: 0 1.5rem;
-
-    align-items: center;
-
-    background: #ffffff;
-
-    @include shadows.subphase-box-shadow();
-
-    &[data-disabled='true'] {
-        background-color: #F5F5F5;
-    }
-
     & > div {
         display: flex;
-
         flex: 1;
 
+        height: 3rem;
+        padding: 0 1.5rem;
+
         align-items: center;
+
+        background: #ffffff;
+
+        @include shadows.subphase-box-shadow();
+
+        &[data-disabled='true'] {
+            background-color: colors.$white-gray;
+
+            color: colors.$light-gray2;
+        }
 
         padding-top: 2px;
 

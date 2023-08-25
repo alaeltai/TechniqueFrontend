@@ -2,8 +2,8 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, HostBinding, Input } from '@angular/core';
 import { IMethod } from '@teq/shared/types/method.type';
 import { ApproachComponent } from '../approach/approach.component';
-import { enforceDisabledStatusAtLocation } from '@teq/shared/lib/disable.lib';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
+import { FiltersService } from '@teq/shared/components/filters/filters.service';
 
 @Component({
     selector: 'teq-method',
@@ -23,9 +23,17 @@ export class MethodComponent {
         return this.disabled ?? this.method?.disabled ?? false;
     }
 
+    constructor(private readonly _filtersService: FiltersService) {}
+
     toggleDisableState(): void {
         const disabled = !this.method.disabled;
 
-        enforceDisabledStatusAtLocation(this.method, disabled);
+        this._filtersService.enforceDisabledStatusAtLocation(this.method, disabled);
+    }
+
+    toggleCollapseState(): void {
+        const collapsed = !this.method.collapsed;
+
+        this._filtersService.ensureCollapsedStatusAtLocation(this.method, collapsed);
     }
 }
