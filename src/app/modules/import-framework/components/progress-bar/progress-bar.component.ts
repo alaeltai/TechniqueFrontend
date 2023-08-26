@@ -14,6 +14,6 @@ export class ProgressBarComponent {
     constructor() {
         this.numbers = Array(100)
             .fill(0)
-            .map((x, i) => i + 1);
+            .map((_, i) => i + 1);
     }
 }

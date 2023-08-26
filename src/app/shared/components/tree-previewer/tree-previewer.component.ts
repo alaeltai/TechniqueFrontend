@@ -3,7 +3,6 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { TreeViewerComponent } from '../tree-viewer/tree-viewer.component';
 import { PaginationService } from './components/pagination/pagination.service';
 import { SVGRendererService } from './components/svg/svg.service';
-import { APIService } from '@teq/shared/states/api/api.service';
 import { OverlayService, OverlayType } from '@teq/shared/services/overlay.service';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { IPagination } from '@teq/shared/types/pagination.type';
@@ -13,6 +12,7 @@ import { SVGRendererComponent } from './components/svg/svg.component';
 import { CommonModule } from '@angular/common';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { ToggleComponent } from '../toggle/toggle.component';
+import { FiltersService } from '../filters/filters.service';
 
 @UntilDestroy()
 @Component({
@@ -45,7 +45,6 @@ export class TreePreviewerComponent implements OnChanges {
     constructor(
         private readonly _paginationService: PaginationService,
         private readonly _svgRenderingService: SVGRendererService,
-        private readonly _apiService: APIService,
         private readonly _overlayService: OverlayService,
         private readonly _element: ElementRef<HTMLElement>
     ) {}
@@ -105,7 +104,9 @@ export class TreePreviewerComponent implements OnChanges {
                     // Restore filtering status
                     this.filterDisabled = filterDisabled;
 
-                    this._overlayService.remove(this._resourceGenerationOverlay);
+                    setTimeout(() => {
+                        this._overlayService.remove(this._resourceGenerationOverlay);
+                    }, 250);
                 }, 1000);
             }, 250);
         }
@@ -116,8 +117,15 @@ export class TreePreviewerComponent implements OnChanges {
             message: 'Generating TEQ...'
         });
 
-        generateResource(this.phases ?? [], { type: 'application/json', hint: this._generateName('teq'), download: true });
-        this._overlayService.remove(this._resourceGenerationOverlay);
+        setTimeout(() => {
+            generateResource(FiltersService.computeDisableMap(this.phases ?? []), {
+                type: 'application/json',
+                hint: this._generateName('teq'),
+                download: true
+            });
+
+            setTimeout(() => this._overlayService.remove(this._resourceGenerationOverlay), 250);
+        }, 500);
     }
 
     private _generateName(type: 'svg' | 'teq'): string {

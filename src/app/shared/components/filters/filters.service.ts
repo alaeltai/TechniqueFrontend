@@ -48,6 +48,35 @@ const valueExtractableTypes = {
     providedIn: 'root'
 })
 export class FiltersService {
+    /**
+     * Given a phases array computes the disable map associated with the provided selection
+     */
+    public static computeDisableMap(data: IPhase[]): Record<string, boolean> {
+        const disableMap: Record<string, boolean> = {};
+
+        data.forEach(p => {
+            disableMap[p.id] = !!p.disabled;
+
+            p.subphases?.forEach(s => {
+                disableMap[`${p.id}.${s.id}`] = !!s.disabled;
+
+                s.methods.forEach(m => {
+                    disableMap[`${p.id}.${s.id}.${m.id}`] = !!m.disabled;
+
+                    m.approaches.forEach(a => {
+                        disableMap[`${p.id}.${s.id}.${m.id}.${a.id}`] = !!a.disabled;
+
+                        a.tasks.forEach(t => {
+                            disableMap[`${p.id}.${s.id}.${m.id}.${a.id}.${t.id}`] = !!t.disabled;
+                        });
+                    });
+                });
+            });
+        });
+
+        return disableMap;
+    }
+
     private readonly _filters = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
     public term = signal('');
     public term$ = new BehaviorSubject('');
@@ -59,7 +88,7 @@ export class FiltersService {
 
     private _registeredFilters!: FilterType[];
 
-    private readonly _disableMap: Record<string, boolean> = {};
+    private _disableMap: Record<string, boolean> = {};
     private readonly _collapsedMap: Record<string, boolean> = {};
 
     private _filteredMap: Record<string, EntityDataType> = {};
@@ -89,16 +118,34 @@ export class FiltersService {
         });
     }
 
-    get filters$(): Observable<IFilters> {
+    public get filters$(): Observable<IFilters> {
         return this._filters.asObservable();
     }
 
-    get phases$(): Observable<IPhase[]> {
+    public get phases$(): Observable<IPhase[]> {
         return this._phases.asObservable();
     }
 
-    getTailoredPhases(): IPhase[] {
+    public getTailoredPhases(): IPhase[] {
         return this._originalPhases.map(p => this._filterInDepth(p, this._defaultCriterias)).filter(Boolean) as IPhase[];
+    }
+
+    public mergeDisableMap(disableMap: Record<string, boolean> = {}): void {
+        this._disableMap = {
+            ...this._disableMap,
+            ...disableMap
+        };
+
+        // Make sure to refilter on external phases changes
+        const filters = this._filters.value;
+        const formControls: Record<string, string | string[] | boolean> = {};
+
+        filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
+        filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : MatchAllOfType));
+
+        this._defaultCriterias = this._determineFilterCriterias(formControls);
+
+        this.filter(formControls);
     }
 
     public addFilters(...types: FilterType[]): IFilters {
@@ -108,12 +155,12 @@ export class FiltersService {
         return this._addFilters();
     }
 
-    ensureCollapsedStatusAtLocation(entity: EntityDataType, collapsed: boolean): void {
+    public ensureCollapsedStatusAtLocation(entity: EntityDataType, collapsed: boolean): void {
         // Enforce the new status on the entity itself
         this.enforceCollapseStatus(entity, collapsed);
     }
 
-    enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
+    public enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
         // Enforce the new status on the entity itself
         this.enforceDisableStatus(entity, disabled);
 

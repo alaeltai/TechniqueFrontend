@@ -76,7 +76,6 @@ export class RolesContainerComponent implements OnInit, OnDestroy, OnChanges {
             const roles = changes['roles'].currentValue as IRoleCount[];
 
             if (roles.map(r => r.role.name).join('|') !== this.roles.map(r => r.role.name).join('|')) {
-                console.log('Computed length changed');
                 this._computeLength();
             }
         }

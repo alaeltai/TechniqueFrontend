@@ -79,10 +79,6 @@ export class TreeViewerComponent implements OnChanges {
         return this._filteredPhases;
     }
 
-    onTaskFocused(taskId: string): void {
-        console.log('Task activated', taskId);
-    }
-
     /**
      * Filters phases based on desired disabled visibility and filtered status
      */

@@ -37,8 +37,6 @@ export class CachingInterceptor implements HttpInterceptor {
         const cacheStorage = request.context.get(CacheStorage);
         const cachingPolicy = request.context.get(CachePolicy);
 
-        console.log('In interceptor');
-
         if (cacheStorage !== CacheType.NONE) {
             if (cachingPolicy === CachingPolicy.STALE_WHILE_REVALIDATE) {
                 return from(this.staleWhileRevalidate(cacheStorage, request, next));

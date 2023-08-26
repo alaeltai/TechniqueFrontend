@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
@@ -25,7 +25,7 @@ import { commitPreviewState, removePreviewState } from '@teq/shared/lib/preview-
     styleUrls: ['./column-viewer.component.scss'],
     animations: [fadeIn]
 })
-export class ColumnViewerComponent implements OnDestroy {
+export class ColumnViewerComponent implements OnInit, OnDestroy {
     @Input() enableToggles?: boolean;
     @Input() enableVisibility?: boolean;
     @Input() enableComplexity?: boolean;
@@ -33,6 +33,8 @@ export class ColumnViewerComponent implements OnDestroy {
     @Input() preview?: boolean;
 
     @Input() tailoring?: boolean;
+
+    @Input() disableMap: Record<string, boolean> = {};
 
     public phases$: Observable<IPhase[]>;
     public showTree = false;
@@ -77,6 +79,10 @@ export class ColumnViewerComponent implements OnDestroy {
                 this._aggregatedCounts.push({ methods, approaches });
             });
         });
+    }
+
+    ngOnInit(): void {
+        this._filtersService.mergeDisableMap(this.disableMap);
     }
 
     ngOnDestroy(): void {
