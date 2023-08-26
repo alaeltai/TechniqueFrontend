@@ -97,7 +97,7 @@ export class TreePreviewerComponent implements OnChanges {
                         generateResource(svg, {
                             type: 'image/svg+xml',
                             hint: this.preview ? this._generateName('svg') : 'full-framework.svg',
-                            download: false
+                            download: true
                         });
                     }
 
