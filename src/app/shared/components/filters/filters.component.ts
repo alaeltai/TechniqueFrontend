@@ -23,6 +23,7 @@ export class FiltersComponent implements OnInit {
 
     @Input() enableToggles?: boolean;
     @Input() enableVisibility?: boolean;
+    @Input() enableComplexity?: boolean;
     @Input() complexity?: string;
 
     @Output() filtersChanged = new EventEmitter<FiltersValue>();
@@ -35,7 +36,7 @@ export class FiltersComponent implements OnInit {
                 ...(this.enableVisibility ? [FilterType.ToggleFilterDisabled] : []),
                 ...(this.enableToggles ? [FilterType.ToggleDisableControl] : []),
                 FilterType.SelectRoles,
-                ...(this.complexity ? [FilterType.SelectComplexity] : []),
+                ...(this.enableComplexity ? [FilterType.SelectComplexity] : []),
                 FilterType.SelectCategory,
                 FilterType.Search
             ].filter(Boolean)
@@ -56,7 +57,7 @@ export class FiltersComponent implements OnInit {
     }
 
     get filters(): Observable<IFilters> {
-        return this._filtersService.filters$.asObservable();
+        return this._filtersService.filters$;
     }
 
     private _initForm(filters: IFilters): void {

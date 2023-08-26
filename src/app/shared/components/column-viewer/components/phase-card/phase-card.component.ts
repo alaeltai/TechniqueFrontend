@@ -2,6 +2,11 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } f
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { IRole } from '@teq/shared/types/roles.type';
+import { RolesContainerComponent } from '../roles-container/roles-container.component';
+import { SubphaseTabComponent } from '../subphase-tab/subphase-tab.component';
+import { CommonModule } from '@angular/common';
+import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
+import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
 
 export interface IRoleCount {
     count: number;
@@ -10,6 +15,8 @@ export interface IRoleCount {
 
 @Component({
     selector: 'teq-phase-card',
+    standalone: true,
+    imports: [CommonModule, InformationProviderComponent, ToggleComponent, RolesContainerComponent, SubphaseTabComponent],
     templateUrl: './phase-card.component.html',
     styleUrls: ['./phase-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush

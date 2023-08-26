@@ -42,7 +42,6 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
 
     @HostListener('document:click', ['$event'])
     unfocus(event: Event): void {
-        console.log('Event', event.target);
         let unfocus = true;
 
         if (event.target) {

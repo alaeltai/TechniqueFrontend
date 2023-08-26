@@ -46,7 +46,7 @@ const valueExtractableTypes = {
     providedIn: 'root'
 })
 export class FiltersService {
-    public filters$ = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
+    private readonly _filters = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
     private readonly _phases: BehaviorSubject<IPhase[]> = new BehaviorSubject<IPhase[]>([]);
 
     private _originalPhases!: IPhase[];
@@ -69,7 +69,7 @@ export class FiltersService {
 
             if (this._filtersRegistered) {
                 // Make sure to refilter on external phases changes
-                const filters = this.filters$.value;
+                const filters = this._filters.value;
                 const formControls: Record<string, string | string[] | boolean> = {};
 
                 filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
@@ -81,6 +81,10 @@ export class FiltersService {
                 this._addFilters();
             }
         });
+    }
+
+    get filters$(): Observable<IFilters> {
+        return this._filters.asObservable();
     }
 
     get phases$(): Observable<IPhase[]> {
@@ -253,7 +257,7 @@ export class FiltersService {
                         options: [
                             {
                                 value: MatchAllOfType,
-                                label: 'All complexities'
+                                label: 'All Scenarios'
                             },
                             ...(aggregations[FilterType.SelectComplexity]?.map<IOption>(c => ({
                                 value: c.id,
@@ -320,7 +324,7 @@ export class FiltersService {
         });
 
         // Update the filters
-        this.filters$.next(filters);
+        this._filters.next(filters);
 
         this._filtersRegistered = true;
 
@@ -571,8 +575,6 @@ export class FiltersService {
 
         this._filteredMap = {}; // Clear filtered entity lookup map
         this._regenerateFilterMap(filtered);
-
-        console.log('Filtered content', filtered);
 
         this._phases.next(filtered);
     }

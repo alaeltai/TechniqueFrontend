@@ -4,10 +4,15 @@ import { IPhase } from '@teq/shared/types/phase.type';
 import { BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RoleType } from '@teq/shared/types/roles.type';
+import { LabelComponent } from '@teq/shared/components/label/label.component';
+import { BadgeComponent } from '@teq/shared/components/badge/badge.component';
+import { CommonModule } from '@angular/common';
 
 @UntilDestroy()
 @Component({
     selector: 'teq-roles-container',
+    standalone: true,
+    imports: [CommonModule, LabelComponent, BadgeComponent],
     templateUrl: './roles-container.component.html',
     styleUrls: ['./roles-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush

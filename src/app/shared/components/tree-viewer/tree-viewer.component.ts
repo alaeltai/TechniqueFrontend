@@ -21,6 +21,8 @@ export class TreeViewerComponent implements OnChanges {
 
     @Input() phases!: IPhase[] | null;
 
+    @Input() filterDisabled = false;
+
     @Output() scaleChanged = new EventEmitter<number>();
 
     @HostBinding('style.--scale')

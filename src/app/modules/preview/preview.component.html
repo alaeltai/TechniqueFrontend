@@ -1,1 +1,1 @@
-<teq-tree-viewer></teq-tree-viewer>
+<teq-tree-previewer *ngIf="phases$" [phases]="phases$" [preview]="true" [exportable]="true" [enableVisibility]="true" [filterDisabled]="filterDisabled" (filterDisabledChanged)="filterDisabledChanged($event)"></teq-tree-previewer>

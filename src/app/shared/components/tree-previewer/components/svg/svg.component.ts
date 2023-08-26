@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { ISVGRenderingOptions, SVGNode } from '@teq/shared/types/svg.type';
-import { SVGNodeRendererComponent } from '../svg-element/svg-element.component';
+import { SVGNodeRendererComponent } from '../../../svg-element/svg-element.component';
 
 @Component({
     selector: 'teq-svg',

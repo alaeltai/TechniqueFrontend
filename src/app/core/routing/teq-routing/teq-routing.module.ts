@@ -12,26 +12,37 @@ const routes: Routes = [
     {
         path: TeqRoutesEnum.LANDING_PAGE,
         canActivate: [isAuthenticatedGuard],
+        title: 'Technique',
         loadChildren: async () => (await import('@teq/modules/landing-page/landing-page.module')).LandingPageModule
     },
     {
-        path: TeqRoutesEnum.PREVIEW,
+        path: `${TeqRoutesEnum.PREVIEW}/:id`,
         canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Preview',
         loadChildren: async () => (await import('@teq/modules/preview/preview.module')).PreviewModule
     },
     {
         path: TeqRoutesEnum.VIEW_FRAMEWORK,
         canActivate: [isAuthenticatedGuard],
+        title: 'Technique - View full framework',
         loadChildren: async () => (await import('@teq/modules/framework/framework.module')).FrameworkModule
+    },
+    {
+        path: TeqRoutesEnum.CREATE,
+        canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Create',
+        loadChildren: async () => (await import('@teq/modules/create/create.module')).CreateModule
     },
     {
         path: TeqRoutesEnum.EXPLORE,
         canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Explore',
         loadChildren: async () => (await import('@teq/modules/explore/explore.module')).ExploreModule
     },
     {
         path: TeqRoutesEnum.IMPORT,
         canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Import',
         loadChildren: async () => (await import('@teq/modules/import-framework/import-framework.module')).ImportFrameworkModule
     },
     {

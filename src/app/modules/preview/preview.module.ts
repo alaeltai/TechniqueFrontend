@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PreviewComponent } from './preview.component';
 import { RouterModule } from '@angular/router';
-import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
+import { TreePreviewerComponent } from '@teq/shared/components/tree-previewer/tree-previewer.component';
 
 @NgModule({
     declarations: [PreviewComponent],
     imports: [
         CommonModule,
-        TreeViewerComponent,
+        TreePreviewerComponent,
         RouterModule.forChild([
             {
                 path: '',

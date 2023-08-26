@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { IPagination } from '@teq/shared/types/pagination.type';
-import { IconComponent } from '../icon/icon.component';
+import { IconComponent } from '../../../icon/icon.component';
 
 @Component({
     selector: 'teq-pagination',
@@ -11,14 +11,14 @@ import { IconComponent } from '../icon/icon.component';
     styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
-    @Input() pagination!: IPagination;
+    @Input({ required: true }) pagination!: IPagination;
 
-    @Input() maxPages!: number;
+    @Input({ required: true }) maxPages!: number;
 
     @Output() paginationChanged = new EventEmitter<IPagination>();
 
     get isFirstPage(): boolean {
-        return this.pagination.page === 1;
+        return this.pagination.page <= 1;
     }
 
     get isLastPage(): boolean {
@@ -26,11 +26,11 @@ export class PaginationComponent {
     }
 
     get isFullZoomedIn(): boolean {
-        return this.pagination.zoom === this.maxPages;
+        return this.pagination.zoom >= this.maxPages;
     }
 
     get isFullZoomedOut(): boolean {
-        return this.pagination.zoom === 1;
+        return this.pagination.zoom <= 1;
     }
 
     zoomOut(): void {
@@ -41,10 +41,6 @@ export class PaginationComponent {
     }
 
     zoomIn(): void {
-        if (!this.pagination) {
-            return;
-        }
-
         this.paginationChanged.emit({
             zoom: this.pagination.zoom + 1,
             page: this.pagination.page
@@ -52,10 +48,6 @@ export class PaginationComponent {
     }
 
     scrollLeft(): void {
-        if (!this.pagination) {
-            return;
-        }
-
         this.paginationChanged.emit({
             zoom: this.pagination.zoom,
             page: this.pagination.page - 1
@@ -63,10 +55,6 @@ export class PaginationComponent {
     }
 
     scrollRight(): void {
-        if (!this.pagination) {
-            return;
-        }
-
         this.paginationChanged.emit({
             zoom: this.pagination.zoom,
             page: this.pagination.page + 1

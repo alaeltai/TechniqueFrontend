@@ -1,0 +1,61 @@
+<div data-controls [attr.data-page]="getPagePhase(page)">
+    <div>
+        <div data-back-link>
+            <a *ngIf="page === undefined" [routerLink]="['/landing-page']">
+                <teq-icon type="arrow" />
+                Go back
+            </a>
+
+            <a *ngIf="page !== undefined" (click)="page = undefined">
+                <teq-icon type="arrow" />
+                Go back
+            </a>
+        </div>
+
+        <div>
+            <teq-filters [enableToggles]="enableToggles" [enableVisibility]="enableVisibility" [enableComplexity]="enableComplexity" [complexity]="complexity" (filtersChanged)="filtersChanged($event)" />
+        </div>
+
+        <div *ngIf="preview" class="v-divider"></div>
+
+        <button *ngIf="preview" (click)="navigateToPreview()">Preview and Generate Framework</button>
+    </div>
+</div>
+
+<ng-container *ngIf="page === undefined; else contentTemplate">
+    <h3>{{ "Phases" | uppercase }}</h3>
+
+    <div *ngIf="!page" data-phases @fadeIn>
+        <teq-phase-card [disableable]="disableable" *ngFor="let phase of (phases$ | async); index as i" [phase]="phase" (click)="page = i" [methods]="getCardMethods(i)" [approaches]="getCardApproaches(i)">
+            <span *ngIf="!tailoring" cta>Explore</span>
+            <span *ngIf="tailoring" cta>Explore or make changes</span>
+        </teq-phase-card>
+    </div>
+</ng-container>
+
+<ng-template #contentTemplate>
+    <div data-phase-navigation @fadeIn>
+        <div
+            data-phase-nav-item
+            *ngFor="let phase of (phases$ | async); index as i"
+            [attr.data-selected]="i === page"
+            [attr.data-first]="i === 0"
+            [attr.data-intermidiate]="i > 0 && i < ((phases$ | async)?.length || 0) - 1"
+            [attr.data-last]="i === ((phases$ | async)?.length || 0) -1"
+        >
+            <teq-phase [phase]="phase" [showArrow]="i !== page" (phaseClicked)="changePage(i)" [disableable]="i === page && disableable" />
+        </div>
+    </div>
+
+    <div data-content @fadeIn>
+        <div [attr.data-placeholder]="page !== 0"></div>
+        <div data-subphases>
+            <div *ngFor="let subphase of (phases$ | async)?.[page!]?.subphases">
+                <div *ngFor="let method of subphase?.methods" data-method>
+                    <teq-method *ngIf="!(method.disabled && filterDisabled)" [filterDisabled]="filterDisabled" [method]="method" [disableable]="disableable"></teq-method>
+                </div>
+            </div>
+        </div>
+        <div [attr.data-placeholder]="page !== ((phases$ | async)?.length || 0) -1"></div>
+    </div>
+</ng-template>

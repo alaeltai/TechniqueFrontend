@@ -193,8 +193,6 @@ export class APIState {
 
     @Action(APIFramework.FetchTree)
     fetchDataTree({ patchState }: StateContext<IAPIState>): void {
-        console.log('In handler getter');
-
         const response = this._http
             .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, {
                 responseType: 'json',
