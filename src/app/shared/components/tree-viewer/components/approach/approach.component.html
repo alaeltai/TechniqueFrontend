@@ -1,5 +1,5 @@
 <div data-approach-title>
-    {{ approach.name }}
+    <span [innerHTML]=" approach.name | highlighter: term"></span>
 
     <teq-information-provider data-svg-ignore-all [id]="approach.id" [type]="'approach'" [entity]="approach" />
 
@@ -12,7 +12,7 @@
 <div data-approach-roles-wrapper>
     <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
         <div>
-            <span>{{ role.name }}</span>
+            <span [innerHTML]=" role.name | highlighter: term"></span>
         </div>
     </teq-label>
 </div>
@@ -20,7 +20,7 @@
 <teq-entity-collapse [collapse]="approach.collapsed!" data-svg-ignore>
     <div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
         <div *ngFor="let task of approach?.tasks">
-            <teq-task [task]="task" [disabled]="disabled || approach.disabled"></teq-task>
+            <teq-task [task]="task" [disabled]="disabled || approach.disabled" [term]="term"></teq-task>
         </div>
     </div>
 </teq-entity-collapse>

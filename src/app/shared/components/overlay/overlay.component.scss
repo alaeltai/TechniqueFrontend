@@ -21,7 +21,14 @@
     &[data-active='true'] {
         display: flex;
 
-        background-color: colors.$overlayColor;
+        &[data-type='loading'] {
+            background-color: colors.$overlayLightColor;
+        }
+
+        &[data-type='data'] {
+            background-color: colors.$overlayDarkColor;
+        }
+
         z-index: layers.$overlayLayer;
     }
 

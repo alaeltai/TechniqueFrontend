@@ -33,8 +33,8 @@ $phaseColorImprove: #f12938;
 
 $pageBackground: $white;
 
-// $overlayColor: rgba($pageBackground, .85); // TODO: Use this for loading state
-$overlayColor: rgba($dark-gray, 0.9); // TODO: Use this only for data modal
+$overlayLightColor: rgba($pageBackground, .85);
+$overlayDarkColor: rgba($dark-gray, 0.9);
 
 $phases: (
     'understand': #009ddc,

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IFilters } from '@teq/shared/components/filters/types/filters.type';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { APIService } from '../../states/api/api.service';
@@ -11,6 +11,8 @@ import { EntityDataType, IApproach, IMethod, ISubphase, ITask } from '@teq/share
 import { environment } from 'environments/environment';
 
 const MatchAllOfType = '-1';
+
+type EntityPropStringValue = string | undefined | EntityPropStringValue[];
 
 export enum FilterType {
     ToggleFilterDisabled = 1,
@@ -47,6 +49,8 @@ const valueExtractableTypes = {
 })
 export class FiltersService {
     private readonly _filters = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
+    public term = signal('');
+    public term$ = new BehaviorSubject('');
     private readonly _phases: BehaviorSubject<IPhase[]> = new BehaviorSubject<IPhase[]>([]);
 
     private _originalPhases!: IPhase[];
@@ -60,9 +64,9 @@ export class FiltersService {
 
     private _filteredMap: Record<string, EntityDataType> = {};
 
-    constructor(private readonly _apiService: APIService) {
-        console.log('In Filters Service constructor');
+    private _defaultCriterias: IFilterCriteria[] = [];
 
+    constructor(private readonly _apiService: APIService) {
         this._apiService.phases$.pipe(distinctUntilChanged()).subscribe(phases => {
             // Retain the list of fetched phases
             this._originalPhases = phases;
@@ -74,6 +78,8 @@ export class FiltersService {
 
                 filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
                 filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : MatchAllOfType));
+
+                this._defaultCriterias = this._determineFilterCriterias(formControls);
 
                 this.filter(formControls);
 
@@ -89,6 +95,10 @@ export class FiltersService {
 
     get phases$(): Observable<IPhase[]> {
         return this._phases.asObservable();
+    }
+
+    getTailoredPhases(): IPhase[] {
+        return this._originalPhases.map(p => this._filterInDepth(p, this._defaultCriterias)).filter(Boolean) as IPhase[];
     }
 
     public addFilters(...types: FilterType[]): IFilters {
@@ -331,6 +341,19 @@ export class FiltersService {
         return filters;
     }
 
+    filter(filters: Record<string, IFilterCriteria['value']>): void {
+        this.term.update(() => filters[6] as string);
+        this.term$.next(filters[6] as string);
+
+        const filterCriterias = this._determineFilterCriterias(filters);
+        const filtered = this._originalPhases.map(p => this._filterInDepth(p, filterCriterias)).filter(Boolean) as IPhase[];
+
+        this._filteredMap = {}; // Clear filtered entity lookup map
+        this._regenerateFilterMap(filtered);
+
+        this._phases.next(filtered);
+    }
+
     private _filterInDepth(entity: EntityDataType, criterias: IFilterCriteria[]): EntityDataType | null {
         // Filter all entities in depth while deep clonning results at the same time
         if (entity.type === 'phase') {
@@ -360,8 +383,10 @@ export class FiltersService {
                         matchAllSearch = criteria.value === '';
 
                         if (
-                            entity.name.includes(criteria.value as string) || // Method name contains
-                            entity.description?.includes(criteria.value as string) // Method description contains
+                            this._matchesStrings(criteria.value as string, [
+                                entity.name, // Method name contains
+                                entity.description // Method description contains
+                            ])
                         ) {
                             searchMatch = true;
                         }
@@ -370,7 +395,7 @@ export class FiltersService {
             }
 
             // Known side effect: emptyu approaches are not displayed at all
-            if ((!matchAllSearch && searchMatch) || approaches.length) {
+            if ((!matchAllSearch && searchMatch && approaches.length) || approaches.length) {
                 return {
                     ...entity,
                     disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
@@ -397,10 +422,11 @@ export class FiltersService {
                 if (criteria.filter === FilterType.Search) {
                     // TODO: Take the string length into account for match all cases determination
                     matchAllSearch = criteria.value === '';
-
                     if (
-                        entity.name.includes(criteria.value as string) || // Approach name contains
-                        entity.description?.includes(criteria.value as string) // Approach description contains
+                        this._matchesStrings(criteria.value as string, [
+                            entity.name, // Approach name contains
+                            entity.description // Approach description contains
+                        ])
                     ) {
                         // Search filter matched
                         searchMatch = true;
@@ -489,16 +515,23 @@ export class FiltersService {
                     matchAllSearch = criteria.value === '';
 
                     if (
-                        entity.name.includes(criteria.value as string) || // Task name contains
-                        entity.how?.includes(criteria.value as string) || // Task how contains
-                        entity.purpose?.includes(criteria.value as string) || // Task purpose contains
-                        entity.artefacts.some(
-                            // Task artefact contain
-                            a =>
-                                a.name.includes(criteria.value as string) || // Artefact name contains
-                                a.description.includes(criteria.value as string) || // Artefact description contains
-                                a.url === criteria.value // Artefact url is
-                        )
+                        this._matchesStrings(criteria.value as string, [
+                            entity.name, // Task name contains
+                            entity.how, // Task how contains
+                            entity.purpose, // Task purpose contains
+                            ...entity.artefacts.map(a => [
+                                a.name, // Artefact name contains
+                                a.description, // Artefact description contains
+                                a.url.de, // Artefact url is
+                                a.url.uk // Artefact url is
+                            ]),
+                            ...entity.inputArtefacts.map(a => [
+                                a.name, // Artefact name contains
+                                a.description, // Artefact description contains
+                                a.url.de, // Artefact url is
+                                a.url.uk // Artefact url is
+                            ])
+                        ])
                     ) {
                         // Search filter matched
                         searchMatch = true;
@@ -552,7 +585,15 @@ export class FiltersService {
         return null;
     }
 
-    filter(filters: Record<string, IFilterCriteria['value']>): void {
+    private _matchesStrings(term: string | RegExp, ...strings: EntityPropStringValue[]): boolean {
+        // const regExp = typeof term === 'string' ? new RegExp(term, 'gi') : term;
+
+        // return (strings.flat().filter(Boolean) as string[]).some(s => s.match(regExp) !== null);
+        const t = term.toString().toLowerCase();
+        return (strings.flat(2).filter(Boolean) as string[]).some(s => s.toLowerCase().includes(t));
+    }
+
+    private _determineFilterCriterias(filters: Record<string, IFilterCriteria['value']>): IFilterCriteria[] {
         const filterTypes = Object.keys(filters) as unknown as FilterType[];
         const filterCriterias: IFilterCriteria[] = filterTypes.map(filter => {
             const filterValue = filters[filter];
@@ -571,12 +612,7 @@ export class FiltersService {
             };
         });
 
-        const filtered = this._originalPhases.map(p => this._filterInDepth(p, filterCriterias)).filter(Boolean) as IPhase[];
-
-        this._filteredMap = {}; // Clear filtered entity lookup map
-        this._regenerateFilterMap(filtered);
-
-        this._phases.next(filtered);
+        return filterCriterias;
     }
 
     private _regenerateFilterMap(filtered: EntityDataType[]): void {

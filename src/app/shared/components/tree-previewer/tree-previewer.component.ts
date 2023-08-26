@@ -107,7 +107,7 @@ export class TreePreviewerComponent implements OnChanges {
 
                     this._overlayService.remove(this._resourceGenerationOverlay);
                 }, 1000);
-            }, 100);
+            }, 250);
         }
     }
 

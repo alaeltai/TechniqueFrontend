@@ -77,20 +77,6 @@ export class ColumnViewerComponent implements OnDestroy {
                 this._aggregatedCounts.push({ methods, approaches });
             });
         });
-
-        // Cache the phases objects for preview forwarding
-        this._filtersService.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
-            if (this.preview) {
-                this._previewData = phases;
-
-                if (this._previewId) {
-                    commitPreviewState(
-                        this.previewData
-                        // this._previewId
-                    );
-                }
-            }
-        });
     }
 
     ngOnDestroy(): void {
@@ -152,11 +138,16 @@ export class ColumnViewerComponent implements OnDestroy {
             this._previewId = Date.now();
         }
 
+        this._previewData = this._filtersService.getTailoredPhases();
+
         commitPreviewState(
             this.previewData
             // this._previewId
         );
 
-        window.open(`/preview/${this._previewId}`, this._previewId.toString());
+        window.open(
+            `/preview/${this._previewId}`,
+            'preview-page' // this._previewId.toString()
+        );
     }
 }

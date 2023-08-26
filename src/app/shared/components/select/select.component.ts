@@ -6,7 +6,7 @@ import { IconComponent } from '../icon/icon.component';
 import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
 
-const MinLettersTreshold = 3;
+const MinLettersTreshold = 2;
 
 @Component({
     selector: 'teq-select',
@@ -98,7 +98,17 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
                 (this._lastSearch.length >= MinLettersTreshold && value.length < MinLettersTreshold) // or the value was trimmed under the minimum length for the first time
             ) {
                 this._lastSearch = value; // Cache the value as last searched for value
-                this.onChange(value); // And propagate the new search value as a filter
+
+                if (value.length > MinLettersTreshold) {
+                    // TODO: Convert to debounced subject
+                    setTimeout(() => {
+                        if (this._lastSearch === value) {
+                            this.onChange(value); // And propagate the new search value as a filter
+                        }
+                    }, 150);
+                } else {
+                    this.onChange(value); // And propagate the new search value as a filter
+                }
             }
         }
     }
