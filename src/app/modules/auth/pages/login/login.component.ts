@@ -33,11 +33,6 @@ export class LoginComponent implements OnInit {
             this.evaluatedSession = !authenticated; // End of session validation
 
             if (!this.loggingIn && authenticated) {
-                requestIdleCallback(
-                    // Pre-fetch the data tree as it is required for all functionality (once authenticated)
-                    () => this._apiService.getDataTree()
-                );
-
                 // Authenticated based on initial getToken without any suplemental manual login
                 void this._router.navigate([`/${TeqRoutesEnum.LANDING_PAGE}`]);
             }

@@ -8,7 +8,6 @@ import { ICategory } from '@teq/shared/types/category.type';
 import { ITemplate } from '@teq/shared/types/template.type';
 import { IOption } from '../select/types/option.type';
 import { EntityDataType, IApproach, IMethod, ISubphase, ITask } from '@teq/shared/types/types';
-import { environment } from 'environments/environment';
 
 const MatchAllOfType = '-1';
 
@@ -405,17 +404,47 @@ export class FiltersService {
         // Filter all entities in depth while deep clonning results at the same time
         if (entity.type === 'phase') {
             // Phase level, filter subphases but ignore the phase itself (non filterable)
+            let innerMatch = false;
+
+            for (const criteria of criterias) {
+                if (criteria.filter === FilterType.Search) {
+                    if (
+                        this._matchesStrings(criteria.value as string, [
+                            entity.description // Phase description contains
+                        ])
+                    ) {
+                        innerMatch = true;
+                    }
+                }
+            }
+
             return {
                 ...entity,
                 disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
-                subphases: entity.subphases?.map(s => this._filterInDepth(s, criterias)) as ISubphase[]
+                subphases: entity.subphases?.map(s => this._filterInDepth(s, criterias)) as ISubphase[],
+                matches: { innerMatch }
             } satisfies IPhase;
         } else if (entity.type === 'subphase') {
             // SubPhase level, filter methods but ignore the subphase itself (non filterable)
+            let innerMatch = false;
+
+            for (const criteria of criterias) {
+                if (criteria.filter === FilterType.Search) {
+                    if (
+                        this._matchesStrings(criteria.value as string, [
+                            entity.description // Subphase description contains
+                        ])
+                    ) {
+                        innerMatch = true;
+                    }
+                }
+            }
+
             return {
                 ...entity,
                 disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
-                methods: entity.methods?.map(m => this._filterInDepth(m, criterias)).filter(Boolean) as IMethod[]
+                methods: entity.methods?.map(m => this._filterInDepth(m, criterias)).filter(Boolean) as IMethod[],
+                matches: { innerMatch }
             } satisfies ISubphase;
         } else if (entity.type === 'method') {
             // Method level, filter approaches and the method itself
@@ -463,16 +492,24 @@ export class FiltersService {
             let roleMatch = false;
             let matchAllTemplates = false;
             let templateMatch = false;
+            let innerMatch = false;
 
             // Filter approach level if it has no approaches
             for (const criteria of criterias) {
                 if (criteria.filter === FilterType.Search) {
-                    // TODO: Take the string length into account for match all cases determination
                     matchAllSearch = criteria.value === '';
+
                     if (
                         this._matchesStrings(criteria.value as string, [
-                            entity.name, // Approach name contains
                             entity.description // Approach description contains
+                        ])
+                    ) {
+                        // Search filter matched
+                        searchMatch = true;
+                        innerMatch = true;
+                    } else if (
+                        this._matchesStrings(criteria.value as string, [
+                            entity.name // Approach name contains
                         ])
                     ) {
                         // Search filter matched
@@ -532,17 +569,9 @@ export class FiltersService {
                     collapsed: entity._locator in this._collapsedMap ? this._collapsedMap[entity._locator] : entity.collapsed,
                     tasks,
                     templates,
-                    roles
+                    roles,
+                    matches: { innerMatch }
                 };
-
-                if (!environment.production) {
-                    // Debug point
-                    (cloned as unknown as Record<string, unknown>)['matches'] = {
-                        searchMatch,
-                        rolesMatch: roles.length > 0,
-                        templatesMatch: templates.length > 0
-                    };
-                }
 
                 return cloned;
             }
@@ -555,6 +584,7 @@ export class FiltersService {
             let categoryMatch = false;
             let matchAllRole = false;
             let roleMatch = false;
+            let innerMatch = false;
 
             // Filter approach level if it has no approaches
             for (const criteria of criterias) {
@@ -563,7 +593,6 @@ export class FiltersService {
 
                     if (
                         this._matchesStrings(criteria.value as string, [
-                            entity.name, // Task name contains
                             entity.how, // Task how contains
                             entity.purpose, // Task purpose contains
                             ...entity.artefacts.map(a => [
@@ -578,6 +607,14 @@ export class FiltersService {
                                 a.url.de, // Artefact url is
                                 a.url.uk // Artefact url is
                             ])
+                        ])
+                    ) {
+                        // Search filter matched
+                        searchMatch = true;
+                        innerMatch = true;
+                    } else if (
+                        this._matchesStrings(criteria.value as string, [
+                            entity.name // Task name contains
                         ])
                     ) {
                         // Search filter matched
@@ -617,13 +654,9 @@ export class FiltersService {
                     disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
                     artefacts: entity.artefacts.map(a => ({ ...a })),
                     category: { ...entity.category },
-                    responsible: { ...entity.responsible }
+                    responsible: { ...entity.responsible },
+                    matches: { innerMatch }
                 };
-
-                if (!environment.production) {
-                    // Debug point
-                    (cloned as unknown as Record<string, unknown>)['matches'] = { searchMatch, categoryMatch, roleMatch };
-                }
 
                 return cloned;
             }
@@ -632,11 +665,8 @@ export class FiltersService {
         return null;
     }
 
-    private _matchesStrings(term: string | RegExp, ...strings: EntityPropStringValue[]): boolean {
-        // const regExp = typeof term === 'string' ? new RegExp(term, 'gi') : term;
-
-        // return (strings.flat().filter(Boolean) as string[]).some(s => s.match(regExp) !== null);
-        const t = term.toString().toLowerCase();
+    private _matchesStrings(term: string, ...strings: EntityPropStringValue[]): boolean {
+        const t = term.toLowerCase();
         return (strings.flat(2).filter(Boolean) as string[]).some(s => s.toLowerCase().includes(t));
     }
 

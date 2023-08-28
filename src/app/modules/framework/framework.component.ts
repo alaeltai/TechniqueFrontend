@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
+import { TreeBasedPageComponent } from '@teq/shared/components/tree-based-page/tree-based-page';
 import { PaginationService } from '@teq/shared/components/tree-previewer/components/pagination/pagination.service';
 import { SVGRendererService } from '@teq/shared/components/tree-previewer/components/svg/svg.service';
 import { generateResource } from '@teq/shared/lib/resource.lib';
@@ -16,10 +17,8 @@ import { IPagination } from '@teq/shared/types/pagination.type';
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [fadeIn]
 })
-export class FrameworkComponent implements OnInit {
+export class FrameworkComponent extends TreeBasedPageComponent implements OnInit {
     public readonly phases$ = this._apiService.phases$;
-
-    public readonly svgOptions$ = this._svgRenderingService.options$;
 
     private _scale = 1;
 
@@ -27,27 +26,27 @@ export class FrameworkComponent implements OnInit {
 
     private _pagination: IPagination = { page: 1, zoom: 4 };
 
-    private _dataLoadingOverlay!: number;
+    // private _dataLoadingOverlay!: number;
 
     private _svgGenerationOverlay!: number;
 
     constructor(
+        protected override readonly _apiService: APIService,
+        protected override readonly _overlayService: OverlayService,
         private readonly _paginationService: PaginationService,
         private readonly _svgRenderingService: SVGRendererService,
-        private readonly _apiService: APIService,
-        private readonly _overlayService: OverlayService,
         private readonly _element: ElementRef<HTMLElement>
-    ) {}
+    ) {
+        super(_overlayService, _apiService);
+    }
 
-    ngOnInit(): void {
-        this._dataLoadingOverlay = this._overlayService.add(OverlayType.Loading, {
-            message: 'Loading data...'
-        });
+    override ngOnInit(): void {
+        super.ngOnInit();
 
         this.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
             this._maxPhases = phases.length;
 
-            this._overlayService.remove(this._dataLoadingOverlay);
+            // this._overlayService.remove(this._dataLoadingOverlay);
         });
     }
 

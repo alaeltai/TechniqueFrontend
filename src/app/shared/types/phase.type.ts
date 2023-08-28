@@ -31,6 +31,11 @@ export interface BasePhase {
      * Determines if the data should be omitted from rendering
      */
     filtered?: boolean;
+
+    /**
+     * Flag remembering if a search metch was found inside the non directly visible entity data
+     */
+    matches?: { innerMatch?: boolean };
 }
 
 export interface IPhase extends BasePhase {

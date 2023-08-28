@@ -17,6 +17,9 @@ export class APIService {
     @Select(APIState.phases)
     public readonly phases$!: Observable<IPhase[]>;
 
+    @Select(APIState.treeStatus)
+    public readonly treeStatus$!: Observable<{ fetched: boolean; fetching: boolean }>;
+
     constructor(private readonly _store: Store) {}
 
     getDataTree(): Observable<unknown> {

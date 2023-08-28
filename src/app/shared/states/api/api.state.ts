@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { IPhase } from '@teq/shared/types/phase.type';
@@ -7,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { APIPhases } from './api.phases.actions';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
-import { AuthService } from '@teq/modules/auth/state/auth.service';
 import { IAPIPhase } from '@teq/shared/types/api/phase.type';
 import { ISubphase } from '@teq/shared/types/subphase.type';
 import { IMethod } from '@teq/shared/types/method.type';
@@ -40,10 +37,14 @@ import { IAPIArtefact } from '@teq/shared/types/api/artefact.type';
 
 export interface IAPIState {
     phases: IPhase[];
+    treeFetched: boolean;
+    treeFetching: boolean;
 }
 
 const defaults: IAPIState = {
-    phases: []
+    phases: [],
+    treeFetched: false,
+    treeFetching: false
 };
 
 @State<IAPIState>({
@@ -55,6 +56,11 @@ export class APIState {
     @Selector()
     static phases(state: IAPIState): IPhase[] {
         return state.phases;
+    }
+
+    @Selector()
+    static treeStatus(state: IAPIState): { fetched: boolean; fetching: boolean } {
+        return { fetched: state.treeFetched, fetching: state.treeFetching };
     }
 
     public static sortByOrder<T extends { order?: number }>(a: T, b: T): number {
@@ -189,10 +195,12 @@ export class APIState {
         });
     }
 
-    constructor(private readonly _authService: AuthService, private readonly _http: HttpClient) {}
+    constructor(private readonly _http: HttpClient) {}
 
     @Action(APIFramework.FetchTree)
     fetchDataTree({ patchState }: StateContext<IAPIState>): void {
+        patchState({ treeFetching: true }); // Mark state requesting status
+
         const response = this._http
             .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, {
                 responseType: 'json',
@@ -203,13 +211,12 @@ export class APIState {
             })
             .pipe(catchError(this.handleError('tree')));
 
-        // TODO: Compute locators here in order to determine parent-child relationships
         response.subscribe(rawPhases => {
             // Convert IAPIPhase to IPhase
             const phases = (rawPhases as IAPIPhase[]).map(APIState.convertPhase).sort(APIState.sortByOrder);
 
             // Persist newly fetched data in state
-            patchState({ phases });
+            patchState({ phases, treeFetched: true, treeFetching: false });
         });
     }
 
