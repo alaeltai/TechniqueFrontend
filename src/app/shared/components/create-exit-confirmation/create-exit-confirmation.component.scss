@@ -1,0 +1,69 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    & > div:first-of-type {
+        padding-top: 1.5rem;
+        padding-bottom: 1rem;
+
+        border: 1px solid colors.$mid-gray;
+        border-left: none;
+        border-right: none;
+
+        & > p {
+            @include typography.apply('content+');
+            color: colors.$dark-gray;
+
+            &:last-of-type {
+                padding-bottom: 1.5rem;
+            }
+        }
+
+        & > [data-controls] {
+            display: flex;
+            flex-direction: column;
+
+            & > button {
+                width: fit-content;
+            }
+
+            gap: .5rem;
+
+            & > button {
+                height: 32px;
+
+                padding: 8px 16px;
+
+                border-style: solid;
+                border-width: 1px;
+
+                border-color: colors.$active-link-item-background;
+                background-color: colors.$active-link-item-background;
+                color: colors.$white;
+
+                &:not(:disabled):hover {
+                    background-color: rgba(colors.$active-link-item-background, .85);
+                }
+
+                @include typography.apply('condensed', true);
+
+                &:not(:disabled):hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    & > div:last-of-type {
+        padding-top: 1rem;
+    }
+
+    & a {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        @include typography.apply('bold');
+        background-color: transparent;
+        color: colors.$active-link-item-background;
+        text-decoration: none;
+    }
+}

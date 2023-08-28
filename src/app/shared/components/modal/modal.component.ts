@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input } from '@angular/core';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { OverlayService } from '../../services/overlay.service';
 import { IconComponent } from '../icon/icon.component';
@@ -15,6 +15,10 @@ export class ModalComponent {
     @Input() title!: string;
     @Input() registrationId!: number;
     @Input() term!: string;
+
+    @Input()
+    @HostBinding('attr.data-size')
+    size: 'small' | 'normal' | 'large' = 'normal';
 
     private opened = false;
 

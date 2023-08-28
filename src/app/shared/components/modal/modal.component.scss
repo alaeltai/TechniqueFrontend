@@ -2,10 +2,23 @@
 @use 'typography' as typography;
 
 :host {
-    width: 61.25rem;
-    min-height: 34.125rem;
+
     max-height: 44.75rem;
     height: fit-content;
+
+    &[data-size='small'] {
+        width: 31.25rem;
+        max-height: 44.75rem;
+        height: fit-content;
+    }
+
+    &[data-size='normal'] {
+        width: 61.25rem;
+    }
+
+    &[data-size='large'] {
+        width: 90%;
+    }
 
     padding: 1.5rem;
 
@@ -15,7 +28,7 @@
 
     & > article {
         & > section {
-            min-height: 24.375rem;
+            min-height: 17.5rem;
             max-height: 34.6875rem;
             height: fit-content;
 

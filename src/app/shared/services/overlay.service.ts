@@ -20,7 +20,8 @@ export enum OverlayType {
 }
 
 export enum OverlayTemplate {
-    TaskDetails = 'task'
+    TaskDetails = 'task',
+    TailoringConfirmation = 'confirmation'
 }
 
 interface IOverlay<T> {

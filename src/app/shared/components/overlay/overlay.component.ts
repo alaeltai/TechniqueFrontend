@@ -1,5 +1,5 @@
 import { NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { SpinnerComponent } from '@teq/shared/components/spinner/spinner.component';
 import { IOverlayDataContent, OverlayService, OverlayTemplate, OverlayType } from '@teq/shared/services/overlay.service';
 
@@ -8,14 +8,24 @@ import { ITask } from '@teq/shared/types/task.type';
 import { TaskDetailsComponent } from '@teq/shared/components/task-details/task-details.component';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { CreateExitConfirmationComponent } from '../create-exit-confirmation/create-exit-confirmation.component';
 @UntilDestroy()
 @Component({
     selector: 'teq-overlay',
     standalone: true,
     templateUrl: './overlay.component.html',
     styleUrls: ['./overlay.component.scss'],
-    imports: [NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet, SpinnerComponent, ModalComponent, TaskDetailsComponent, CommonModule],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    imports: [
+        NgIf,
+        NgSwitch,
+        NgSwitchCase,
+        NgTemplateOutlet,
+        SpinnerComponent,
+        ModalComponent,
+        TaskDetailsComponent,
+        CreateExitConfirmationComponent,
+        CommonModule
+    ]
 })
 export class OverlayComponent {
     public OverlayTemplate = OverlayTemplate;

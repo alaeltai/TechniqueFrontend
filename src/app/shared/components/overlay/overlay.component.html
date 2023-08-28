@@ -4,11 +4,17 @@
         <div data-explanation *ngIf="message">{{ message }}</div>
     </div>
 
-    <ng-container *ngIf="data" [ngSwitch]="data.template">
+    <ng-container *ngIf="data && !loading" [ngSwitch]="data.template">
         <ng-container
             *ngSwitchCase="OverlayTemplate.TaskDetails"
             [ngTemplateOutlet]="taskModal"
             [ngTemplateOutletContext]="{task: data.data, registrationId: currentDataId, term: term}"
+        ></ng-container>
+
+        <ng-container
+            *ngSwitchCase="OverlayTemplate.TailoringConfirmation"
+            [ngTemplateOutlet]="tailoringConfirmationModal"
+            [ngTemplateOutletContext]="{previewData: data.data, registrationId: currentDataId}"
         ></ng-container>
     </ng-container>
 </div>
@@ -16,5 +22,11 @@
 <ng-template #taskModal let-task="task" let-registration="registrationId">
     <teq-modal [title]="getTitle(task)" [registrationId]="registration" [term]="term()">
         <teq-task-details [task]="task" [term]="term()"></teq-task-details>
+    </teq-modal>
+</ng-template>
+
+<ng-template #tailoringConfirmationModal let-previewData="previewData" let-registration="registrationId">
+    <teq-modal [size]="'small'" [title]="'One moment...'" [registrationId]="registration">
+        <teq-create-exit-confirmation [previewData]="previewData" [registrationId]="registration" />
     </teq-modal>
 </ng-template>

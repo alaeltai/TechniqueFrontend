@@ -1,0 +1,13 @@
+<div>
+    <p>Your project was not yet generated. Going back will result in losing all the customizations on the curent project.</p>
+    <p>Do you wish to save before going back and  starting from scratch?</p>
+
+    <div data-controls>
+        <button (click)="saveChanges()">Save and download project</button>
+        <a (click)="discardChanges()">That's ok, don't save</a>
+    </div>
+</div>
+
+<div>
+    <a (click)="closeModal()">I still have changes to make. Close window</a>
+</div>

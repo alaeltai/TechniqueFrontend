@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { PhaseComponent } from '../tree-viewer/components/phase/phase.component';
 import { MethodComponent } from '../tree-viewer/components/method/method.component';
 import { commitPreviewState, removePreviewState } from '@teq/shared/lib/preview-storage.lib';
+import { OverlayService, OverlayTemplate, OverlayType } from '@teq/shared/services/overlay.service';
 
 @UntilDestroy()
 @Component({
@@ -53,7 +54,7 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
 
     @ViewChild(TreeViewerComponent) treeViewer!: TreeViewerComponent;
 
-    constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService) {
+    constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService, private _overlayService: OverlayService) {
         this.phases$ = this._filtersService.phases$;
 
         // Compute the total amounts for cards
@@ -155,5 +156,12 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
             `/preview/${this._previewId}`,
             'preview-page' // this._previewId.toString()
         );
+    }
+
+    guardNavigation(): void {
+        this._overlayService.add(OverlayType.Data, {
+            template: OverlayTemplate.TailoringConfirmation,
+            data: FiltersService.computeDisableMap((this._previewData = this._filtersService.getTailoredPhases()))
+        });
     }
 }
