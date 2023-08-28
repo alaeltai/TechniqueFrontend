@@ -46,6 +46,12 @@ const routes: Routes = [
         loadChildren: async () => (await import('@teq/modules/import-framework/import-framework.module')).ImportFrameworkModule
     },
     {
+        path: TeqRoutesEnum.ROLES,
+        canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Roles',
+        loadChildren: async () => (await import('@teq/modules/roles/roles.module')).RolesModule
+    },
+    {
         path: '**',
         redirectTo: TeqRoutesEnum.LANDING_PAGE
     }

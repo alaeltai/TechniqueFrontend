@@ -1,0 +1,39 @@
+<div>
+    <ul>
+        <li *ngFor="let role of rolesList">
+            {{ role.role.name }}
+        </li>
+    </ul>
+
+    <div>
+        <div>
+            {{ currentAggregation.role.description }}
+        </div>
+
+        <div>
+            Skills:
+            {{ currentAggregation.role.skills }}
+        </div>
+
+        <div>
+            <span *ngFor="let phase of currentAggregation.phases">
+                {{ phase.name }}
+            </span>
+        </div>
+
+        <div>
+            <span *ngFor="let subphase of currentAggregation.subphases">
+                {{ subphase.name }}
+            </span>
+        </div>
+
+        <table>
+            <tr *ngFor="let row of currentAggregation.rows">
+                <td>{{ row[0].name }}</td>
+                <td>{{ row[1].name }}</td>
+                <td>{{ row[2].name }}</td>
+                <td>{{ row[3].name }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

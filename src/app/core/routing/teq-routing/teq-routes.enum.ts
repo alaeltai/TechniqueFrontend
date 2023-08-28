@@ -5,5 +5,6 @@ export enum TeqRoutesEnum {
     VIEW_FRAMEWORK = 'view-framework',
     CREATE = 'create',
     EXPLORE = 'explore',
-    IMPORT = 'import'
+    IMPORT = 'import',
+    ROLES = 'roles'
 }
