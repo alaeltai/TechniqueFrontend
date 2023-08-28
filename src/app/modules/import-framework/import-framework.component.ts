@@ -20,7 +20,7 @@ export class ImportFrameworkComponent {
         const reader = new FileReader();
         const started = Date.now();
 
-        reader.onload = async event => {
+        reader.onload = event => {
             const remaining = 1800 - (Date.now() - started);
 
             if (remaining > 0) {

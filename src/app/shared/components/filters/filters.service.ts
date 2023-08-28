@@ -408,7 +408,10 @@ export class FiltersService {
 
             for (const criteria of criterias) {
                 if (criteria.filter === FilterType.Search) {
+                    const matchAllSearch = this._isAllSearchCase(criteria.value);
+
                     if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.description // Phase description contains
                         ])
@@ -430,7 +433,10 @@ export class FiltersService {
 
             for (const criteria of criterias) {
                 if (criteria.filter === FilterType.Search) {
+                    const matchAllSearch = this._isAllSearchCase(criteria.value);
+
                     if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.description // Subphase description contains
                         ])
@@ -456,9 +462,10 @@ export class FiltersService {
                 // Filter method level only if it has no approaches
                 for (const criteria of criterias) {
                     if (criteria.filter === FilterType.Search) {
-                        matchAllSearch = criteria.value === '';
+                        matchAllSearch = this._isAllSearchCase(criteria.value);
 
                         if (
+                            !matchAllSearch &&
                             this._matchesStrings(criteria.value as string, [
                                 entity.name, // Method name contains
                                 entity.description // Method description contains
@@ -497,9 +504,10 @@ export class FiltersService {
             // Filter approach level if it has no approaches
             for (const criteria of criterias) {
                 if (criteria.filter === FilterType.Search) {
-                    matchAllSearch = criteria.value === '';
+                    matchAllSearch = this._isAllSearchCase(criteria.value);
 
                     if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.description // Approach description contains
                         ])
@@ -508,6 +516,7 @@ export class FiltersService {
                         searchMatch = true;
                         innerMatch = true;
                     } else if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.name // Approach name contains
                         ])
@@ -589,9 +598,10 @@ export class FiltersService {
             // Filter approach level if it has no approaches
             for (const criteria of criterias) {
                 if (criteria.filter === FilterType.Search) {
-                    matchAllSearch = criteria.value === '';
+                    matchAllSearch = this._isAllSearchCase(criteria.value);
 
                     if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.how, // Task how contains
                             entity.purpose, // Task purpose contains
@@ -613,6 +623,7 @@ export class FiltersService {
                         searchMatch = true;
                         innerMatch = true;
                     } else if (
+                        !matchAllSearch &&
                         this._matchesStrings(criteria.value as string, [
                             entity.name // Task name contains
                         ])
@@ -663,6 +674,12 @@ export class FiltersService {
         }
 
         return null;
+    }
+
+    private _isAllSearchCase(value: unknown): boolean {
+        const v = (value as string).toString();
+
+        return v.trim() === '' ?? v.length < 3;
     }
 
     private _matchesStrings(term: string, ...strings: EntityPropStringValue[]): boolean {

@@ -12,14 +12,14 @@ export abstract class TreeBasedPageComponent implements OnInit {
 
     ngOnInit(): void {
         this._apiService.treeStatus$.pipe(untilDestroyed(this)).subscribe(status => {
-            console.log('In tree fetching status check');
-
             if (!status.fetched && !status.fetching) {
-                this._dataLoadingOverlay = this._overlayService.add(OverlayType.Loading, {
-                    message: 'Loading data...'
-                });
+                requestIdleCallback(() => {
+                    this._dataLoadingOverlay = this._overlayService.add(OverlayType.Loading, {
+                        message: 'Loading data...'
+                    });
 
-                this._apiService.getDataTree();
+                    this._apiService.getDataTree();
+                });
             } else if (!status.fetching && status.fetched && this._dataLoadingOverlay) {
                 // Remove prior overlays
                 this._overlayService.remove(this._dataLoadingOverlay);

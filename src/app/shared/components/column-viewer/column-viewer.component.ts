@@ -54,7 +54,7 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
 
     @ViewChild(TreeViewerComponent) treeViewer!: TreeViewerComponent;
 
-    constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService, private _overlayService: OverlayService) {
+    constructor(private readonly _filtersService: FiltersService, private readonly _apiService: APIService, private readonly _overlayService: OverlayService) {
         this.phases$ = this._filtersService.phases$;
 
         // Compute the total amounts for cards
