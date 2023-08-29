@@ -14,6 +14,8 @@ export class AuthService {
     @Select(AuthState.user)
     public readonly user$!: Observable<string>;
 
+    private readonly _registeredPaths = new Set<string>();
+
     public constructor(private readonly _store: Store) {}
 
     get isAuthenticated(): boolean {
@@ -31,5 +33,19 @@ export class AuthService {
     refreshToken(authentication = false): Observable<IAuthState> {
         // acquireTokenSilent
         return this._store.dispatch(new Auth.Refresh(authentication)) as Observable<IAuthState>;
+    }
+
+    registerAuthPath(path: string): boolean {
+        if (!this._registeredPaths.has(path)) {
+            this._registeredPaths.add(path);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    requiresAuthentication(path: string): boolean {
+        return this._registeredPaths.has(path);
     }
 }

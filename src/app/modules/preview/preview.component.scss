@@ -1,0 +1,18 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    & [data-empty] {
+        & > h3 {
+            color: colors.$text-color-dark;
+            @include typography.apply('phase');
+        }
+
+        & > p {
+            color: colors.$dark-gray;
+            @include typography.apply('content');
+        }
+    }
+}

@@ -1,4 +1,4 @@
-<nav *ngIf="authenticated$ | async" @fadeIn>
+<nav *ngIf="((authenticated$ | async) && requiresAuthentication) || !requiresAuthentication" @fadeIn>
     <li>
         <img src="assets/logo.svg" />
         <h1>Technique Platform</h1>

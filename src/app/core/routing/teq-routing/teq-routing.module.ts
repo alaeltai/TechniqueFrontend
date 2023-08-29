@@ -17,7 +17,6 @@ const routes: Routes = [
     },
     {
         path: `${TeqRoutesEnum.PREVIEW}/:id`,
-        canActivate: [isAuthenticatedGuard],
         title: 'Technique - Preview',
         loadChildren: async () => (await import('@teq/modules/preview/preview.module')).PreviewModule
     },

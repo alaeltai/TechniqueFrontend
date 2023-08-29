@@ -8,8 +8,12 @@ import { Observable, take } from 'rxjs';
 let priorToRedirect = '';
 
 export const isAuthenticatedGuard: CanActivateFn = (_: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-    const isAuth = inject(AuthService).authenticated$;
+    const authService = inject(AuthService);
+    const isAuth = authService.authenticated$;
     const router = inject(Router);
+
+    // Mark the route as requiring authentication
+    authService.registerAuthPath(state.url);
 
     const resolveRoute = new Observable<boolean | UrlTree>(observer => {
         isAuth.pipe(take(1)).subscribe(authenticated => {

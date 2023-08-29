@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-// import { Router } from '@angular/router';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { commitPreviewState, fetchPreviewState, removePreviewState } from '@teq/shared/lib/preview-storage.lib';
 import { IPhase } from '@teq/shared/types/phase.type';
@@ -15,6 +14,13 @@ import { IPhase } from '@teq/shared/types/phase.type';
     animations: [fadeIn]
 })
 export class PreviewComponent implements OnInit, OnDestroy {
+    // @HostListener('window:beforeunload', ['$event'])
+    // clearState(event: Event): boolean {
+    //     removePreviewState();
+
+    //     return false;
+    // }
+
     public phases$: IPhase[] = [];
 
     public filterDisabled = false;
@@ -29,7 +35,6 @@ export class PreviewComponent implements OnInit, OnDestroy {
                 this._previewId = params['id'] as number;
 
                 const state = fetchPreviewState();
-                // this._previewId
 
                 if (state) {
                     this.phases$ = state.data;
