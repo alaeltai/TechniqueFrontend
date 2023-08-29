@@ -1,34 +1,23 @@
-<div>
-    <ul>
-        <li *ngFor="let role of rolesList">
-            {{ role.role.name }}
-        </li>
-    </ul>
+<h1 data-title>Roles</h1>
 
-    <div>
+<div data-content>
+    <teq-side-list [items]="rolesList"></teq-side-list>
+
+    <div *ngIf="currentAggregation">
+        <div>{{ currentAggregation.role.description }}</div>
+
+        <div>Skills: {{ currentAggregation.role.skills }}</div>
+
         <div>
-            {{ currentAggregation.role.description }}
+            <span *ngFor="let phase of currentAggregation.phases">{{ phase.name }}</span>
         </div>
 
         <div>
-            Skills:
-            {{ currentAggregation.role.skills }}
-        </div>
-
-        <div>
-            <span *ngFor="let phase of currentAggregation.phases">
-                {{ phase.name }}
-            </span>
-        </div>
-
-        <div>
-            <span *ngFor="let subphase of currentAggregation.subphases">
-                {{ subphase.name }}
-            </span>
+            <span *ngFor="let subphase of currentAggregation.subphases">{{ subphase.name }}</span>
         </div>
 
         <table>
-            <tr *ngFor="let row of currentAggregation.rows">
+            <tr *ngFor="let row of currentAggregation?.rows">
                 <td>{{ row[0].name }}</td>
                 <td>{{ row[1].name }}</td>
                 <td>{{ row[2].name }}</td>

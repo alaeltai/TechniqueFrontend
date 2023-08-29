@@ -47,8 +47,6 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
         const rolesMap: IRolesAggregation = {};
 
-        console.log('in pipe');
-
         this.phases$.pipe(untilDestroyed(this)).subscribe(phases => {
             phases.forEach(p => {
                 p.subphases?.forEach(s => {

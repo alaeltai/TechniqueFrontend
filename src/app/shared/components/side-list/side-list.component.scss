@@ -1,0 +1,13 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    & > ::ng-deep ul {
+        margin: 0;
+
+        & > li {
+        }
+    }
+}
