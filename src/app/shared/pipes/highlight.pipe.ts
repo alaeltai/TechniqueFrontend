@@ -12,7 +12,7 @@ export class HighlighterPipe implements PipeTransform {
     transform(value: string, args: string): unknown {
         if (!args) return value;
 
-        const regExp = lastHint === args ? lastRegExp : new RegExp('\\b(' + args + '\\b)', 'igm');
+        const regExp = lastHint === args ? lastRegExp : new RegExp('(' + args + ')', 'igm');
 
         lastHint = args;
 

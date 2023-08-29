@@ -107,7 +107,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
                         }
                     }, 150);
                 } else {
-                    this.onChange(value); // And propagate the new search value as a filter
+                    this.onChange(''); // And propagate the new search value as a filter
                 }
             }
         }
