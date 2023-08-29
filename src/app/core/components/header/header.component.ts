@@ -12,4 +12,8 @@ export class HeaderComponent {
     public readonly authenticated$ = this._authService.authenticated$;
 
     constructor(private readonly _authService: AuthService) {}
+
+    get requiresAuthentication(): boolean {
+        return this._authService.requiresAuthentication(window.location.pathname);
+    }
 }

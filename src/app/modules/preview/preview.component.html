@@ -1,1 +1,5 @@
-<teq-tree-previewer *ngIf="phases$" [phases]="phases$" [preview]="true" [exportable]="true" [enableVisibility]="true" [filterDisabled]="filterDisabled" (filterDisabledChanged)="filterDisabledChanged($event)"></teq-tree-previewer>
+<teq-tree-previewer *ngIf="phases$ && phases$.length" [phases]="phases$" [preview]="true" [exportable]="true" [enableVisibility]="true" [filterDisabled]="filterDisabled" (filterDisabledChanged)="filterDisabledChanged($event)"></teq-tree-previewer>
+<div data-empty *ngIf="!phases$ || !phases$.length">
+    <h3>No data to preview</h3>
+    <p>You probably don't see any result for the reason the URL has been shared, the browser or computer has been restarted. In order to receive a preview, it must be regenerated.</p>
+</div>
