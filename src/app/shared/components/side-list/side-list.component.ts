@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+export interface IListItem {
+    label: string;
+    value: string;
+}
 
 @Component({
     selector: 'teq-side-list',
@@ -9,15 +14,35 @@ import { CommonModule } from '@angular/common';
     styleUrls: ['./side-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SideListComponent {
-    public selectedItem: unknown;
-    private _items: unknown[] = [];
+export class SideListComponent implements OnChanges {
+    @Input() items: IListItem[] = [];
 
-    @Input() set items(value: unknown[]) {
-        this._items = value;
+    @Input() value!: string;
+
+    @Output() valueChange = new EventEmitter<string>();
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if ('items' in changes) {
+            const items = changes['items'].currentValue as IListItem[];
+
+            if (items) {
+                // Validate the current selection is inside the new items list
+                const included = items.some(i => i.value.toString() === this.value);
+
+                if (!included) {
+                    this._determineValue();
+                }
+            }
+        }
     }
 
-    get items(): unknown[] {
-        return this._items;
+    change(item: IListItem): void {
+        this.valueChange.emit(item.value.toString());
+    }
+
+    private _determineValue(): void {
+        if (this.items.length) {
+            this.value = this.items[0].value;
+        }
     }
 }

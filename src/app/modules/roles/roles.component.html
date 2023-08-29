@@ -1,7 +1,7 @@
 <h1 data-title>Roles</h1>
 
 <div data-content>
-    <teq-side-list [items]="rolesList"></teq-side-list>
+    <teq-side-list [items]="computedItems" [value]="selected" (valueChange)="selectionChanged($event)"></teq-side-list>
 
     <div *ngIf="currentAggregation">
         <div>{{ currentAggregation.role.description }}</div>

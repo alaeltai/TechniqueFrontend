@@ -51,6 +51,18 @@ const routes: Routes = [
         loadChildren: async () => (await import('@teq/modules/roles/roles.module')).RolesModule
     },
     {
+        path: TeqRoutesEnum.GLOSSARY,
+        canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Glossary',
+        loadChildren: async () => (await import('@teq/modules/glossary/glossary.module')).GlossaryModule
+    },
+    {
+        path: TeqRoutesEnum.FAQ,
+        canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Frequently Asked Questions',
+        loadChildren: async () => (await import('@teq/modules/faq/faq.module')).FaqModule
+    },
+    {
         path: '**',
         redirectTo: TeqRoutesEnum.LANDING_PAGE
     }

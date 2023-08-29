@@ -6,5 +6,7 @@ export enum TeqRoutesEnum {
     CREATE = 'create',
     EXPLORE = 'explore',
     IMPORT = 'import',
-    ROLES = 'roles'
+    ROLES = 'roles',
+    GLOSSARY = 'glossary',
+    FAQ = 'faq'
 }

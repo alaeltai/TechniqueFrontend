@@ -9,6 +9,10 @@ import { APIMethods } from './api.methods.actions';
 import { APIApproaches } from './api.approaches.actions';
 import { APITasks } from './api.tasks.actions';
 import type { EntityType, IPhase } from '@teq/shared/types/types';
+import { APIGlossary } from './api.glossary.actions';
+import { APIFaq } from './api.faq.actions';
+import { IFaq } from '@teq/shared/types/faq.type';
+import { IGlossary } from '@teq/shared/types/glossary.type';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +20,12 @@ import type { EntityType, IPhase } from '@teq/shared/types/types';
 export class APIService {
     @Select(APIState.phases)
     public readonly phases$!: Observable<IPhase[]>;
+
+    @Select(APIState.faq)
+    public readonly faq$!: Observable<IFaq[]>;
+
+    @Select(APIState.glossary)
+    public readonly glossary$!: Observable<IGlossary[]>;
 
     @Select(APIState.treeStatus)
     public readonly treeStatus$!: Observable<{ fetched: boolean; fetching: boolean }>;
@@ -92,5 +102,13 @@ export class APIService {
             case 'task':
                 return !!phases.find(p => p.subphases?.find(s => s.methods.find(m => m.approaches.find(a => !!a.tasks.find(t => t.id === id)?.how))));
         }
+    }
+
+    getGlossary(): Observable<unknown> {
+        return this._store.dispatch(new APIGlossary.List());
+    }
+
+    getFaq(): Observable<unknown> {
+        return this._store.dispatch(new APIFaq.List());
     }
 }

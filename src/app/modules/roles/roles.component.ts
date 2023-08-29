@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
+import { IListItem } from '@teq/shared/components/side-list/side-list.component';
 import { TreeBasedPageComponent } from '@teq/shared/components/tree-based-page/tree-based-page';
 import { IApproach } from '@teq/shared/types/approach.type';
 import { ICategory } from '@teq/shared/types/category.type';
@@ -38,6 +39,8 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
     private _aggregatedRoles: IRolesAggregation = {};
 
+    private _computedItems: IListItem[] | null = null;
+
     get currentAggregation(): IRoleAggregation {
         return this._aggregatedRoles[this.selected];
     }
@@ -74,7 +77,7 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
             this.rolesList = Object.keys(rolesMap).map(roleId => {
                 if (!this.selected) {
-                    this.selected = roleId; // TODO: Remove once selecting
+                    this.selected = roleId;
                 }
 
                 const role = rolesMap[roleId];
@@ -85,6 +88,16 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
             });
 
             this._aggregatedRoles = rolesMap;
+
+            this._computedItems = this.rolesList.map(r => ({ value: r.id, label: r.role.name }));
         });
+    }
+
+    selectionChanged(selected: string): void {
+        this.selected = selected;
+    }
+
+    get computedItems(): IListItem[] {
+        return this._computedItems ?? [];
     }
 }

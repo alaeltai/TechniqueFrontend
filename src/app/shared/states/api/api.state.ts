@@ -19,7 +19,6 @@ import { IAPICategory } from '@teq/shared/types/api/category.type';
 import { IAPIApproach } from '@teq/shared/types/api/approach.type';
 import { IAPIMethod } from '@teq/shared/types/api/method.type';
 import { IAPISubPhase } from '@teq/shared/types/api/subphase.type';
-import { phases } from './mock'; // Mock point
 import { environment } from 'environments/environment';
 import { IArtefact } from '@teq/shared/types/artefact.type';
 import { AuthenticatedRequest } from '../../../core/inteceptors/auth.interceptor';
@@ -32,17 +31,28 @@ import { APITasks } from './api.tasks.actions';
 import { IAPITemplate } from '@teq/shared/types/api/template.type';
 import { ITemplate } from '@teq/shared/types/template.type';
 import { IAPIArtefact } from '@teq/shared/types/api/artefact.type';
+import { APIGlossary } from './api.glossary.actions';
+import { IGlossary } from '@teq/shared/types/glossary.type';
+import { APIFaq } from './api.faq.actions';
+import { IFaq } from '@teq/shared/types/faq.type';
+import { phases } from './mock-phases'; // Mock point
+import { glossary } from './mock-glossary'; // Mock point
+import { faq } from './mock-faq'; // Mock point
 
 // const phases: IAPIPhase[] = []; // Coment to enable mock
 
 export interface IAPIState {
     phases: IPhase[];
+    glossary: IGlossary[];
+    faq: IFaq[];
     treeFetched: boolean;
     treeFetching: boolean;
 }
 
 const defaults: IAPIState = {
     phases: [],
+    glossary: [],
+    faq: [],
     treeFetched: false,
     treeFetching: false
 };
@@ -56,6 +66,16 @@ export class APIState {
     @Selector()
     static phases(state: IAPIState): IPhase[] {
         return state.phases;
+    }
+
+    @Selector()
+    static faq(state: IAPIState): IFaq[] {
+        return state.faq;
+    }
+
+    @Selector()
+    static glossary(state: IAPIState): IGlossary[] {
+        return state.glossary;
     }
 
     @Selector()
@@ -195,6 +215,14 @@ export class APIState {
         });
     }
 
+    public static convertGlossary(glossary: IGlossary): IGlossary {
+        return glossary;
+    }
+
+    public static convertFaq(faq: IFaq): IFaq {
+        return faq;
+    }
+
     constructor(private readonly _http: HttpClient) {}
 
     @Action(APIFramework.FetchTree)
@@ -217,6 +245,68 @@ export class APIState {
 
             // Persist newly fetched data in state
             patchState({ phases, treeFetched: true, treeFetching: false });
+        });
+    }
+
+    @Action(APIGlossary.List)
+    fetchGlossary({ patchState }: StateContext<IAPIState>): void {
+        const response = this._http
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Glossary/GetGlossary`, {
+                responseType: 'json',
+                context: new HttpContext()
+                    // .set(CacheStorage, CacheType.GLOSSARY)
+                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                    .set(AuthenticatedRequest, true)
+            })
+            .pipe(catchError(this.handleError('glossary')));
+
+        response.subscribe(rawGlossary => {
+            const glossary = (rawGlossary as IGlossary[]).map(APIState.convertGlossary).sort((g1: IGlossary, g2: IGlossary) => {
+                const c1 = g1.grouping;
+                const c2 = g2.grouping;
+
+                if (c1 < c2) {
+                    return -1;
+                } else if (c1 > c2) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            // Persist newly fetched data in state
+            patchState({ glossary });
+        });
+    }
+
+    @Action(APIFaq.List)
+    fetchFaq({ patchState }: StateContext<IAPIState>): void {
+        const response = this._http
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Faq/GetFaq`, {
+                responseType: 'json',
+                context: new HttpContext()
+                    // .set(CacheStorage, CacheType.GLOSSARY)
+                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                    .set(AuthenticatedRequest, true)
+            })
+            .pipe(catchError(this.handleError('faq')));
+
+        response.subscribe(rawFaq => {
+            const faq = (rawFaq as IFaq[]).map(APIState.convertFaq).sort((f1: IFaq, f2: IFaq) => {
+                const c1 = f1.question;
+                const c2 = f2.question;
+
+                if (c1 < c2) {
+                    return -1;
+                } else if (c1 > c2) {
+                    return 1;
+                }
+
+                return 0;
+            });
+
+            // Persist newly fetched data in state
+            patchState({ faq });
         });
     }
 
@@ -378,6 +468,10 @@ export class APIState {
             if (operation === 'tree') {
                 return of(phases as T); // Mock point
                 // return of([] as T);
+            } else if (operation === 'glossary') {
+                return of(glossary as T); // Mock point
+            } else if (operation === 'faq') {
+                return of(faq as T); // Mock point
             } else {
                 return of(null as T);
             }
