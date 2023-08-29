@@ -1,8 +1,8 @@
 <teq-icon type="information" />
 
+<teq-search-ellipse-notification *ngIf="term().length > 2 && innerMatch"></teq-search-ellipse-notification>
+
 <div data-modal>
-    <h3>{{ entity.name }}</h3>
-    <div>
-        {{ entity.description }}
-    </div>
+    <h3 [innerHTML]="entity.name | highlighter: term()"></h3>
+    <div [innerHTML]="entity.description ?? '' | highlighter: term()"></div>
 </div>

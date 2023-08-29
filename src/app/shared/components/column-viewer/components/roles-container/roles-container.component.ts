@@ -7,12 +7,13 @@ import { RoleType } from '@teq/shared/types/roles.type';
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { BadgeComponent } from '@teq/shared/components/badge/badge.component';
 import { CommonModule } from '@angular/common';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 @UntilDestroy()
 @Component({
     selector: 'teq-roles-container',
     standalone: true,
-    imports: [CommonModule, LabelComponent, BadgeComponent],
+    imports: [CommonModule, LabelComponent, BadgeComponent, HighlighterPipe],
     templateUrl: './roles-container.component.html',
     styleUrls: ['./roles-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,6 +22,7 @@ export class RolesContainerComponent implements OnInit, OnDestroy, OnChanges {
     @Input({ required: true }) roles!: IRoleCount[];
     @Input() unlimited!: boolean;
     @Input() phase!: IPhase;
+    @Input() term!: string;
 
     width$ = new BehaviorSubject<number>(0);
 

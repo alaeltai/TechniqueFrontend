@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<teq-entity-collapse [collapse]="method.collapsed!" data-svg-ignore>
+<teq-entity-collapse [collapse]="!method.collapsed!" data-svg-ignore>
     <div data-approach-container [attr.data-collapsed]="method.collapsed">
         <div *ngFor="let approach of method?.approaches">
             <teq-approach

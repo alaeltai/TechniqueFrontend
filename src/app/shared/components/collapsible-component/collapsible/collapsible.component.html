@@ -4,7 +4,7 @@
         <teq-icon type="collapse" [orientation]="isExpanded ? 'right' : 'left'"></teq-icon>
     </div>
 
-    <teq-entity-collapse [collapse]="!isExpanded" (click)="toggleContent()">
+    <teq-entity-collapse [collapse]="isExpanded" (click)="toggleContent()">
         <p [innerHTML]="content | highlighter: term"></p>
         <span *ngIf="url && (url.uk || url.de)">Supporting links:</span>
         <div data-url *ngIf="url && url.uk">

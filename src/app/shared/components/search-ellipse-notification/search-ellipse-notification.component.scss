@@ -1,0 +1,16 @@
+@use 'variables/colors' as colors;
+
+:host {
+    position: absolute;
+
+    top: -0.25rem;
+    right: -0.25rem;
+
+    width: 0.5rem;
+    height: 0.5rem;
+
+    background-color: colors.$orange;
+
+    border: 1px solid colors.$white;
+    border-radius: 0.25rem;
+}

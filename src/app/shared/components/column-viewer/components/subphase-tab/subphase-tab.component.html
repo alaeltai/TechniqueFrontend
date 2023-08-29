@@ -1,4 +1,4 @@
 <div>
-    <span [style.color]="color">{{ subphase.name }}</span>
-    <teq-information-provider [type]="'subphase'" [id]="subphase.id" [entity]="subphase"></teq-information-provider>
+    <span [style.color]="color" [innerHTML]="subphase.name | highlighter : term"></span>
+    <teq-information-provider [type]="'subphase'" [id]="subphase.id" [entity]="subphase" [innerMatch]="subphase.matches?.innerMatch"></teq-information-provider>
 </div>

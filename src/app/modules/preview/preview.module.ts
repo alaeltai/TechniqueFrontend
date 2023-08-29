@@ -16,7 +16,6 @@ import { TreePreviewerComponent } from '@teq/shared/components/tree-previewer/tr
             }
         ])
     ],
-    exports: [PreviewComponent],
-    providers: []
+    exports: [PreviewComponent]
 })
 export class PreviewModule {}

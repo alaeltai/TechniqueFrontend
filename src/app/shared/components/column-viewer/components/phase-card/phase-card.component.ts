@@ -7,6 +7,7 @@ import { SubphaseTabComponent } from '../subphase-tab/subphase-tab.component';
 import { CommonModule } from '@angular/common';
 import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
 import { ToggleComponent } from '@teq/shared/components/toggle/toggle.component';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 export interface IRoleCount {
     count: number;
@@ -16,12 +17,13 @@ export interface IRoleCount {
 @Component({
     selector: 'teq-phase-card',
     standalone: true,
-    imports: [CommonModule, InformationProviderComponent, ToggleComponent, RolesContainerComponent, SubphaseTabComponent],
+    imports: [CommonModule, InformationProviderComponent, ToggleComponent, RolesContainerComponent, SubphaseTabComponent, HighlighterPipe],
     templateUrl: './phase-card.component.html',
     styleUrls: ['./phase-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PhaseCardComponent implements OnChanges {
+    public term = this._filtersService.term();
     private _methodsCount = 0;
     private _approachesCount = 0;
     private _roles: IRoleCount[] = [];

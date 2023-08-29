@@ -5,8 +5,13 @@
         <div>
             <div>
                 <div data-title>
-                    <h4>{{ phase.name | uppercase }}</h4>
-                    <teq-information-provider [type]="'phase'" [id]="phase.id" [entity]="phase"></teq-information-provider>
+                    <h4 [innerHTML]=" phase.name | highlighter: term"></h4>
+                    <teq-information-provider
+                        [type]="'phase'"
+                        [id]="phase.id"
+                        [entity]="phase"
+                        [innerMatch]="phase.matches?.innerMatch"
+                    ></teq-information-provider>
                 </div>
                 <div data-completion>
                     <div>
@@ -33,7 +38,7 @@
             <div data-roles>
                 <span data-role-name>{{ "Roles" | uppercase }}</span>
 
-                <teq-roles-container [roles]="roles" [phase]="phase" [unlimited]="phase.disabled ?? hover" />
+                <teq-roles-container [roles]="roles" [phase]="phase" [term]="term" [unlimited]="phase.disabled ?? hover" />
             </div>
         </div>
 
@@ -52,7 +57,7 @@
     <div>
         <h3>{{ "Subphases" | uppercase }}</h3>
         <div data-subphases-wrapper>
-            <teq-subphase-tab *ngFor="let subphase of phase.subphases" [subphase]="subphase"></teq-subphase-tab>
+            <teq-subphase-tab *ngFor="let subphase of phase.subphases" [subphase]="subphase" [term]="term"></teq-subphase-tab>
         </div>
     </div>
 </div>

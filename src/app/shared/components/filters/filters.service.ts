@@ -76,9 +76,9 @@ export class FiltersService {
         return disableMap;
     }
 
-    private readonly _filters = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
     public term = signal('');
-    public term$ = new BehaviorSubject('');
+
+    private readonly _filters = new BehaviorSubject<IFilters>({ selects: [], toggles: [] });
     private readonly _phases: BehaviorSubject<IPhase[]> = new BehaviorSubject<IPhase[]>([]);
 
     private _originalPhases!: IPhase[];
@@ -389,7 +389,6 @@ export class FiltersService {
 
     filter(filters: Record<string, IFilterCriteria['value']>): void {
         this.term.update(() => filters[6] as string);
-        this.term$.next(filters[6] as string);
 
         const filterCriterias = this._determineFilterCriterias(filters);
         const filtered = this._originalPhases.map(p => this._filterInDepth(p, filterCriterias)).filter(Boolean) as IPhase[];

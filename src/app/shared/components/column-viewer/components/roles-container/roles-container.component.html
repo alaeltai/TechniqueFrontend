@@ -1,10 +1,12 @@
 <div [attr.data-initialised]="initialised">
     <teq-label *ngFor="let role of roles | slice:0:computedLength" [borderColor]="role.role.color" [attr.data-role]="role.role.name">
         <div>
-            <span>{{ role.role.name }}</span>
+            <span [innerHTML]="role.role.name | highlighter : term"></span>
         </div>
 
-        <teq-badge #badge *ngIf="role.count !== undefined" [backgroundColor]="role.role.color" [color]="'#ffffff'" [attr.data-phase]="phase.name | lowercase">{{ role.count }}</teq-badge>
+        <teq-badge #badge *ngIf="role.count !== undefined" [backgroundColor]="role.role.color" [color]="'#ffffff'" [attr.data-phase]="phase.name | lowercase"
+            >{{ role.count }}</teq-badge
+        >
     </teq-label>
 
     <teq-label [borderColor]="'#bdbcbc'" *ngIf="initialised ? roles.length > computedLength : false" data-more>

@@ -2,19 +2,19 @@
     <div>
         <teq-label [borderColor]="task.responsible.color" [color]="task.responsible.color" [bold]="true" [attr.title]="task.responsible.name">
             <div data-role>
-                <span [innerHTML]=" responsible | highlighter: term"></span>
+                <span [innerHTML]="responsible | highlighter: term"></span>
             </div>
         </teq-label>
 
         <teq-label data-validation-stage [inverse]="true" [bold]="true" [attr.title]="task.category.name">
             <div>
-                <span>{{ category }}</span>
+                <span [innerHTML]="responsible | highlighter: category"></span>
             </div>
         </teq-label>
     </div>
 
     <div>
-        <span [innerHTML]=" task.name | highlighter: term"></span>
+        <span [innerHTML]="task.name | highlighter: term"></span>
     </div>
 </div>
 

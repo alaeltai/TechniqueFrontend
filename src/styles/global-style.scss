@@ -29,5 +29,6 @@ body {
 }
 
 .highlighted-text {
-    background-color: yellow;
+    background-color: colors.$orange;
+    display: inline-block;
 }

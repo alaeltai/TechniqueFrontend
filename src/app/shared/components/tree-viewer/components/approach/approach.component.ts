@@ -9,7 +9,7 @@ import { FiltersService } from '@teq/shared/components/filters/filters.service';
 import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-collapse-button/expand-collapse-button.component';
 import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
 import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
-
+import { SearchEllipseNotificationComponent } from '@teq/shared/components/search-ellipse-notification/search-ellipse-notification.component';
 @Component({
     selector: 'teq-approach',
     standalone: true,
@@ -23,7 +23,8 @@ import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
         ToggleComponent,
         EntityCollapseComponent,
         ExpandCollapseButtonComponent,
-        HighlighterPipe
+        HighlighterPipe,
+        SearchEllipseNotificationComponent
     ],
     styleUrls: ['./approach.component.scss']
 })

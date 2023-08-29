@@ -30,6 +30,7 @@ import { CreateExitConfirmationComponent } from '../create-exit-confirmation/cre
 export class OverlayComponent {
     public OverlayTemplate = OverlayTemplate;
     public term = this._filtersService.term;
+    public term2 = this._filtersService.term();
 
     @Input()
     @HostBinding('attr.data-active')
