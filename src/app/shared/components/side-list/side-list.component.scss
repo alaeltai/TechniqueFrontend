@@ -4,7 +4,7 @@
 @use 'typography' as typography;
 
 :host {
-    & > ::ng-deep ul {
+    & > ul {
         display: flex;
         flex-direction: column;
 
@@ -12,11 +12,26 @@
         margin: 0;
 
         & > li {
-            display: flex;
+            // display: flex;
+            // align-items: center;
+            display: block;
             flex: 1;
+
+            padding: 1.5rem 1rem;
+
+            cursor: pointer;
+
+            height: 4.875rem;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid colors.$mid-gray;
+            }
+
+            @include typography.apply('side-list');
 
             &[data-active='true'] {
                 background-color: colors.$active-link-item-background;
+                color: colors.$white;
             }
         }
     }

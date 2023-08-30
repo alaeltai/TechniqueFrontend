@@ -1,3 +1,3 @@
 <ul>
-    <li *ngFor="let item of items" [attr.data-active]="value === item.value.toString()" (click)="change(item)">{{ item.value }} :  {{ item.label }}</li>
+    <li *ngFor="let item of items" [attr.data-active]="value === item.value.toString()" (click)="change(item)" [innerHtml]="item.label | highlighter:term"></li>
 </ul>

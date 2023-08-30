@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { IListItem } from '@teq/shared/components/side-list/side-list.component';
+import { ITab } from '@teq/shared/components/tabs/tabs.component';
 import { TreeBasedPageComponent } from '@teq/shared/components/tree-based-page/tree-based-page';
 import { IApproach } from '@teq/shared/types/approach.type';
 import { ICategory } from '@teq/shared/types/category.type';
@@ -37,12 +39,18 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
     public selected = '';
 
+    public tabs!: ITab[];
+
     private _aggregatedRoles: IRolesAggregation = {};
 
     private _computedItems: IListItem[] | null = null;
 
     get currentAggregation(): IRoleAggregation {
-        return this._aggregatedRoles[this.selected];
+        const currentAggregation = this._aggregatedRoles[this.selected];
+        if (currentAggregation) {
+            this.tabs = this.parseTabs(currentAggregation.role);
+        }
+        return currentAggregation;
     }
 
     override ngOnInit(): void {
@@ -97,7 +105,24 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
         this.selected = selected;
     }
 
+    parseTabs(role: IRole): ITab[] {
+        return [
+            {
+                title: 'Description',
+                content: role.description || 'No data'
+            },
+            {
+                title: 'Skills and qualifications',
+                content: role.skills || 'No data'
+            },
+            {
+                title: 'Related job descriptions',
+                content: 'No data'
+            }
+        ];
+    }
+
     get computedItems(): IListItem[] {
-        return this._computedItems ?? [];
+        return this._computedItems ?? ([] as IListItem[]);
     }
 }

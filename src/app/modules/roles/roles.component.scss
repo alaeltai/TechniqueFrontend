@@ -14,12 +14,93 @@
         width: 100%;
 
         padding-top: 1.375rem;
+        padding-bottom: 1rem;
+
+        z-index: 1;
 
         background: colors.$white;
         @include typography.apply('heading1');
     }
 
     & > [data-content] {
-        margin-top: 7.375rem;
+        display: flex;
+
+        gap: 1.5rem;
+
+        // margin-top: 7.375rem;
+        margin-top: 6.875rem;
+        margin-bottom: 2rem;
+
+        & > teq-side-list {
+            min-width: 22.625rem;
+        }
+
+        & > div {
+            & > teq-tabs {
+                display: block;
+            }
+
+            & > div {
+                margin-top: 2.5rem;
+
+                & > h3 {
+                    @include typography.apply('title');
+                    color: colors.$light-gray;
+                }
+
+                & > [data-subphases-wrapper],
+                & > [data-phase-wrapper] {
+                    display: flex;
+                    margin-top: 1rem;
+                    gap: 1rem;
+
+                    & > teq-subphase-tab,
+                    & > teq-phase-tab {
+                        display: flex;
+                        max-width: 10rem;
+
+                        ::ng-deep {
+                            height: 3rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        table {
+            margin-top: 2.5rem;
+            text-align: left;
+            width: 100%;
+
+            [data-table-head] {
+                @include typography.apply('bold');
+
+                background-color: colors.$white-gray;
+            }
+
+            th,
+            td {
+                padding: 1rem 0.5rem 1rem 1rem;
+
+                border-bottom: 1px solid colors.$mid-gray;
+            }
+
+            th {
+                height: 3rem;
+                position: relative;
+
+                & > teq-icon {
+                    position: absolute;
+                    right: 18.6px;
+                    top: 1.125rem;
+
+                    cursor: pointer;
+                }
+            }
+
+            td {
+                @include typography.apply('content+');
+            }
+        }
     }
 }

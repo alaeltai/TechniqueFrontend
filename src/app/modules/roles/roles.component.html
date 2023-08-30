@@ -3,26 +3,50 @@
 <div data-content>
     <teq-side-list [items]="computedItems" [value]="selected" (valueChange)="selectionChanged($event)"></teq-side-list>
 
-    <div *ngIf="currentAggregation">
-        <div>{{ currentAggregation.role.description }}</div>
-
-        <div>Skills: {{ currentAggregation.role.skills }}</div>
+    <div *ngIf="currentAggregation" @fadeIn>
+        <teq-tabs [tabs]="tabs"></teq-tabs>
 
         <div>
-            <span *ngFor="let phase of currentAggregation.phases">{{ phase.name }}</span>
+            <h3>{{ "Phases involved in" | uppercase }}</h3>
+            <div data-phase-wrapper>
+                <teq-phase-tab *ngFor="let phase of currentAggregation.phases" [phase]="phase"></teq-phase-tab>
+            </div>
         </div>
 
         <div>
-            <span *ngFor="let subphase of currentAggregation.subphases">{{ subphase.name }}</span>
+            <h3>{{ "Subphases involved in" | uppercase }}</h3>
+            <div data-subphases-wrapper>
+                <teq-subphase-tab *ngFor="let subphase of currentAggregation.subphases" [subphase]="subphase"></teq-subphase-tab>
+            </div>
         </div>
 
         <table>
-            <tr *ngFor="let row of currentAggregation?.rows">
-                <td>{{ row[0].name }}</td>
-                <td>{{ row[1].name }}</td>
-                <td>{{ row[2].name }}</td>
-                <td>{{ row[3].name }}</td>
-            </tr>
+            <thead data-table-head>
+                <tr>
+                    <th>
+                        <span>Method</span>
+                        <teq-icon type="sort"></teq-icon>
+                    </th>
+                    <th>
+                        <span>Approach</span>
+                        <teq-icon type="sort"></teq-icon>
+                    </th>
+                    <th>
+                        <span>Category</span>
+                        <teq-icon type="sort"></teq-icon>
+                    </th>
+                    <th>
+                        <span>Task</span>
+                        <teq-icon type="sort"></teq-icon>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of currentAggregation?.rows">
+                    <td *ngFor="let cell of row">{{ cell.name }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

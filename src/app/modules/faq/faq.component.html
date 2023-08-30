@@ -2,13 +2,24 @@
 
 <div data-controls>
     <teq-select
-        formControlName="'term'" [value]="term" [label]="'Search...'" [searchable]="true" [options]="[]" [attr.data-for]="'term'" [searchIcon]="true" [multiple]="false" (input)="termChanged($event)" />
+        formControlName="'term'"
+        [value]="term"
+        [label]="'Search...'"
+        [searchable]="true"
+        [options]="[]"
+        [attr.data-for]="'term'"
+        [searchIcon]="true"
+        [multiple]="false"
+        (input)="termChanged($event)"
+    />
 </div>
 
-{{ term }}
+<div data-divider-wrapper>
+    <div data-divider></div>
+</div>
 
 <div data-content>
-    <teq-side-list [items]="(computedItems$ | async) || []" [value]="selected" (valueChange)="selectionChanged($event)"></teq-side-list>
+    <teq-side-list [items]="(computedItems$ | async) || []" [value]="selected" [term]="term" (valueChange)="selectionChanged($event)"></teq-side-list>
 
-    <div *ngIf="current" [innerHTML]="current.answer"></div>
+    <teq-side-content *ngIf="current" [content]="current.answer" [term]="term"></teq-side-content>
 </div>

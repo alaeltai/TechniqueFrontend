@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 
 export interface IListItem {
     label: string;
@@ -9,7 +10,7 @@ export interface IListItem {
 @Component({
     selector: 'teq-side-list',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, HighlighterPipe],
     templateUrl: './side-list.component.html',
     styleUrls: ['./side-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -18,6 +19,8 @@ export class SideListComponent implements OnChanges {
     @Input() items: IListItem[] = [];
 
     @Input() value!: string;
+
+    @Input() term!: string;
 
     @Output() valueChange = new EventEmitter<string>();
 

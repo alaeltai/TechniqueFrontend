@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IListItem } from '@teq/shared/components/side-list/side-list.component';
@@ -72,7 +73,6 @@ export class FaqComponent implements OnInit {
     }
 
     private _filter(faq: IFaq[], term = ''): IFaq[] {
-        console.log('filtering');
         const isMatchAll = term.trim() === '';
 
         return faq

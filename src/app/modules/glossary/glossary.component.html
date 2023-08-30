@@ -1,1 +1,25 @@
-<p>glosary works!</p>
+<h1 data-title>GLOSSARY</h1>
+
+<div data-controls>
+    <teq-select
+        formControlName="'term'"
+        [value]="term"
+        [label]="'Search...'"
+        [searchable]="true"
+        [options]="[]"
+        [attr.data-for]="'term'"
+        [searchIcon]="true"
+        [multiple]="false"
+        (input)="termChanged($event)"
+    />
+</div>
+
+<div data-divider-wrapper>
+    <div data-divider></div>
+</div>
+
+<div data-content>
+    <teq-side-list [items]="(computedItems$ | async) || []" [value]="selected" [term]="term" (valueChange)="selectionChanged($event)"></teq-side-list>
+
+    <teq-side-content *ngIf="current" [content]="current.definition" [term]="term"></teq-side-content>
+</div>

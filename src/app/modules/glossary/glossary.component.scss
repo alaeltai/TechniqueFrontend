@@ -1,0 +1,76 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 8rem;
+
+    & > [data-title] {
+        position: fixed;
+        width: 100%;
+
+        padding-top: 1.375rem;
+        padding-bottom: 1rem;
+
+        background: colors.$white;
+        @include typography.apply('heading1');
+
+        z-index: 2;
+    }
+
+    & > [data-controls] {
+        position: fixed;
+
+        padding-top: 6.875rem;
+        min-width: 30.625rem;
+        width: 30.625rem;
+
+        background-color: colors.$white;
+
+        ::ng-deep [data-value] {
+            display: flex;
+        }
+        z-index: 1;
+    }
+
+    & > [data-divider-wrapper] {
+        position: fixed;
+
+        width: 100%;
+
+        padding-top: 10.375rem;
+        padding-bottom: 1.5rem;
+
+        background-color: colors.$white;
+
+        & > [data-divider] {
+            height: 1px;
+
+            background-color: colors.$mid-gray;
+        }
+    }
+
+    & > [data-content] {
+        display: flex;
+
+        gap: 1.5rem;
+
+        padding-top: 11.875rem;
+        margin-bottom: 2rem;
+
+        & > teq-side-list {
+            min-width: 30.625rem;
+            width: 30.625rem;
+        }
+
+        & > teq-side-content {
+            position: fixed;
+            right: 0;
+            width: calc(100% - 42.5rem);
+        }
+    }
+}
