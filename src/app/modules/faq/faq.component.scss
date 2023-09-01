@@ -19,7 +19,7 @@
         background: colors.$white;
         @include typography.apply('heading1');
 
-        z-index: 2;
+        z-index: layers.$pageControlsLayer;
     }
 
     & > [data-controls] {
@@ -34,7 +34,7 @@
         ::ng-deep [data-value] {
             display: flex;
         }
-        z-index: 1;
+        z-index: layers.$fixedContent;
     }
 
     & > [data-divider-wrapper] {

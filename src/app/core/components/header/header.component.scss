@@ -57,6 +57,10 @@
 
             & > a ~ ul {
                 display: none;
+                position: absolute;
+
+                min-width: 7.125rem;
+                width: max-content;
 
                 top: 100%;
                 right: 0;
@@ -96,6 +100,21 @@
                 position: absolute;
 
                 display: block;
+            }
+
+            & > nav {
+                li:last-of-type:hover ul {
+                    display: block;
+
+                    & > li:hover a {
+                        background-color: colors.$button-hover-color-primary;
+                        transition: background-color 0.15s ease-in-out;
+                    }
+                    & > li:not(:hover) a {
+                        background-color: colors.$active-link-item-background;
+                        transition: background-color 0.3s ease-in-out;
+                    }
+                }
             }
         }
     }

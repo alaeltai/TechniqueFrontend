@@ -16,7 +16,7 @@
         padding-top: 1.375rem;
         padding-bottom: 1rem;
 
-        z-index: 1;
+        z-index: layers.$fixedContent;
 
         background: colors.$white;
         @include typography.apply('heading1');
