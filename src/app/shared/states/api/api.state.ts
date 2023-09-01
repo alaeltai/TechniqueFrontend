@@ -37,11 +37,11 @@ import { APIFaq } from './api.faq.actions';
 import { IFaq } from '@teq/shared/types/faq.type';
 import { IAPIFaq } from '@teq/shared/types/api/faq.type';
 import { IAPIGlossary } from '@teq/shared/types/api/glossary.type';
-import { phases } from './mock-phases'; // Mock point
+// import { phases } from './mock-phases'; // Mock point
 // import { glossary } from './mock-glossary'; // Mock point
 // import { faq } from './mock-faq'; // Mock point
 
-// const phases: IAPIPhase[] = []; // Coment to enable mock
+const phases: IAPIPhase[] = []; // Coment to enable mock
 const faq: IAPIFaq[] = []; // Coment to enable mock
 const glossary: IAPIGlossary[] = []; // Coment to enable mock
 
