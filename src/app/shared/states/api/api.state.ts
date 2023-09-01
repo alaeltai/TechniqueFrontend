@@ -265,7 +265,7 @@ export class APIState {
     @Action(APIGlossary.List)
     fetchGlossary({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Glossary/GetGlossary`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.GLOSSARY)
@@ -296,7 +296,7 @@ export class APIState {
     @Action(APIFaq.List)
     fetchFaq({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Faq/GetFaq`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetFaq`, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.GLOSSARY)
