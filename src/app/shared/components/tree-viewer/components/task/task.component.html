@@ -32,6 +32,6 @@
         <div [innerHTML]=" artefacts | highlighter: term"></div>
         <!-- <span *ngFor="let artefact of task.artefacts; index as i">{{ i > 0 ? '; ' + artefact.name : artefact.name }}</span> -->
 
-        <span *ngIf="!task.artefacts?.length"> No artefacts </span>
+        <span *ngIf="!task.artefacts?.length">No specific artefact</span>
     </div>
 </div>

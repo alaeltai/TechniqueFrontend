@@ -23,9 +23,12 @@
 
                 cursor: pointer;
             }
+
             & > [data-tab='true'] {
                 border-bottom: 4px solid colors.$active-link-item-background;
                 color: colors.$active-link-item-background;
+
+                animation: tabAnimation 0.5s ease-in;
             }
         }
 
@@ -38,5 +41,16 @@
                 margin-top: 0.875rem;
             }
         }
+    }
+}
+
+@keyframes tabAnimation {
+    0% {
+        border-color: transparent;
+        color: colors.$light-gray2;
+    }
+    100% {
+        border-color: colors.$active-link-item-background;
+        color: colors.$active-link-item-background;
     }
 }

@@ -8,6 +8,7 @@ import { IconComponent } from '@teq/shared/components/icon/icon.component';
 import { EntityCollapseComponent } from '@teq/shared/components/entity-collapse/entity-collapse.component';
 import { ExpandCollapseButtonComponent } from '@teq/shared/components/expand-collapse-button/expand-collapse-button.component';
 import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
+import { InformationProviderComponent } from '@teq/shared/components/information-provider/information-provider.component';
 
 @Component({
     selector: 'teq-method',
@@ -21,6 +22,7 @@ import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
         EntityCollapseComponent,
         ExpandCollapseButtonComponent,
         CommonModule,
+        InformationProviderComponent,
         HighlighterPipe
     ],
     templateUrl: './method.component.html',

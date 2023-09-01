@@ -15,12 +15,19 @@ import { ITask } from '@teq/shared/types/task.type';
 
 type RowTupple = [IMethod, IApproach, ICategory, ITask];
 
+type SortDirection = 'ascending' | 'descending' | 'unsorted';
+
 interface IRoleAggregation {
     id: string;
     role: IRole;
     phases: IPhase[];
     subphases: ISubphase[];
     rows: RowTupple[];
+}
+
+interface ITableHeader {
+    name: string;
+    sortDirection: string;
 }
 
 type IRolesAggregation = Record<string, IRoleAggregation>;
@@ -34,6 +41,13 @@ type IRolesAggregation = Record<string, IRoleAggregation>;
 })
 export class RolesComponent extends TreeBasedPageComponent implements OnInit {
     public readonly phases$ = this._apiService.phases$;
+
+    public tableHeaders: ITableHeader[] = [
+        { name: 'Method', sortDirection: 'unsorted' },
+        { name: 'Approach', sortDirection: 'unsorted' },
+        { name: 'Category', sortDirection: 'unsorted' },
+        { name: 'Task', sortDirection: 'unsorted' }
+    ];
 
     public rolesList: IRoleAggregation[] = [];
 
@@ -109,20 +123,58 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
         return [
             {
                 title: 'Description',
-                content: role.description || 'No data'
+                content: role.description || 'No specific data'
             },
             {
                 title: 'Skills and qualifications',
-                content: role.skills || 'No data'
+                content: role.skills || 'No specific data'
             },
             {
                 title: 'Related job descriptions',
-                content: 'No data'
+                content: 'No specific data'
             }
         ];
     }
 
     get computedItems(): IListItem[] {
         return this._computedItems ?? ([] as IListItem[]);
+    }
+
+    sort(index: number): void {
+        this.currentAggregation.rows.sort((a, b) => {
+            const direction = this.getSortDirection(index);
+
+            if (direction === 'unsorted' || direction === 'descending') {
+                this.setColumnDirection(index, 'ascending');
+                return a[index].name.localeCompare(b[index].name);
+            } else {
+                this.setColumnDirection(index, 'descending');
+                return b[index].name.localeCompare(a[index].name);
+            }
+        });
+    }
+
+    setColumnDirection(index: number, direction: string): void {
+        this.tableHeaders.forEach((h, i) => {
+            if (index === i) {
+                this.tableHeaders[i].sortDirection = direction;
+                return;
+            }
+            this.tableHeaders[i].sortDirection = 'unsorted';
+        });
+    }
+
+    getSortDirection(index: number): SortDirection {
+        const arr = this.currentAggregation.rows;
+        const c = [];
+
+        for (let i = 1; i < arr.length; i++) {
+            c.push(arr[i - 1][index].name.localeCompare(arr[i][index]?.name));
+        }
+
+        if (c.every(n => n <= 0)) return 'ascending';
+        if (c.every(n => n >= 0)) return 'descending';
+
+        return 'unsorted';
     }
 }

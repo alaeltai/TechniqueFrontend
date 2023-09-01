@@ -1,6 +1,8 @@
 <div data-method-title>
     <span [innerHTML]=" method.name | highlighter: term"></span>
 
+    <teq-information-provider data-svg-ignore-all [id]="method.id" [type]="'method'" [entity]="method" [innerMatch]="method.matches?.innerMatch" />
+
     <div data-controls data-svg-ignore-all>
         <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
         <teq-expand-collapse-button [collapsed]="method.collapsed" (click)="toggleCollapseState()"></teq-expand-collapse-button>

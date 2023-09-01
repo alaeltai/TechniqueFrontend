@@ -1,9 +1,9 @@
 <div data-tabs>
     <ul data-tab-group>
-        <li *ngFor="let tab of tabs; index as i" [attr.data-tab]="i === selectedIndex" (click)="changeTab(i)">{{ tab.title }}</li>
+        <li *ngFor="let tab of tabs; trackBy: trackTabName, index as i" [attr.data-tab]="i === selectedIndex" (click)="changeTab(i)">{{ tab.title }}</li>
     </ul>
 
     <div data-tab-content-group>
-        <div @fadeIn data-tab-content [innerHTML]="tabs[selectedIndex].content | lineBreak | replaceChar: ['- ', '&#x2022; ']"></div>
+        <div data-tab-content [innerHTML]="tabs[selectedIndex].content | lineBreak | replaceChar: ['- ', '&#x2022; ']"></div>
     </div>
 </div>

@@ -7,37 +7,28 @@
         <teq-tabs [tabs]="tabs"></teq-tabs>
 
         <div>
-            <h3>{{ "Phases involved in" | uppercase }}</h3>
+            <h3>{{ "Phases contributing to" | uppercase }}</h3>
             <div data-phase-wrapper>
                 <teq-phase-tab *ngFor="let phase of currentAggregation.phases" [phase]="phase"></teq-phase-tab>
             </div>
         </div>
 
         <div>
-            <h3>{{ "Subphases involved in" | uppercase }}</h3>
+            <h3>{{ "Subphases contributing to" | uppercase }}</h3>
             <div data-subphases-wrapper>
                 <teq-subphase-tab *ngFor="let subphase of currentAggregation.subphases" [subphase]="subphase"></teq-subphase-tab>
             </div>
         </div>
 
+        <div>
+            <h3>{{ "Tasks responsible for" | uppercase }}</h3>
+        </div>
         <table>
             <thead data-table-head>
                 <tr>
-                    <th>
-                        <span>Method</span>
-                        <teq-icon type="sort"></teq-icon>
-                    </th>
-                    <th>
-                        <span>Approach</span>
-                        <teq-icon type="sort"></teq-icon>
-                    </th>
-                    <th>
-                        <span>Category</span>
-                        <teq-icon type="sort"></teq-icon>
-                    </th>
-                    <th>
-                        <span>Task</span>
-                        <teq-icon type="sort"></teq-icon>
+                    <th *ngFor="let header of tableHeaders; index as i">
+                        <span>{{ header.name }}</span>
+                        <teq-icon type="sort" [attr.data-sort]="header.sortDirection" (click)="sort(i)"></teq-icon>
                     </th>
                 </tr>
             </thead>

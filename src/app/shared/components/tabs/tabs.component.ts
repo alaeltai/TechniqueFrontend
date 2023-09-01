@@ -2,8 +2,6 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LineBreakPipe } from '@teq/shared/pipes/lineBreak.pipe';
 import { ReplaceCharPipe } from '@teq/shared/pipes/replaceChar.pipe';
-import { fadeIn } from '@teq/shared/animations/animations.lib';
-
 export interface ITab {
     title: string;
     content: string;
@@ -14,8 +12,7 @@ export interface ITab {
     standalone: true,
     imports: [CommonModule, LineBreakPipe, ReplaceCharPipe],
     templateUrl: './tabs.component.html',
-    styleUrls: ['./tabs.component.scss'],
-    animations: [fadeIn]
+    styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent {
     public selectedIndex = 0;
@@ -23,6 +20,12 @@ export class TabsComponent {
     @Input() tabs!: ITab[];
 
     changeTab(index: number): void {
-        this.selectedIndex = index;
+        if (index !== this.selectedIndex) {
+            this.selectedIndex = index;
+        }
+    }
+
+    trackTabName(_i: number, tab: ITab): string {
+        return tab.title;
     }
 }

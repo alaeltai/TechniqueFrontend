@@ -456,22 +456,30 @@ export class FiltersService {
             const approaches = entity.approaches?.map(a => this._filterInDepth(a, criterias)).filter(Boolean) as IApproach[];
             let matchAllSearch = false;
             let searchMatch = false;
+            let innerMatch = false;
 
-            if (!approaches.length) {
-                // Filter method level only if it has no approaches
-                for (const criteria of criterias) {
-                    if (criteria.filter === FilterType.Search) {
-                        matchAllSearch = this._isAllSearchCase(criteria.value);
-
-                        if (
-                            !matchAllSearch &&
-                            this._matchesStrings(criteria.value as string, [
-                                entity.name, // Method name contains
-                                entity.description // Method description contains
-                            ])
-                        ) {
-                            searchMatch = true;
-                        }
+            // Filter method level only if it has no approaches
+            for (const criteria of criterias) {
+                if (criteria.filter === FilterType.Search) {
+                    matchAllSearch = this._isAllSearchCase(criteria.value);
+                    if (
+                        !matchAllSearch &&
+                        this._matchesStrings(criteria.value as string, [
+                            entity.description // Method description contains
+                        ])
+                    ) {
+                        // Search filter matched
+                        searchMatch = true;
+                        innerMatch = true;
+                    } else if (
+                        !approaches.length &&
+                        !matchAllSearch &&
+                        this._matchesStrings(criteria.value as string, [
+                            entity.name // Method name contains
+                        ])
+                    ) {
+                        // Search filter matched
+                        searchMatch = true;
                     }
                 }
             }
@@ -482,7 +490,8 @@ export class FiltersService {
                     ...entity,
                     disabled: entity._locator in this._disableMap ? this._disableMap[entity._locator] : entity.disabled,
                     collapsed: entity._locator in this._collapsedMap ? this._collapsedMap[entity._locator] : entity.collapsed,
-                    approaches
+                    approaches,
+                    matches: { innerMatch }
                 } satisfies IMethod;
             }
         } else if (entity.type === 'approach') {

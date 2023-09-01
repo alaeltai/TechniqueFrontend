@@ -35,11 +35,15 @@ import { APIGlossary } from './api.glossary.actions';
 import { IGlossary } from '@teq/shared/types/glossary.type';
 import { APIFaq } from './api.faq.actions';
 import { IFaq } from '@teq/shared/types/faq.type';
+import { IAPIFaq } from '@teq/shared/types/api/faq.type';
+import { IAPIGlossary } from '@teq/shared/types/api/glossary.type';
 import { phases } from './mock-phases'; // Mock point
-import { glossary } from './mock-glossary'; // Mock point
-import { faq } from './mock-faq'; // Mock point
+// import { glossary } from './mock-glossary'; // Mock point
+// import { faq } from './mock-faq'; // Mock point
 
 // const phases: IAPIPhase[] = []; // Coment to enable mock
+const faq: IAPIFaq[] = []; // Coment to enable mock
+const glossary: IAPIGlossary[] = []; // Coment to enable mock
 
 export interface IAPIState {
     phases: IPhase[];
@@ -215,12 +219,22 @@ export class APIState {
         });
     }
 
-    public static convertGlossary(glossary: IGlossary): IGlossary {
-        return glossary;
+    public static convertGlossary(glossary: IAPIGlossary): IGlossary {
+        return {
+            id: glossary.id,
+            grouping: glossary.grouping,
+            title: glossary.titleTranslation.trim(),
+            definition: glossary.definitionTranslation
+        } satisfies IGlossary;
     }
 
-    public static convertFaq(faq: IFaq): IFaq {
-        return faq;
+    public static convertFaq(faq: IAPIFaq): IFaq {
+        return {
+            id: faq.id,
+            order: faq.questionRef,
+            question: faq.titleTranslation,
+            answer: faq.answerTranslation
+        } satisfies IFaq;
     }
 
     constructor(private readonly _http: HttpClient) {}
@@ -261,7 +275,7 @@ export class APIState {
             .pipe(catchError(this.handleError('glossary')));
 
         response.subscribe(rawGlossary => {
-            const glossary = (rawGlossary as IGlossary[]).map(APIState.convertGlossary).sort((g1: IGlossary, g2: IGlossary) => {
+            const glossary = (rawGlossary as IAPIGlossary[]).map(APIState.convertGlossary).sort((g1: IGlossary, g2: IGlossary) => {
                 const c1 = g1.grouping;
                 const c2 = g2.grouping;
 
@@ -292,7 +306,7 @@ export class APIState {
             .pipe(catchError(this.handleError('faq')));
 
         response.subscribe(rawFaq => {
-            const faq = (rawFaq as IFaq[]).map(APIState.convertFaq).sort((f1: IFaq, f2: IFaq) => {
+            const faq = (rawFaq as IAPIFaq[]).map(APIState.convertFaq).sort((f1: IFaq, f2: IFaq) => {
                 const c1 = f1.question;
                 const c2 = f2.question;
 
