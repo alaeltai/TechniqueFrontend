@@ -3,7 +3,7 @@
         <li *ngFor="let tab of tabs; trackBy: trackTabName, index as i" [attr.data-tab]="i === selectedIndex" (click)="changeTab(i)">{{ tab.title }}</li>
     </ul>
 
-    <div data-tab-content-group>
+    <div [attr.data-tab-content-group]="animateContent">
         <div data-tab-content [innerHTML]="tabs[selectedIndex].content | lineBreak | replaceChar: ['- ', '&#x2022; ']"></div>
     </div>
 </div>

@@ -4,7 +4,7 @@
     <teq-side-list [items]="computedItems" [value]="selected" (valueChange)="selectionChanged($event)"></teq-side-list>
 
     <div *ngIf="currentAggregation" @fadeIn>
-        <teq-tabs [tabs]="tabs"></teq-tabs>
+        <teq-tabs [tabs]="tabs" [item]="selected"></teq-tabs>
 
         <div>
             <h3>{{ "Phases contributing to" | uppercase }}</h3>
