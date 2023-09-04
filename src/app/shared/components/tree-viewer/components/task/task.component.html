@@ -8,7 +8,7 @@
 
         <teq-label data-validation-stage [inverse]="true" [bold]="true" [attr.title]="task.category.name">
             <div>
-                <span [innerHTML]="responsible | highlighter: category"></span>
+                <span [innerHTML]="category | highlighter: term"></span>
             </div>
         </teq-label>
     </div>
