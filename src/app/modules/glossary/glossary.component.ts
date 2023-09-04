@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { IListItem } from '@teq/shared/components/side-list/side-list.component';
 import { APIService } from '@teq/shared/states/api/api.service';
@@ -17,7 +18,7 @@ export class GlossaryComponent implements OnInit {
 
     public selected = '';
 
-    public term = '';
+    public term = new FormControl('');
 
     private _glossaryMap: Record<string, IGlossary> = {};
 
@@ -38,12 +39,14 @@ export class GlossaryComponent implements OnInit {
                 this._glossaryMap[f.id] = f;
             });
 
-            this._computedItems.next(this._computeItems(this._filter(glossary, this.term)));
+            this._computedItems.next(this._computeItems(this._filter(glossary, this.term.value ?? '')));
 
             if (!this.selected && glossary.length) {
                 this.selected = glossary[0].id.toString();
             }
         });
+
+        this.term.valueChanges.pipe(untilDestroyed(this)).subscribe(t => this.termChanged(t ?? ''));
     }
 
     get current(): IGlossary {
@@ -58,12 +61,8 @@ export class GlossaryComponent implements OnInit {
         return this._computedItems.asObservable();
     }
 
-    termChanged(event: Event): void {
-        if (event.target) {
-            this.term = (event.target as HTMLInputElement).value;
-
-            this._computedItems.next(this._computeItems(this._filter(this._glossary, this.term)));
-        }
+    termChanged(term: string): void {
+        this._computedItems.next(this._computeItems(this._filter(this._glossary, term)));
     }
 
     private _computeItems(glossary: IGlossary[]): IListItem[] {

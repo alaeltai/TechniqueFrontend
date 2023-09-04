@@ -5,10 +5,11 @@ import { GlossaryComponent } from './glossary.component';
 import { GlossaryRoutingModule } from './glossary-routing.module';
 import { SelectComponent } from '@teq/shared/components/select/select.component';
 import { SideContentComponent } from '@teq/shared/components/side-content/side-content.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [GlossaryComponent],
-    imports: [CommonModule, GlossaryRoutingModule, SideListComponent, SelectComponent, SideContentComponent],
+    imports: [CommonModule, ReactiveFormsModule, GlossaryRoutingModule, SideListComponent, SelectComponent, SideContentComponent],
     exports: [GlossaryComponent]
 })
 export class GlossaryModule {}

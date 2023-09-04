@@ -1,1 +1,4 @@
-<div [innerHTML]="content | highlighter:term"></div>
+<div
+    *ngIf="content.toLowerCase().includes(term.toLowerCase()) || title.toLowerCase().includes(term.toLowerCase())"
+    [innerHTML]="content | highlighter:term"
+></div>

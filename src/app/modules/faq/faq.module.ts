@@ -5,10 +5,11 @@ import { FaqComponent } from './faq.component';
 import { FaqRoutingModule } from './faq-routing.module';
 import { SelectComponent } from '@teq/shared/components/select/select.component';
 import { SideContentComponent } from '@teq/shared/components/side-content/side-content.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [FaqComponent],
-    imports: [CommonModule, FaqRoutingModule, SideListComponent, SelectComponent, SideContentComponent],
+    imports: [CommonModule, ReactiveFormsModule, FaqRoutingModule, SideListComponent, SelectComponent, SideContentComponent],
     exports: [FaqComponent]
 })
 export class FaqModule {}

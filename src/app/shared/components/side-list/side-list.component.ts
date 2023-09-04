@@ -45,7 +45,7 @@ export class SideListComponent implements OnChanges {
 
     private _determineValue(): void {
         if (this.items.length) {
-            this.value = this.items[0].value;
+            this.value = this.value ?? this.items[0].value;
         }
     }
 }

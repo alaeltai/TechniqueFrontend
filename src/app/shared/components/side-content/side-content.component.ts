@@ -13,5 +13,7 @@ import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
 export class SideContentComponent {
     @Input() content!: string;
 
+    @Input() title!: string;
+
     @Input() term!: string;
 }
