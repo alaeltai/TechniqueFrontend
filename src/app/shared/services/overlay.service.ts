@@ -45,11 +45,13 @@ export class OverlayService {
 
         this._overlays.next([...this._overlays.value, newOverlay]);
 
+        document.body.style.overflow = 'hidden';
         return newOverlay.registration;
     }
 
     remove(registration: RegistrationId): void {
         setTimeout(() => {
+            document.body.style.overflow = 'initial';
             this._overlays.next(this._overlays.value.filter(overlay => overlay.registration !== registration));
         }, 100);
     }

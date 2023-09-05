@@ -12,8 +12,6 @@
         margin: 0;
 
         & > li {
-            // display: flex;
-            // align-items: center;
             display: block;
             flex: 1;
 
@@ -33,6 +31,14 @@
                 background-color: colors.$active-link-item-background;
                 color: colors.$white;
             }
+        }
+
+        & > li[data-active='false']:hover {
+            background-color: colors.$mid-gray;
+            transition: background-color 0s ease-in-out;
+        }
+        & > li:not(:hover) {
+            transition: background-color 0.1s ease-in-out;
         }
     }
 }
