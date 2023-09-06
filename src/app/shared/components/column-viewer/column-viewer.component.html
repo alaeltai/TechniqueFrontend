@@ -6,7 +6,7 @@
                 Go back
             </a>
 
-            <a *ngIf="page === undefined && tailoring" (click)="guardNavigation()">
+            <a *ngIf="page === undefined && tailoring" [routerLink]="['/landing-page']">
                 <teq-icon type="arrow" />
                 Start over
             </a>
@@ -18,7 +18,13 @@
         </div>
 
         <div>
-            <teq-filters [enableToggles]="enableToggles" [enableVisibility]="enableVisibility" [enableComplexity]="enableComplexity" [complexity]="complexity" (filtersChanged)="filtersChanged($event)" />
+            <teq-filters
+                [enableToggles]="enableToggles"
+                [enableVisibility]="enableVisibility"
+                [enableComplexity]="enableComplexity"
+                [complexity]="complexity"
+                (filtersChanged)="filtersChanged($event)"
+            />
         </div>
 
         <div *ngIf="preview" class="v-divider"></div>
@@ -31,7 +37,14 @@
     <h3>{{ "Phases" | uppercase }}</h3>
 
     <div *ngIf="!page" data-phases @fadeIn>
-        <teq-phase-card [disableable]="disableable" *ngFor="let phase of (phases$ | async); index as i" [phase]="phase" (click)="page = i" [methods]="getCardMethods(i)" [approaches]="getCardApproaches(i)">
+        <teq-phase-card
+            [disableable]="disableable"
+            *ngFor="let phase of (phases$ | async); index as i"
+            [phase]="phase"
+            (click)="page = i"
+            [methods]="getCardMethods(i)"
+            [approaches]="getCardApproaches(i)"
+        >
             <span *ngIf="!tailoring" cta>Explore</span>
             <span *ngIf="tailoring" cta>Explore or make changes</span>
         </teq-phase-card>
@@ -57,7 +70,12 @@
         <div data-subphases>
             <div *ngFor="let subphase of (phases$ | async)?.[page!]?.subphases">
                 <div *ngFor="let method of subphase?.methods" data-method>
-                    <teq-method *ngIf="!(method.disabled && filterDisabled)" [filterDisabled]="filterDisabled" [method]="method" [disableable]="disableable"></teq-method>
+                    <teq-method
+                        *ngIf="!(method.disabled && filterDisabled)"
+                        [filterDisabled]="filterDisabled"
+                        [method]="method"
+                        [disableable]="disableable"
+                    ></teq-method>
                 </div>
             </div>
         </div>

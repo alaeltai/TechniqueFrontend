@@ -159,11 +159,4 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
             'preview-page' // this._previewId.toString()
         );
     }
-
-    guardNavigation(): void {
-        this._overlayService.add(OverlayType.Data, {
-            template: OverlayTemplate.TailoringConfirmation,
-            data: FiltersService.computeDisableMap((this._previewData = this._filtersService.getTailoredPhases()))
-        });
-    }
 }
