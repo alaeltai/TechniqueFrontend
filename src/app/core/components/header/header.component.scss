@@ -35,18 +35,24 @@
 
             margin-right: auto;
 
-            & > img {
-                margin-top: -4px;
-                padding-right: 6px;
-            }
+            & > [data-logo] {
+                & > img {
+                    margin-top: -4px;
+                    padding-right: 6px;
+                }
 
-            & > h1 {
-                display: inline-flex;
+                & > h1 {
+                    display: inline-flex;
 
-                letter-spacing: -1%;
+                    letter-spacing: -1%;
 
-                @include typography.apply('condensed', true);
-                color: colors.$dark-gray;
+                    @include typography.apply('condensed', true);
+                    color: colors.$dark-gray;
+                }
+
+                &:hover {
+                    background-color: transparent;
+                }
             }
         }
 

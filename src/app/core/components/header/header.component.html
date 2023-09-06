@@ -1,7 +1,9 @@
 <nav *ngIf="((authenticated$ | async) && requiresAuthentication) || !requiresAuthentication" @fadeIn>
     <li>
-        <img src="assets/logo.svg" />
-        <h1>Technique Platform</h1>
+        <a data-logo [routerLink]="['/landing-page']">
+            <img src="assets/logo.svg" />
+            <h1>Technique Platform</h1>
+        </a>
     </li>
 
     <li>
@@ -10,13 +12,13 @@
                 <a [routerLink]="['/view-framework']" routerLinkActive="active" target="view-full-framework">View full framework</a>
             </li>
             <li>
-                <a [routerLink]="['/roles']" routerLinkActive="active">Roles</a>
+                <a [routerLink]="['/roles']" routerLinkActive="active" target="roles">Roles</a>
             </li>
             <li>
                 <a
                     href="https://forms.office.com/pages/responsepage.aspx?id=ZGZljjZfW0qVTMVAX9KSBs5oMXcU5A1FpsRWAx0uNRhUNzc5WDBTME83TUpDTjgzQk5aSlc2WDJJVCQlQCN0PWcu"
-                    target="_blank"
                     routerLinkActive="active"
+                    target="_blank"
                     >Feedback</a
                 >
             </li>
@@ -31,11 +33,11 @@
 
                         <ul>
                             <li>
-                                <a href="/faq">FAQ</a>
+                                <a href="/faq" target="faq">FAQ</a>
                             </li>
 
                             <li>
-                                <a href="/glossary">Glossary</a>
+                                <a href="/glossary" target="glossary">Glossary</a>
                             </li>
 
                             <li>
@@ -43,11 +45,13 @@
                             </li>
 
                             <li>
-                                <a href="/artefacts">Artefacts</a>
+                                <a href="https://computacenter.sharepoint.com/sites/C_TechniqueArtefacts" target="_blank">Artefacts</a>
                             </li>
 
                             <li>
-                                <a href="/training">Training</a>
+                                <a href="https://computacenter.sharepoint.com/sites/C_TechniqueTraining/SitePages/Technique-Training.aspx" target="_blank"
+                                    >Training</a
+                                >
                             </li>
 
                             <li>
@@ -58,7 +62,11 @@
                                 <a href="/contacts">Contacts</a>
                             </li>
                             <li>
-                                <a href="/ask-a-mentor">Ask a mentor</a>
+                                <a
+                                    href="https://teams.microsoft.com/l/channel/19%3a0420b04faaf346aca14c7082e15d7b1d%40thread.tacv2/Q%2520and%2520A?groupId=6d7fc435-f6ee-4879-85da-29d543a49318&tenantId=8e656664-5f36-4a5b-954c-c5405fd29206"
+                                    target="_blank"
+                                    >Ask a mentor</a
+                                >
                             </li>
                         </ul>
                     </li>
