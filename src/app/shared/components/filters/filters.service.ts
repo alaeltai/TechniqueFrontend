@@ -215,14 +215,14 @@ export class FiltersService {
      * Given an entity attempts to fetch it's current parent inside the filtered data slice based
      * on a parent locator derived from the entity locator
      */
-    private getEntityParent(entity: EntityDataType): EntityDataType | null {
+    private getEntityParent(entity: EntityDataType, map: Record<string, EntityDataType>): EntityDataType | null {
         const locator = entity._locator;
         const idx = entity._locator.lastIndexOf('.');
         const parentLocator = locator.slice(0, idx > -1 ? idx : locator.length);
 
         if (parentLocator) {
             if (parentLocator in this._filteredMap) {
-                return this._originalMap[parentLocator];
+                return map[parentLocator];
             }
         }
 
@@ -236,8 +236,6 @@ export class FiltersService {
             return;
         }
 
-        // TODO: Continue from here
-
         if (entity.type === 'phase') {
             // No phase level parents
             return;
@@ -245,7 +243,7 @@ export class FiltersService {
 
         if (!disabled) {
             // Ensure enablement regardless of prior status
-            const parent = this.getEntityParent(entity);
+            const parent = this.getEntityParent(entity, this._originalMap);
 
             if (parent) {
                 this.enforceDisableStatus(parent._locator, disabled);
@@ -254,7 +252,7 @@ export class FiltersService {
             }
         } else {
             // Only disable parent levels when all children of same type are disabled
-            const parent = this.getEntityParent(entity);
+            const parent = this.getEntityParent(entity, this._originalMap);
 
             if (parent) {
                 let children: EntityDataType[] = [];
@@ -280,7 +278,7 @@ export class FiltersService {
                         break;
                 }
 
-                if (!children.some(c => !c.disabled)) {
+                if (!children.some(c => !this._disableMap[c._locator])) {
                     // All children are disabled, disable the paret as well
                     this.enforceDisableStatus(parent._locator, disabled);
 
