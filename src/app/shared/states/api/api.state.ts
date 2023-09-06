@@ -3,7 +3,7 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { catchError } from 'rxjs/operators';
 import { APIPhases } from './api.phases.actions';
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { IAPIPhase } from '@teq/shared/types/api/phase.type';
 import { ISubphase } from '@teq/shared/types/subphase.type';
@@ -37,13 +37,6 @@ import { APIFaq } from './api.faq.actions';
 import { IFaq } from '@teq/shared/types/faq.type';
 import { IAPIFaq } from '@teq/shared/types/api/faq.type';
 import { IAPIGlossary } from '@teq/shared/types/api/glossary.type';
-// import { phases } from './mock-phases'; // Mock point
-// import { glossary } from './mock-glossary'; // Mock point
-// import { faq } from './mock-faq'; // Mock point
-
-const phases: IAPIPhase[] = []; // Coment to enable mock
-const faq: IAPIFaq[] = []; // Coment to enable mock
-const glossary: IAPIGlossary[] = []; // Coment to enable mock
 
 export interface IAPIState {
     phases: IPhase[];
@@ -480,12 +473,23 @@ export class APIState {
 
             // Let the app keep running by returning an empty result.
             if (operation === 'tree') {
-                return of(phases as T); // Mock point
-                // return of([] as T);
+                if (environment.mock.tree) {
+                    return from((async () => (await import('./mock-phases')).phases as unknown as T)());
+                } else {
+                    return of([] as T);
+                }
             } else if (operation === 'glossary') {
-                return of(glossary as T); // Mock point
+                if (environment.mock.glossary) {
+                    return from((async () => (await import('./mock-glossary')).glossary as unknown as T)());
+                } else {
+                    return of([] as T);
+                }
             } else if (operation === 'faq') {
-                return of(faq as T); // Mock point
+                if (environment.mock.faq) {
+                    return from((async () => (await import('./mock-faq')).faq as unknown as T)());
+                } else {
+                    return of([] as T);
+                }
             } else {
                 return of(null as T);
             }

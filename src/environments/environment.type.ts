@@ -4,6 +4,11 @@ type MSALScope = MSALReadScope;
 export interface EnvironmentTypeModel {
     production: boolean;
     rootUrl: string;
+    mock: {
+        tree: boolean;
+        glossary: boolean;
+        faq: boolean;
+    };
     msalConfig: {
         auth: {
             clientId: string;

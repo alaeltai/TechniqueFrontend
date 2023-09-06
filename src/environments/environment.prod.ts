@@ -3,6 +3,11 @@ import { EnvironmentTypeModel } from 'environments/environment.type';
 export const environment: EnvironmentTypeModel = {
     production: true,
     rootUrl: '',
+    mock: {
+        tree: false,
+        faq: false,
+        glossary: false
+    },
     msalConfig: {
         auth: {
             clientId: '05321182-2629-434e-b593-d8272c535df9',

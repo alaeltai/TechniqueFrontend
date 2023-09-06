@@ -91,6 +91,7 @@ export class FiltersService {
     private readonly _collapsedMap: Record<string, boolean> = {};
 
     private _filteredMap: Record<string, EntityDataType> = {};
+    private _originalMap: Record<string, EntityDataType> = {};
 
     private _defaultCriterias: IFilterCriteria[] = [];
 
@@ -107,7 +108,12 @@ export class FiltersService {
                 filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
                 filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : MatchAllOfType));
 
+                // Cache default criterias in use
                 this._defaultCriterias = this._determineFilterCriterias(formControls);
+
+                // Create a map representation of locator to entity type from the original data
+                this._originalMap = {};
+                this._regenerateMap(phases, this._originalMap);
 
                 this.filter(formControls);
 
@@ -161,13 +167,13 @@ export class FiltersService {
 
     public enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
         // Enforce the new status on the entity itself
-        this.enforceDisableStatus(entity, disabled);
+        this.enforceDisableStatus(entity._locator, disabled);
 
         // Enforce the new status on all children
-        this.enforceDisabledOnChildren(entity, disabled);
+        this.enforceDisabledOnChildren(entity._locator, disabled);
 
         // Enforce the new status on affected parents
-        this.enforceDisabledOnParents(entity, disabled);
+        this.enforceDisabledOnParents(entity._locator, disabled);
     }
 
     private enforceCollapseStatus(entity: EntityDataType, collapsed: boolean): void {
@@ -175,44 +181,61 @@ export class FiltersService {
         this._collapsedMap[entity._locator] = collapsed; // Cache the collapsed status change at disable Map level
     }
 
-    private enforceDisableStatus(entity: EntityDataType, disabled: boolean): void {
-        entity.disabled = disabled;
-        this._disableMap[entity._locator] = disabled; // Cache the disable status change at disable Map level
-    }
+    private enforceDisableStatus(locator: string, disabled: boolean): void {
+        const entity = this._filteredMap[locator];
 
-    private enforceDisabledOnChildren(entity: EntityDataType, disabled: boolean): void {
-        if (entity.type === 'phase') {
-            entity.subphases?.forEach(s => this.enforceDisabledOnChildren(s, disabled));
-        } else if (entity.type === 'subphase') {
-            entity.methods?.forEach(m => this.enforceDisabledOnChildren(m, disabled));
-        } else if (entity.type === 'method') {
-            entity.approaches?.forEach(a => this.enforceDisabledOnChildren(a, disabled));
-        } else if (entity.type === 'approach' || entity.type === 'task') {
-            // No task level disable status
+        if (entity) {
+            // Only mark entities in current filtered state as disabled
+            entity.disabled = disabled;
         }
 
-        this.enforceDisableStatus(entity, disabled);
+        // Cache the disable status change at disable Map level (dissregarding filtered status)
+        this._disableMap[entity._locator] = disabled;
+    }
+
+    private enforceDisabledOnChildren(locator: string, disabled: boolean): void {
+        const entity = this._originalMap[locator]; // Use original entity as base for disabling statuses
+
+        if (entity) {
+            if (entity.type === 'phase') {
+                entity.subphases?.forEach(s => this.enforceDisabledOnChildren(s._locator, disabled));
+            } else if (entity.type === 'subphase') {
+                entity.methods?.forEach(m => this.enforceDisabledOnChildren(m._locator, disabled));
+            } else if (entity.type === 'method') {
+                entity.approaches?.forEach(a => this.enforceDisabledOnChildren(a._locator, disabled));
+            } else if (entity.type === 'approach' || entity.type === 'task') {
+                // No task level disable status
+            }
+
+            this.enforceDisableStatus(entity._locator, disabled);
+        }
     }
 
     /**
      * Given an entity attempts to fetch it's current parent inside the filtered data slice based
      * on a parent locator derived from the entity locator
      */
-    private getEntityParent(entity: EntityDataType): EntityDataType | null {
+    private getEntityParent(entity: EntityDataType, map: Record<string, EntityDataType>): EntityDataType | null {
         const locator = entity._locator;
         const idx = entity._locator.lastIndexOf('.');
         const parentLocator = locator.slice(0, idx > -1 ? idx : locator.length);
 
         if (parentLocator) {
             if (parentLocator in this._filteredMap) {
-                return this._filteredMap[parentLocator];
+                return map[parentLocator];
             }
         }
 
         return null;
     }
 
-    private enforceDisabledOnParents(entity: EntityDataType, disabled: boolean): void {
+    private enforceDisabledOnParents(locator: string, disabled: boolean): void {
+        const entity = this._originalMap[locator];
+
+        if (!entity) {
+            return;
+        }
+
         if (entity.type === 'phase') {
             // No phase level parents
             return;
@@ -220,16 +243,16 @@ export class FiltersService {
 
         if (!disabled) {
             // Ensure enablement regardless of prior status
-            const parent = this.getEntityParent(entity);
+            const parent = this.getEntityParent(entity, this._originalMap);
 
             if (parent) {
-                this.enforceDisableStatus(parent, disabled);
+                this.enforceDisableStatus(parent._locator, disabled);
 
-                this.enforceDisabledOnParents(parent, disabled);
+                this.enforceDisabledOnParents(parent._locator, disabled);
             }
         } else {
             // Only disable parent levels when all children of same type are disabled
-            const parent = this.getEntityParent(entity);
+            const parent = this.getEntityParent(entity, this._originalMap);
 
             if (parent) {
                 let children: EntityDataType[] = [];
@@ -255,12 +278,12 @@ export class FiltersService {
                         break;
                 }
 
-                if (!children.some(c => !c.disabled)) {
+                if (!children.some(c => !this._disableMap[c._locator])) {
                     // All children are disabled, disable the paret as well
-                    this.enforceDisableStatus(parent, disabled);
+                    this.enforceDisableStatus(parent._locator, disabled);
 
                     // Ensure disabling further in the parent chain
-                    this.enforceDisabledOnParents(parent, disabled);
+                    this.enforceDisabledOnParents(parent._locator, disabled);
                 }
             }
         }
@@ -394,7 +417,7 @@ export class FiltersService {
         const filtered = this._originalPhases.map(p => this._filterInDepth(p, filterCriterias)).filter(Boolean) as IPhase[];
 
         this._filteredMap = {}; // Clear filtered entity lookup map
-        this._regenerateFilterMap(filtered);
+        this._regenerateMap(filtered, this._filteredMap);
 
         this._phases.next(filtered);
     }
@@ -717,28 +740,28 @@ export class FiltersService {
         return filterCriterias;
     }
 
-    private _regenerateFilterMap(filtered: EntityDataType[]): void {
+    private _regenerateMap(filtered: EntityDataType[], map: Record<string, EntityDataType>): void {
         filtered.forEach(e => {
-            this._filteredMap[e._locator] = e;
+            map[e._locator] = e;
 
             switch (e.type) {
                 case 'phase':
-                    this._regenerateFilterMap(e.subphases ?? []);
+                    this._regenerateMap(e.subphases ?? [], map);
 
                     break;
 
                 case 'subphase':
-                    this._regenerateFilterMap(e.methods ?? []);
+                    this._regenerateMap(e.methods ?? [], map);
 
                     break;
 
                 case 'method':
-                    this._regenerateFilterMap(e.approaches ?? []);
+                    this._regenerateMap(e.approaches ?? [], map);
 
                     break;
 
                 case 'approach':
-                    this._regenerateFilterMap(e.tasks ?? []);
+                    this._regenerateMap(e.tasks ?? [], map);
 
                     break;
             }
