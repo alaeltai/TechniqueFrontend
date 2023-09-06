@@ -205,6 +205,7 @@ export class APIState {
                 owner: artefact.owner,
                 refNo: artefact.refNo,
                 url: {
+                    group: artefact.groupArtefact,
                     uk: artefact.ukartefact,
                     de: artefact.deartefact
                 }

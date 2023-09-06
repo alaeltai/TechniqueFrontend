@@ -35,7 +35,7 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
 
     @Input() tailoring?: boolean;
 
-    @Input() disableMap: Record<string, boolean> = {};
+    @Input() disableMap?: Record<string, boolean>;
 
     public phases$: Observable<IPhase[]>;
     public showTree = false;
@@ -83,7 +83,9 @@ export class ColumnViewerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this._filtersService.mergeDisableMap(this.disableMap);
+        if (this.disableMap) {
+            this._filtersService.mergeDisableMap(this.disableMap);
+        }
     }
 
     ngOnDestroy(): void {

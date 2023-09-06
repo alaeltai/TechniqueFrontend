@@ -21,7 +21,7 @@
     <div data-wyn>
         <div data-section-title>{{ 'What you need' | uppercase }}</div>
         <ng-container *ngFor="let artefact of task.inputArtefacts">
-            <teq-collapsible [title]="artefact.name" [content]="artefact.description" [term]="term"></teq-collapsible>
+            <teq-collapsible [title]="artefact.name" [content]="artefact.description" [url]="artefact.url" [term]="term"></teq-collapsible>
         </ng-container>
     </div>
 

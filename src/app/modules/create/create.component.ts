@@ -25,6 +25,7 @@ export class CreateComponent extends TreeBasedPageComponent {
 
             if (state) {
                 if (state['imported']) {
+                    // Replace the disable map by the imported state
                     this.disableMap = state['imported'] as Record<string, boolean>;
                 }
             }

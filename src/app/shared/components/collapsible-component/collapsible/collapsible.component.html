@@ -6,7 +6,10 @@
 
     <teq-entity-collapse [collapse]="isExpanded" (click)="toggleContent()">
         <p [innerHTML]="content | highlighter: term"></p>
-        <span *ngIf="url && (url.uk || url.de)">Supporting links:</span>
+        <span *ngIf="url && (url.uk || url.de || url.group)">Supporting links:</span>
+        <div data-url *ngIf="url && url.group">
+            <a [href]="url.group" rel="noopener noreferrer" target="”_blank”" (click)="$event.stopPropagation()">[{{title}}]</a>
+        </div>
         <div data-url *ngIf="url && url.uk">
             <a [href]="url.uk" rel="noopener noreferrer" target="”_blank”" (click)="$event.stopPropagation()">[UK] [{{title}}]</a>
         </div>

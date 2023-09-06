@@ -95,6 +95,8 @@ export class FiltersService {
 
     private _defaultCriterias: IFilterCriteria[] = [];
 
+    private _touched = false;
+
     constructor(private readonly _apiService: APIService) {
         this._apiService.phases$.pipe(distinctUntilChanged()).subscribe(phases => {
             // Retain the list of fetched phases
@@ -135,22 +137,17 @@ export class FiltersService {
         return this._originalPhases.map(p => this._filterInDepth(p, this._defaultCriterias)).filter(Boolean) as IPhase[];
     }
 
+    /**
+     * Merge received disable map with exiting map and allow further filter registration to handle the actual filtering
+     *
+     * This method is only intended to be used in combination with init lifecycles and won't ensure it's functionality
+     * - in current form - in further lifecycles
+     */
     public mergeDisableMap(disableMap: Record<string, boolean> = {}): void {
         this._disableMap = {
             ...this._disableMap,
             ...disableMap
         };
-
-        // Make sure to refilter on external phases changes
-        const filters = this._filters.value;
-        const formControls: Record<string, string | string[] | boolean> = {};
-
-        filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
-        filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : MatchAllOfType));
-
-        this._defaultCriterias = this._determineFilterCriterias(formControls);
-
-        this.filter(formControls);
     }
 
     public addFilters(...types: FilterType[]): IFilters {
@@ -160,12 +157,40 @@ export class FiltersService {
         return this._addFilters();
     }
 
+    /**
+     * Enforces desired collapsed status at specified entity's level while ensuring caching of state for further
+     * filtering restoration purposes
+     */
     public ensureCollapsedStatusAtLocation(entity: EntityDataType, collapsed: boolean): void {
         // Enforce the new status on the entity itself
         this.enforceCollapseStatus(entity, collapsed);
     }
 
+    /**
+     * Enforces desired disabled status at specified entity's level while ensuring caching of state for further
+     * filtering restoration purposes
+     *
+     * Marks the data as touched
+     */
     public enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
+        this._touched = true; // Mark the data as touched from the outside
+
+        this._enforceDisabledStatusAtLocation(entity, disabled);
+    }
+
+    /**
+     * Determines if there are modifications to the data statuses determined by manual intervention
+     */
+    public hasDataChanges(): boolean {
+        return this._touched;
+    }
+
+    private enforceCollapseStatus(entity: EntityDataType, collapsed: boolean): void {
+        entity.collapsed = collapsed;
+        this._collapsedMap[entity._locator] = collapsed; // Cache the collapsed status change at disable Map level
+    }
+
+    private _enforceDisabledStatusAtLocation(entity: EntityDataType, disabled: boolean): void {
         // Enforce the new status on the entity itself
         this.enforceDisableStatus(entity._locator, disabled);
 
@@ -174,11 +199,6 @@ export class FiltersService {
 
         // Enforce the new status on affected parents
         this.enforceDisabledOnParents(entity._locator, disabled);
-    }
-
-    private enforceCollapseStatus(entity: EntityDataType, collapsed: boolean): void {
-        entity.collapsed = collapsed;
-        this._collapsedMap[entity._locator] = collapsed; // Cache the collapsed status change at disable Map level
     }
 
     private enforceDisableStatus(locator: string, disabled: boolean): void {

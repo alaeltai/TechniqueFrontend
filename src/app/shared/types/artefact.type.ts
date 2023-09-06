@@ -5,6 +5,7 @@ export interface IArtefact {
     refNo: string;
     owner: string;
     url: {
+        group?: string;
         uk?: string;
         de?: string;
     };

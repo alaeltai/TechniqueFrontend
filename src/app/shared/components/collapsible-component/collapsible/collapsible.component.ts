@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { IconComponent } from '../../icon/icon.component';
 import { EntityCollapseComponent } from '../../entity-collapse/entity-collapse.component';
 import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
+import { IArtefact } from '@teq/shared/types/artefact.type';
 
 @Component({
     selector: 'teq-collapsible',
@@ -17,10 +18,7 @@ export class CollapsibleComponent {
     @Input() title!: string;
     @Input() content!: string;
     @Input() term!: string;
-    @Input() url?: {
-        uk?: string;
-        de?: string;
-    };
+    @Input() url?: IArtefact['url'];
 
     toggleContent(): void {
         this.isExpanded = !this.isExpanded;

@@ -8,7 +8,7 @@ export interface IAPIArtefact {
     // currentDevType: string;
     // futureDevType: string;
     // groupOption: string;
-    // groupArtefact: string;
+    groupArtefact: string;
     ukartefact: string;
     deartefact: string;
     // phaseCreated: string;
