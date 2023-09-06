@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 export const cards = [
     {
         title: 'Explore',
-        description: 'For beginner users. Open the Technique platform without a predefined selection, play around and create a framework.',
+        description: 'For beginner users. Open the Technique platform without a predefined selection and play around.',
         button: {
             name: 'Explore Technique',
             link: '/explore'
