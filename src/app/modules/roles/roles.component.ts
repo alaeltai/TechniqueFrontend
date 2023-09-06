@@ -77,9 +77,9 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
                 p.subphases?.forEach(s => {
                     s.methods.forEach(m => {
                         m.approaches.forEach(a => {
-                            a.tasks.forEach(t => {
-                                const r = t.responsible;
+                            const roles = a.roles;
 
+                            roles.forEach(r => {
                                 rolesMap[r.id] = rolesMap[r.id] || {
                                     id: r.id,
                                     role: r,
@@ -90,6 +90,11 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
                                 rolesMap[r.id].phases.push(p);
                                 rolesMap[r.id].subphases.push(s);
+                            });
+
+                            a.tasks.forEach(t => {
+                                const r = t.responsible;
+
                                 rolesMap[r.id].rows.push([m, a, t.category, t]);
                             });
                         });

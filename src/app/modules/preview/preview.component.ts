@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { commitPreviewState, fetchPreviewState, removePreviewState } from '@teq/shared/lib/preview-storage.lib';
@@ -27,7 +27,7 @@ export class PreviewComponent implements OnInit, OnDestroy {
 
     private _previewId = 0;
 
-    public constructor(private readonly _activeRoute: ActivatedRoute) {}
+    public constructor(private readonly _activeRoute: ActivatedRoute, private readonly _router: Router) {}
 
     ngOnInit(): void {
         this._activeRoute.params.pipe(untilDestroyed(this)).subscribe(params => {
@@ -46,6 +46,7 @@ export class PreviewComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         removePreviewState();
+        void this._router.navigate(['/landing-page']);
     }
 
     filterDisabledChanged(value: boolean): void {
