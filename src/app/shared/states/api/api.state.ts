@@ -167,7 +167,8 @@ export class APIState {
             id: role.id,
             name,
             description: role.description,
-            skills: role.skills
+            skills: role.skills,
+            related_jd: role.related_job_description
         });
     }
 

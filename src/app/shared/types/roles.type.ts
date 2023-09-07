@@ -19,5 +19,6 @@ export interface IRole extends Omit<BasePhase, 'order' | '_locator'> {
     color?: string;
     count?: number;
     skills: string;
+    related_jd: string;
     name: RoleType;
 }

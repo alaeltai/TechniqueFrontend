@@ -376,10 +376,12 @@ export class FiltersService {
                                 value: MatchAllOfType,
                                 label: 'All Roles'
                             },
-                            ...(aggregations[FilterType.SelectRoles]?.map<IOption>(r => ({
-                                value: r.id,
-                                label: r.name
-                            })) ?? [])
+                            ...(aggregations[FilterType.SelectRoles]
+                                ?.map<IOption>(r => ({
+                                    value: r.id,
+                                    label: r.name
+                                }))
+                                .sort((a, b) => a.label.localeCompare(b.label)) ?? [])
                         ]
                     });
 

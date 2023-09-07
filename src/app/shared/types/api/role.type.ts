@@ -3,4 +3,5 @@ export interface IAPIRole {
     name: string;
     description: string;
     skills: string;
+    related_job_description: string;
 }
