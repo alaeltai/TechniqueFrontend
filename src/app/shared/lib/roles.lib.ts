@@ -1,3 +1,4 @@
+import { APIState } from '@teq/shared/states/api/api.state';
 import { IAPIRole } from '@teq/shared/types/api/role.type';
 import type { IRole, RoleType } from '@teq/shared/types/roles.type';
 import { environment } from 'environments/environment';
@@ -29,7 +30,7 @@ export function mockRole(name: RoleType): IRole {
         id: name,
         description: '',
         skills: '',
-        related_jd: '',
+        related_jobs: '',
         name,
         color: ''
     });
@@ -62,6 +63,6 @@ export function convertRole(role: IAPIRole): IRole {
         name,
         description: role.description,
         skills: role.skills,
-        related_jd: role.related_job_description
+        related_jobs: APIState.convertRelatedJobs(role.relatedJobs)
     });
 }

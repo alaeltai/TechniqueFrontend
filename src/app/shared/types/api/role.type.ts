@@ -3,5 +3,11 @@ export interface IAPIRole {
     name: string;
     description: string;
     skills: string;
-    related_job_description: string;
+    relatedJobs: IAPIRelatedJobs[];
+}
+
+export interface IAPIRelatedJobs {
+    name: string;
+    country: string[];
+    serviceProvider: string;
 }

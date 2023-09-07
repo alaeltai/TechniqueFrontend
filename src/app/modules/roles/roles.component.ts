@@ -136,7 +136,7 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
             },
             {
                 title: 'Related job descriptions',
-                content: role.related_jd || 'No specific data'
+                content: role.related_jobs || 'No specific data'
             }
         ];
     }

@@ -9,7 +9,7 @@ import { IAPIPhase } from '@teq/shared/types/api/phase.type';
 import { ISubphase } from '@teq/shared/types/subphase.type';
 import { IMethod } from '@teq/shared/types/method.type';
 import { IApproach } from '@teq/shared/types/approach.type';
-import { IAPIRole } from '@teq/shared/types/api/role.type';
+import { IAPIRelatedJobs, IAPIRole } from '@teq/shared/types/api/role.type';
 import { IRole } from '@teq/shared/types/roles.type';
 import { determineRoleColor, normalizeName } from '@teq/shared/lib/roles.lib';
 import { IAPITask } from '@teq/shared/types/api/task.type';
@@ -168,7 +168,7 @@ export class APIState {
             name,
             description: role.description,
             skills: role.skills,
-            related_jd: role.related_job_description
+            related_jobs: APIState.convertRelatedJobs(role.relatedJobs)
         });
     }
 
@@ -212,6 +212,16 @@ export class APIState {
                 }
             } satisfies IArtefact;
         });
+    }
+
+    public static convertRelatedJobs(relatedJobs: IAPIRelatedJobs[]): string {
+        let jobs = '';
+
+        relatedJobs?.forEach(job => {
+            jobs += `- ${job.name} [${job.country.join(', ')}] ${job.serviceProvider}\n`;
+        });
+
+        return jobs;
     }
 
     public static convertGlossary(glossary: IAPIGlossary): IGlossary {
@@ -302,8 +312,8 @@ export class APIState {
 
         response.subscribe(rawFaq => {
             const faq = (rawFaq as IAPIFaq[]).map(APIState.convertFaq).sort((f1: IFaq, f2: IFaq) => {
-                const c1 = f1.question;
-                const c2 = f2.question;
+                const c1 = f1.order;
+                const c2 = f2.order;
 
                 if (c1 < c2) {
                     return -1;
