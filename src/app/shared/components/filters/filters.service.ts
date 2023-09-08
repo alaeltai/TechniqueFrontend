@@ -609,8 +609,11 @@ export class FiltersService {
                     roles = entity.roles
                         .map(r => {
                             if (
-                                !matchAllRole &&
-                                this._matchesStrings(criteria.value as string, [r.id]) // Match exact
+                                criteria.value.toString() === MatchAllOfType || // Match all case
+                                (criteria.isArray && (criteria.value as unknown[]).includes(r.id)) || // Match one of
+                                (!criteria.isArray && criteria.value === r.id) // Match exact
+                                // !matchAllRole &&
+                                // this._matchesStrings(criteria.value as string, [r.id]) // Match exact
                             ) {
                                 roleMatch = true;
 

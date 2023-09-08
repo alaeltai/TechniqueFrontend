@@ -38,8 +38,8 @@
             min-width: 22.625rem;
 
             &::-webkit-scrollbar {
-                width: 0.15rem;
-                height: 0.15rem;
+                width: 0.25rem;
+                height: 0.25rem;
                 background: colors.$mid-gray;
             }
 
@@ -149,6 +149,16 @@
 
             td {
                 @include typography.apply('content+');
+            }
+        }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1600px) {
+        padding: 0 4rem;
+
+        & > [data-content] {
+            & > teq-side-list {
+                height: 65vh;
             }
         }
     }
