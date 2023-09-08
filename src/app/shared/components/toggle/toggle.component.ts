@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, forwardRef } from '@angular/core';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
@@ -21,6 +21,11 @@ export class ToggleComponent implements ControlValueAccessor {
     @Input() disabled?: boolean = false;
     @Input() value?: boolean;
     @Input() label?: string;
+
+    @HostListener('click', ['$event'])
+    onClick(event: Event): void {
+        event.stopPropagation();
+    }
 
     onChange: (value: boolean) => void = () => undefined;
 

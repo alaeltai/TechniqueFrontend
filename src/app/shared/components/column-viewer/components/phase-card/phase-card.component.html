@@ -49,7 +49,7 @@
         <div data-cta *ngIf="phase.disabled">
             <div data-controls>
                 <div>Enable this phase</div>
-                <teq-toggle *ngIf="disableable" [value]="!(phase.disabled)" (change)="toggleDisableState()" />
+                <teq-toggle *ngIf="disableable" [value]="!(phase.disabled)" (change)="toggleDisableState($event)" />
             </div>
         </div>
     </div>

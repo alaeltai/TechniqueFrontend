@@ -218,7 +218,7 @@ export class APIState {
         let jobs = '';
 
         relatedJobs?.forEach(job => {
-            jobs += `- ${job.name} [${job.country.join(', ')}] ${job.serviceProvider}\n`;
+            jobs += `- ${job.serviceProvider} [${job.country.join(', ')}]  ${job.name}\n`;
         });
 
         return jobs;

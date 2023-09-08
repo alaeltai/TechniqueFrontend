@@ -68,59 +68,67 @@ export class PhaseCardComponent implements OnChanges {
             const phase = changes['phase'].currentValue as IPhase;
 
             if (phase) {
-                let enabledMethods = 0;
-                let enabledApproaches = 0;
-                const roles: IRoleCount[] = [];
-                const rolesMap: Record<IRole['id'], IRole> = {};
-                const rolesCount: Record<IRole['id'], number> = {};
-
-                phase.subphases?.forEach(s => {
-                    s.methods.forEach(m => {
-                        if (!(m.disabled ?? m.filtered)) {
-                            enabledMethods += 1;
-                        }
-
-                        m.approaches.forEach(a => {
-                            if (!(a.disabled ?? a.filtered)) {
-                                enabledApproaches += 1;
-                            }
-
-                            a.roles.forEach(r => this._agregateRole(r, rolesMap, rolesCount));
-
-                            a.tasks.forEach(t => this._agregateRole(t.responsible, rolesMap, rolesCount));
-                        });
-                    });
-                });
-
-                Object.keys(rolesMap).forEach(id => {
-                    roles.push({
-                        count: rolesCount[id],
-                        role: rolesMap[id]
-                    });
-                });
-
-                this._methodsCount = enabledMethods;
-                this._approachesCount = enabledApproaches;
-                this._roles = roles.sort((a, b) => {
-                    if (a.role.name.length < b.role.name.length) {
-                        return -1;
-                    } else if (a.role.name.length > b.role.name.length) {
-                        return 1;
-                    }
-                    return 0;
-                });
+                this._computeCounts(phase);
             }
         }
     }
 
-    toggleDisableState(): void {
+    toggleDisableState(event: Event): void {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
         const disabled = !this.phase.disabled;
 
         this._filtersService.enforceDisabledStatusAtLocation(this.phase, disabled);
+        this._computeCounts(this.phase);
     }
 
     private _agregateRole(r: IRole, rolesMap: Record<IRole['id'], IRole>, rolesCount: Record<IRole['id'], number>): void {
         rolesMap[r.id] = r;
         rolesCount[r.id] = (rolesCount[r.id] ?? 0) + 1;
+    }
+
+    private _computeCounts(phase: IPhase): void {
+        let enabledMethods = 0;
+        let enabledApproaches = 0;
+        const roles: IRoleCount[] = [];
+        const rolesMap: Record<IRole['id'], IRole> = {};
+        const rolesCount: Record<IRole['id'], number> = {};
+
+        phase.subphases?.forEach(s => {
+            s.methods.forEach(m => {
+                if (!(m.disabled ?? m.filtered)) {
+                    enabledMethods += 1;
+                }
+
+                m.approaches.forEach(a => {
+                    if (!(a.disabled ?? a.filtered)) {
+                        enabledApproaches += 1;
+                    }
+
+                    a.roles.forEach(r => this._agregateRole(r, rolesMap, rolesCount));
+
+                    a.tasks.forEach(t => this._agregateRole(t.responsible, rolesMap, rolesCount));
+                });
+            });
+        });
+
+        Object.keys(rolesMap).forEach(id => {
+            roles.push({
+                count: rolesCount[id],
+                role: rolesMap[id]
+            });
+        });
+
+        this._methodsCount = enabledMethods;
+        this._approachesCount = enabledApproaches;
+        this._roles = roles.sort((a, b) => {
+            if (a.role.name.length < b.role.name.length) {
+                return -1;
+            } else if (a.role.name.length > b.role.name.length) {
+                return 1;
+            }
+            return 0;
+        });
     }
 }

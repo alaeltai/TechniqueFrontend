@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeactivatableComponent } from '@teq/core/guards/can-deactivate-create.guard';
 import { FiltersService } from '@teq/shared/components/filters/filters.service';
@@ -12,7 +12,7 @@ import { CanLeaveRouteService } from '@teq/shared/services/can-leave-route.servi
     templateUrl: './create.component.html',
     styleUrls: ['./create.component.scss']
 })
-export class CreateComponent extends TreeBasedPageComponent implements OnInit, DeactivatableComponent {
+export class CreateComponent extends TreeBasedPageComponent implements OnInit, DeactivatableComponent, OnDestroy {
     public disableMap: Record<string, boolean> = {};
 
     @HostListener('window:beforeunload', ['$event'])
@@ -44,6 +44,10 @@ export class CreateComponent extends TreeBasedPageComponent implements OnInit, D
                 }
             }
         }
+    }
+
+    ngOnDestroy(): void {
+        this._filtersService.reset();
     }
 
     canDeactivate(): boolean | Observable<boolean> {

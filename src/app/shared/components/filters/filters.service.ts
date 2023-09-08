@@ -88,7 +88,7 @@ export class FiltersService {
     private _registeredFilters!: FilterType[];
 
     private _disableMap: Record<string, boolean> = {};
-    private readonly _collapsedMap: Record<string, boolean> = {};
+    private _collapsedMap: Record<string, boolean> = {};
 
     private _filteredMap: Record<string, EntityDataType> = {};
     private _originalMap: Record<string, EntityDataType> = {};
@@ -183,6 +183,13 @@ export class FiltersService {
      */
     public hasDataChanges(): boolean {
         return this._touched;
+    }
+
+    public reset(): void {
+        this._disableMap = {}; // Revert disable state
+        this._collapsedMap = {}; // Revert collapsed state
+        this.term.set(''); // Revert term
+        this._touched = false; // Revert touched status
     }
 
     private enforceCollapseStatus(entity: EntityDataType, collapsed: boolean): void {
@@ -529,7 +536,7 @@ export class FiltersService {
                 }
             }
 
-            // Known side effect: emptyu approaches are not displayed at all
+            // Known side effect: empty approaches are not displayed at all
             if ((!matchAllSearch && searchMatch && approaches.length) || approaches.length) {
                 return {
                     ...entity,
@@ -551,6 +558,7 @@ export class FiltersService {
             let matchAllRole = false;
             let roleMatch = false;
             let matchAllTemplates = false;
+            let hasTemplate = false;
             let templateMatch = false;
             let innerMatch = false;
 
@@ -579,13 +587,13 @@ export class FiltersService {
                     }
                 } else if (criteria.filter === FilterType.SelectComplexity) {
                     matchAllTemplates = criteria.value.toString() === MatchAllOfType;
+                    hasTemplate = true;
 
                     templates = entity.templates
                         .map(t => {
                             if (
-                                criteria.value.toString() === MatchAllOfType || // Match all case
-                                (criteria.isArray && (criteria.value as unknown[]).includes(t.id)) || // Match one of
-                                (!criteria.isArray && criteria.value === t.id) // Match exact
+                                !matchAllTemplates &&
+                                this._matchesStrings(criteria.value as string, [t.id]) // Match exact
                             ) {
                                 templateMatch = true;
 
@@ -601,9 +609,8 @@ export class FiltersService {
                     roles = entity.roles
                         .map(r => {
                             if (
-                                criteria.value.toString() === MatchAllOfType || // Match all case
-                                (criteria.isArray && (criteria.value as unknown[]).includes(r.id)) || // Match one of
-                                (!criteria.isArray && criteria.value === r.id) // Match exact
+                                !matchAllRole &&
+                                this._matchesStrings(criteria.value as string, [r.id]) // Match exact
                             ) {
                                 roleMatch = true;
 
@@ -618,7 +625,9 @@ export class FiltersService {
 
             // Evaluate matches (there is no posibility of early breaking due to the need of filtering at all sublevels)
             if (
-                ![matchAllSearch ? null : searchMatch, matchAllTemplates ? null : templateMatch, matchAllRole ? null : roleMatch].some(v => v === false) || // No failing condition
+                ![matchAllSearch ? null : searchMatch, hasTemplate ? (matchAllTemplates ? null : templateMatch) : null, matchAllRole ? null : roleMatch].some(
+                    v => v === false
+                ) || // No failing condition
                 tasks.length // Or child contents
             ) {
                 maintain = true;
@@ -736,8 +745,8 @@ export class FiltersService {
     }
 
     private _matchesStrings(term: string, ...strings: EntityPropStringValue[]): boolean {
-        const t = term.toLowerCase();
-        return (strings.flat(2).filter(Boolean) as string[]).some(s => s.toLowerCase().includes(t));
+        const t = term.toString().toLowerCase();
+        return (strings.flat(2).filter(Boolean) as string[]).some(s => s.toString().toLowerCase().includes(t));
     }
 
     private _determineFilterCriterias(filters: Record<string, IFilterCriteria['value']>): IFilterCriteria[] {
