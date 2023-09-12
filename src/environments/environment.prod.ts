@@ -6,7 +6,8 @@ export const environment: EnvironmentTypeModel = {
     mock: {
         tree: false,
         faq: false,
-        glossary: false
+        glossary: false,
+        relatedJobs: false
     },
     msalConfig: {
         auth: {

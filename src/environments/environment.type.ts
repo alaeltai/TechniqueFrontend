@@ -8,6 +8,7 @@ export interface EnvironmentTypeModel {
         tree: boolean;
         glossary: boolean;
         faq: boolean;
+        relatedJobs: boolean;
     };
     msalConfig: {
         auth: {

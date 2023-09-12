@@ -19,12 +19,18 @@ export interface IRole extends Omit<BasePhase, 'order' | '_locator'> {
     color?: string;
     count?: number;
     skills: string;
-    related_jobs: string;
+    related_jobs: IRelatedJob[];
     name: RoleType;
 }
 
-// export interface IRelatedJobs {
-//     name: string;
-//     countries: string[];
-//     service_provider: string;
-// }
+export interface IRoleRelatedJobs {
+    role_id: string;
+    jobs: IRelatedJob[];
+}
+
+export interface IRelatedJob {
+    id: string;
+    name: string;
+    countries: string[];
+    service_provider: string;
+}

@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true
 })
 export class LineBreakPipe implements PipeTransform {
-    transform(value: string, args?: string): string {
+    transform(value: string | unknown[], args?: string): string {
+        if (typeof value !== 'string') return '';
         if (!value) return value;
 
         const separator = args ?? '\n';

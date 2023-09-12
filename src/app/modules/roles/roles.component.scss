@@ -60,6 +60,18 @@
 
             & > teq-tabs {
                 display: block;
+
+                ::ng-deep teq-table ::ng-deep {
+                    table {
+                        margin-top: 0;
+                    }
+
+                    td,
+                    th {
+                        height: 1.5rem;
+                        padding: 0.5rem;
+                    }
+                }
             }
 
             & > div {
@@ -86,69 +98,6 @@
                         }
                     }
                 }
-            }
-        }
-
-        table {
-            margin-top: 1rem;
-            text-align: left;
-            width: 100%;
-
-            [data-table-head] {
-                @include typography.apply('bold');
-
-                background-color: colors.$white-gray;
-            }
-
-            th,
-            td {
-                padding: 1rem 0.5rem 1rem 1rem;
-
-                border-bottom: 1px solid colors.$mid-gray;
-            }
-
-            th {
-                height: 3rem;
-
-                min-width: 7rem;
-
-                position: relative;
-
-                & > teq-icon {
-                    position: absolute;
-                    right: 18.6px;
-                    top: 1.125rem;
-
-                    cursor: pointer;
-
-                    &[data-sort='unsorted'] ::ng-deep path {
-                        opacity: 0.5;
-                    }
-
-                    &[data-sort='ascending'] ::ng-deep {
-                        & path:first-of-type {
-                            opacity: 1;
-                        }
-
-                        & path:last-of-type {
-                            opacity: 0.5;
-                        }
-                    }
-
-                    &[data-sort='descending'] ::ng-deep {
-                        & path:first-of-type {
-                            opacity: 0.5;
-                        }
-
-                        & path:last-of-type {
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-
-            td {
-                @include typography.apply('content+');
             }
         }
     }

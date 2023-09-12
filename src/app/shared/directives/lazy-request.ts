@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { IntersectionObserverDirective } from './intersection-observer';
-import { EntityType } from '../types/types';
 import { APIService } from '../states/api/api.service';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { NEVER, Subject, map, switchMap, timer } from 'rxjs';
@@ -35,9 +35,9 @@ enum InteractionType {
 export class LazyRequestDirective implements OnInit, OnChanges, OnDestroy {
     @Input({ required: true }) mechanism!: LazyRequestCondition;
 
-    @Input({ required: true }) requestType!: EntityType;
-
     @Input({ required: true }) id!: string;
+
+    @Input({ required: true }) requestFn!: CallableFunction;
 
     private _status: InteractionStatus = 'none';
 
@@ -82,9 +82,7 @@ export class LazyRequestDirective implements OnInit, OnChanges, OnDestroy {
                             this._status = 'none';
                         }
 
-                        return timer(val === InteractionType.Debounced ? DebounceInterval : 0).pipe(
-                            map(_ => this._apiService.getDetails(this.requestType, this.id))
-                        );
+                        return timer(val === InteractionType.Debounced ? DebounceInterval : 0).pipe(map(_ => this.requestFn(this.id)));
                     }
 
                     // Cancel request
@@ -105,12 +103,11 @@ export class LazyRequestDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if ('requestType' in changes || 'id' in changes) {
-            const type = (changes['requestType'].currentValue as EntityType) ?? this.requestType;
+        if ('id' in changes) {
             const id = (changes['id'].currentValue as string) ?? this.id;
 
-            if (type && id) {
-                if (type !== this.requestType && id !== this.id) {
+            if (id) {
+                if (id !== this.id) {
                     this._requested = false;
                 }
             }
@@ -119,7 +116,7 @@ export class LazyRequestDirective implements OnInit, OnChanges, OnDestroy {
 
     private _shouldRequestData(): boolean {
         if (this._status !== 'none' && (viewportIntersectionTrackers[this.mechanism] ?? pointerIntersectionTrackers[this.mechanism])) {
-            if (!(this._requested && this._requesting)) {
+            if (!this._requested && !this._requesting) {
                 return true;
             }
         }

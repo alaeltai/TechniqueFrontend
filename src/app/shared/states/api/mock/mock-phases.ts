@@ -40,58 +40,7 @@ export const phases = [
                                         description:
                                             '- Work with clients and technical resources to identify their business problems and develop the right approach and analytical solution\r\n- Good knowledge and understanding of digital application workflows\r\n- Planning and managing business diagnosis and Planning activities\r\n- Understand and analyze functional impacts on front-to-back applications\r\n- Performing/interpreting requirement analysis to identify value creation opportunities for clients\r\n- Design and document new process and system changes',
                                         skills: '- Related working experience in technology industry, preferably in consultancy environment\r\n- Prior experience in a sizeable digital transformation project\r\n- Bachelor degree or above from top-tier university in IT or related disciplines\r\n- Solid understanding of Agile or Scrum methodology\r\n- Excellent communication and presentation skills-\r\n- Work with clients and technical resources to identify their business problems and develop the right approach and analytical solution\r\n- Good knowledge and understanding of digital application workflows?\r\n- Planning and managing business diagnosis and planning activities??\r\n- Understand and analyze functional impacts on front-to-back applications \r\n- Performing/interpreting requirement analysis to identify value creation opportunities for clients?\r\n- Design and document new process and system changes',
-                                        relatedJobs: [
-                                            {
-                                                name: 'Chief Architects',
-                                                country: ['UK'],
-                                                serviceProvider: 'Sales'
-                                            },
-                                            {
-                                                name: 'Consultant',
-                                                country: ['IN'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'IT Associate',
-                                                country: ['DE', 'UK'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'IT Expert',
-                                                country: ['DE'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'IT Expert Principal',
-                                                country: ['DE', 'UK'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'IT Expert Senior',
-                                                country: ['DE', 'UK'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'Lead Consultant',
-                                                country: ['DE'],
-                                                serviceProvider: 'PSE'
-                                            },
-                                            {
-                                                name: 'Lead/Principal Consultant',
-                                                country: ['IN'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'Principal Consultant Consultancy',
-                                                country: ['DE', 'UK'],
-                                                serviceProvider: 'Consultancy'
-                                            },
-                                            {
-                                                name: 'Senior Consultant Consultancy',
-                                                country: ['DE', 'UK'],
-                                                serviceProvider: 'Consultancy'
-                                            }
-                                        ]
+                                        relatedJobs: []
                                     }
                                 ],
                                 tasks: [

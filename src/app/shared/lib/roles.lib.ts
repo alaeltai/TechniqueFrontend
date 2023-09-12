@@ -30,7 +30,7 @@ export function mockRole(name: RoleType): IRole {
         id: name,
         description: '',
         skills: '',
-        related_jobs: '',
+        related_jobs: [],
         name,
         color: ''
     });
@@ -63,6 +63,6 @@ export function convertRole(role: IAPIRole): IRole {
         name,
         description: role.description,
         skills: role.skills,
-        related_jobs: APIState.convertRelatedJobs(role.relatedJobs)
+        related_jobs: []
     });
 }

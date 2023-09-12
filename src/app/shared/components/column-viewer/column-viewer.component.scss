@@ -181,7 +181,7 @@
                 position: relative;
 
                 & > teq-phase ::ng-deep [data-phase] {
-                    teq-icon {
+                    & > teq-icon {
                         transform: rotate(180deg);
                         margin-left: auto;
 

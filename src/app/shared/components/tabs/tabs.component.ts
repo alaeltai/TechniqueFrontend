@@ -2,15 +2,18 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LineBreakPipe } from '@teq/shared/pipes/lineBreak.pipe';
 import { ReplaceCharPipe } from '@teq/shared/pipes/replaceChar.pipe';
+import { TypeofPipe } from '@teq/shared/pipes/typeof.pipe';
+import { ITableData, ITableHeader, TableComponent } from '../table/table.component';
 export interface ITab {
     title: string;
-    content: string;
+    content?: string;
+    contentTable?: ITableData;
 }
 
 @Component({
     selector: 'teq-tabs',
     standalone: true,
-    imports: [CommonModule, LineBreakPipe, ReplaceCharPipe],
+    imports: [CommonModule, LineBreakPipe, ReplaceCharPipe, TypeofPipe, TableComponent],
     templateUrl: './tabs.component.html',
     styleUrls: ['./tabs.component.scss']
 })
@@ -21,6 +24,8 @@ export class TabsComponent implements OnChanges {
     @Input() tabs!: ITab[];
 
     @Input() item: unknown;
+
+    @Input() tableHeaders!: ITableHeader[];
 
     ngOnChanges(changes: SimpleChanges): void {
         changes['item']?.currentValue !== changes['item']?.previousValue && this.toggleContentAnimation();

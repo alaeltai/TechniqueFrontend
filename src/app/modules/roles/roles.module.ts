@@ -10,6 +10,7 @@ import { TabsComponent } from '@teq/shared/components/tabs/tabs.component';
 import { SubphaseTabComponent } from '@teq/shared/components/column-viewer/components/subphase-tab/subphase-tab.component';
 import { PhaseTabComponent } from '@teq/shared/components/phase-tab/phase-tab.component';
 import { IconComponent } from '@teq/shared/components/icon/icon.component';
+import { TableComponent } from '@teq/shared/components/table/table.component';
 
 @NgModule({
     declarations: [RolesComponent],
@@ -22,7 +23,8 @@ import { IconComponent } from '@teq/shared/components/icon/icon.component';
         TabsComponent,
         SubphaseTabComponent,
         PhaseTabComponent,
-        IconComponent
+        IconComponent,
+        TableComponent
     ],
     exports: [RolesComponent]
 })

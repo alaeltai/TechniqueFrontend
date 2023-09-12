@@ -13,6 +13,8 @@ import { APIGlossary } from './api.glossary.actions';
 import { APIFaq } from './api.faq.actions';
 import { IFaq } from '@teq/shared/types/faq.type';
 import { IGlossary } from '@teq/shared/types/glossary.type';
+import { APIRelatedJobDescription } from '@teq/shared/states/api/api.related-job-description.actions';
+import { IRoleRelatedJobs } from '@teq/shared/types/roles.type';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +28,9 @@ export class APIService {
 
     @Select(APIState.glossary)
     public readonly glossary$!: Observable<IGlossary[]>;
+
+    @Select(APIState.relatedJobs)
+    public readonly relatedJobs$!: Observable<IRoleRelatedJobs[]>;
 
     @Select(APIState.treeStatus)
     public readonly treeStatus$!: Observable<{ fetched: boolean; fetching: boolean }>;
@@ -81,6 +86,10 @@ export class APIService {
 
     getTask(id: string): Observable<unknown> {
         return this._store.dispatch(new APITasks.Get(id));
+    }
+
+    getRelatedJobDescription(id: string): Observable<unknown> {
+        return this._store.dispatch(new APIRelatedJobDescription.Get(id));
     }
 
     private _hasStaleRepresentation(type: EntityType, id: string): boolean {

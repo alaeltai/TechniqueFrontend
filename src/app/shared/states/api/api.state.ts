@@ -9,8 +9,8 @@ import { IAPIPhase } from '@teq/shared/types/api/phase.type';
 import { ISubphase } from '@teq/shared/types/subphase.type';
 import { IMethod } from '@teq/shared/types/method.type';
 import { IApproach } from '@teq/shared/types/approach.type';
-import { IAPIRelatedJobs, IAPIRole } from '@teq/shared/types/api/role.type';
-import { IRole } from '@teq/shared/types/roles.type';
+import { IAPIRelatedJob, IAPIRole } from '@teq/shared/types/api/role.type';
+import { IRole, IRoleRelatedJobs } from '@teq/shared/types/roles.type';
 import { determineRoleColor, normalizeName } from '@teq/shared/lib/roles.lib';
 import { IAPITask } from '@teq/shared/types/api/task.type';
 import { ITask } from '@teq/shared/types/task.type';
@@ -37,11 +37,13 @@ import { APIFaq } from './api.faq.actions';
 import { IFaq } from '@teq/shared/types/faq.type';
 import { IAPIFaq } from '@teq/shared/types/api/faq.type';
 import { IAPIGlossary } from '@teq/shared/types/api/glossary.type';
+import { APIRelatedJobDescription } from '@teq/shared/states/api/api.related-job-description.actions';
 
 export interface IAPIState {
     phases: IPhase[];
     glossary: IGlossary[];
     faq: IFaq[];
+    relatedJobs: IRoleRelatedJobs[];
     treeFetched: boolean;
     treeFetching: boolean;
 }
@@ -50,6 +52,7 @@ const defaults: IAPIState = {
     phases: [],
     glossary: [],
     faq: [],
+    relatedJobs: [],
     treeFetched: false,
     treeFetching: false
 };
@@ -73,6 +76,11 @@ export class APIState {
     @Selector()
     static glossary(state: IAPIState): IGlossary[] {
         return state.glossary;
+    }
+
+    @Selector()
+    static relatedJobs(state: IAPIState): IRoleRelatedJobs[] {
+        return state.relatedJobs;
     }
 
     @Selector()
@@ -168,7 +176,7 @@ export class APIState {
             name,
             description: role.description,
             skills: role.skills,
-            related_jobs: APIState.convertRelatedJobs(role.relatedJobs)
+            related_jobs: []
         });
     }
 
@@ -214,14 +222,18 @@ export class APIState {
         });
     }
 
-    public static convertRelatedJobs(relatedJobs: IAPIRelatedJobs[]): string {
-        let jobs = '';
+    public static convertRelatedJobs(relatedJobs: IAPIRelatedJob[], roleId: string): IRoleRelatedJobs {
+        const jobs = relatedJobs?.map(job => ({
+            id: job.id,
+            name: job.name,
+            countries: job.country,
+            service_provider: job.serviceProvider
+        }));
 
-        relatedJobs?.forEach(job => {
-            jobs += `- ${job.serviceProvider} [${job.country.join(', ')}]  ${job.name}\n`;
-        });
-
-        return jobs;
+        return {
+            role_id: roleId,
+            jobs
+        };
     }
 
     public static convertGlossary(glossary: IAPIGlossary): IGlossary {
@@ -326,6 +338,28 @@ export class APIState {
 
             // Persist newly fetched data in state
             patchState({ faq });
+        });
+    }
+
+    @Action(APIRelatedJobDescription.Get)
+    fetchRelatedJob({ patchState, getState }: StateContext<IAPIState>, { id }: APIRelatedJobDescription.Get): void {
+        const response = this._http
+            .post<IAPIRelatedJob[]>(
+                `${environment.apiConfig.uri}/v1/Jobs/GetRelatedRoleJobs`,
+                { id },
+                {
+                    responseType: 'json',
+                    context: new HttpContext().set(AuthenticatedRequest, true)
+                }
+            )
+            .pipe(catchError(this.handleError('related-job-description')));
+
+        response.subscribe(rawRelatedJds => {
+            if (rawRelatedJds) {
+                const relatedJds = APIState.convertRelatedJobs(rawRelatedJds as IAPIRelatedJob[], id);
+
+                patchState({ relatedJobs: [...getState().relatedJobs, relatedJds] });
+            }
         });
     }
 
@@ -486,19 +520,25 @@ export class APIState {
             // Let the app keep running by returning an empty result.
             if (operation === 'tree') {
                 if (environment.mock.tree) {
-                    return from((async () => (await import('./mock-phases')).phases as unknown as T)());
+                    return from((async () => (await import('./mock/mock-phases')).phases as unknown as T)());
                 } else {
                     return of([] as T);
                 }
             } else if (operation === 'glossary') {
                 if (environment.mock.glossary) {
-                    return from((async () => (await import('./mock-glossary')).glossary as unknown as T)());
+                    return from((async () => (await import('./mock/mock-glossary')).glossary as unknown as T)());
                 } else {
                     return of([] as T);
                 }
             } else if (operation === 'faq') {
                 if (environment.mock.faq) {
-                    return from((async () => (await import('./mock-faq')).faq as unknown as T)());
+                    return from((async () => (await import('./mock/mock-faq')).faq as unknown as T)());
+                } else {
+                    return of([] as T);
+                }
+            } else if (operation === 'related-job-description') {
+                if (environment.mock.relatedJobs) {
+                    return from((async () => (await import('./mock/mock-related-jobs')).relatedJobDescriptions as unknown as T)());
                 } else {
                     return of([] as T);
                 }

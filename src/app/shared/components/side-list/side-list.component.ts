@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HighlighterPipe } from '@teq/shared/pipes/highlight.pipe';
+import { LazyRequestDirective } from '@teq/shared/directives/lazy-request';
 
 export interface IListItem {
     label: string;
@@ -10,7 +11,7 @@ export interface IListItem {
 @Component({
     selector: 'teq-side-list',
     standalone: true,
-    imports: [CommonModule, HighlighterPipe],
+    imports: [CommonModule, HighlighterPipe, LazyRequestDirective],
     templateUrl: './side-list.component.html',
     styleUrls: ['./side-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,6 +22,10 @@ export class SideListComponent implements OnChanges {
     @Input() value!: string;
 
     @Input() term!: string;
+
+    @Input() lazyRequest?: boolean;
+
+    @Input() requestFn?: CallableFunction;
 
     @Output() valueChange = new EventEmitter<string>();
 

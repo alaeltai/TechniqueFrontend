@@ -3,31 +3,24 @@ import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fadeIn } from '@teq/shared/animations/animations.lib';
 import { IListItem } from '@teq/shared/components/side-list/side-list.component';
+import { ITableData, ITableHeader } from '@teq/shared/components/table/table.component';
 import { ITab } from '@teq/shared/components/tabs/tabs.component';
 import { TreeBasedPageComponent } from '@teq/shared/components/tree-based-page/tree-based-page';
 import { IApproach } from '@teq/shared/types/approach.type';
 import { ICategory } from '@teq/shared/types/category.type';
 import { IMethod } from '@teq/shared/types/method.type';
 import { IPhase } from '@teq/shared/types/phase.type';
-import { IRole } from '@teq/shared/types/roles.type';
+import { IRelatedJob, IRole } from '@teq/shared/types/roles.type';
 import { ISubphase } from '@teq/shared/types/subphase.type';
 import { ITask } from '@teq/shared/types/task.type';
 
 type RowTupple = [IMethod, IApproach, ICategory, ITask];
-
-type SortDirection = 'ascending' | 'descending' | 'unsorted';
-
 interface IRoleAggregation {
     id: string;
     role: IRole;
     phases: IPhase[];
     subphases: ISubphase[];
     rows: RowTupple[];
-}
-
-interface ITableHeader {
-    name: string;
-    sortDirection: string;
 }
 
 type IRolesAggregation = Record<string, IRoleAggregation>;
@@ -42,6 +35,8 @@ type IRolesAggregation = Record<string, IRoleAggregation>;
 export class RolesComponent extends TreeBasedPageComponent implements OnInit {
     public readonly phases$ = this._apiService.phases$;
 
+    public readonly relatedJobs$ = this._apiService.relatedJobs$;
+
     public tableHeaders: ITableHeader[] = [
         { name: 'Method', sortDirection: 'unsorted' },
         { name: 'Approach', sortDirection: 'unsorted' },
@@ -49,11 +44,25 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
         { name: 'Task', sortDirection: 'unsorted' }
     ];
 
+    public relatedJobsTableHeaders: ITableHeader[] = [
+        {
+            name: 'Service provider'
+        },
+        {
+            name: 'Country'
+        },
+        {
+            name: 'Job description'
+        }
+    ];
+
     public rolesList: IRoleAggregation[] = [];
 
     public selected = '';
 
     public tabs!: ITab[];
+
+    public getRelatedJobDescription = this._apiService.getRelatedJobDescription.bind(this._apiService);
 
     private _aggregatedRoles: IRolesAggregation = {};
 
@@ -116,7 +125,17 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
             this._aggregatedRoles = rolesMap;
 
-            this._computedItems = this.rolesList.map(r => ({ value: r.id, label: r.role.name }));
+            this._computedItems = this.rolesList.map(r => ({ value: r.id, label: r.role.name })).sort((a, b) => a.label.localeCompare(b.label));
+        });
+
+        this.relatedJobs$.pipe(untilDestroyed(this)).subscribe(relatedJds => {
+            relatedJds.forEach(relatedJd => {
+                const foundRole = this.rolesList.find(role => role.id === relatedJd.role_id);
+                if (foundRole) {
+                    foundRole.role.related_jobs = relatedJd.jobs;
+                }
+            });
+            console.log(relatedJds);
         });
     }
 
@@ -128,15 +147,15 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
         return [
             {
                 title: 'Description',
-                content: role.description || 'No specific data'
+                content: role.description
             },
             {
                 title: 'Skills and qualifications',
-                content: role.skills || 'No specific data'
+                content: role.skills
             },
             {
                 title: 'Related job descriptions',
-                content: role.related_jobs || 'No specific data'
+                contentTable: this.convertRelatedJobsToTableData(role.related_jobs)
             }
         ];
     }
@@ -145,41 +164,22 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
         return this._computedItems ?? ([] as IListItem[]);
     }
 
-    sort(index: number): void {
-        this.currentAggregation.rows.sort((a, b) => {
-            const direction = this.getSortDirection(index);
+    convertRelatedJobsToTableData(jobs: IRelatedJob[]): ITableData | undefined {
+        if (!jobs) return;
 
-            if (direction === 'unsorted' || direction === 'descending') {
-                this.setColumnDirection(index, 'ascending');
-                return a[index].name.localeCompare(b[index].name);
-            } else {
-                this.setColumnDirection(index, 'descending');
-                return b[index].name.localeCompare(a[index].name);
-            }
-        });
-    }
-
-    setColumnDirection(index: number, direction: string): void {
-        this.tableHeaders.forEach((h, i) => {
-            if (index === i) {
-                this.tableHeaders[i].sortDirection = direction;
-                return;
-            }
-            this.tableHeaders[i].sortDirection = 'unsorted';
-        });
-    }
-
-    getSortDirection(index: number): SortDirection {
-        const arr = this.currentAggregation.rows;
-        const c = [];
-
-        for (let i = 1; i < arr.length; i++) {
-            c.push(arr[i - 1][index].name.localeCompare(arr[i][index]?.name));
-        }
-
-        if (c.every(n => n <= 0)) return 'ascending';
-        if (c.every(n => n >= 0)) return 'descending';
-
-        return 'unsorted';
+        return {
+            rows: jobs?.map(job => [
+                // TODO: make it nicer
+                {
+                    name: job.service_provider
+                },
+                {
+                    name: job.countries.join(', ')
+                },
+                {
+                    name: job.name
+                }
+            ])
+        };
     }
 }
