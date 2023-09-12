@@ -154,7 +154,7 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
             },
             {
                 title: 'Related job descriptions',
-                contentTable: this.convertRelatedJobsToTableData(role.related_jobs)
+                contentTable: role.related_jobs?.length ? this.convertRelatedJobsToTableData(role.related_jobs) : undefined
             }
         ];
     }
