@@ -135,7 +135,6 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
                     foundRole.role.related_jobs = relatedJd.jobs;
                 }
             });
-            console.log(relatedJds);
         });
     }
 

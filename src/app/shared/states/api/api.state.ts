@@ -346,7 +346,7 @@ export class APIState {
         const response = this._http
             .post<IAPIRelatedJob[]>(
                 `${environment.apiConfig.uri}/v1/Jobs/GetRelatedRoleJobs`,
-                { id },
+                { RoleId: id },
                 {
                     responseType: 'json',
                     context: new HttpContext().set(AuthenticatedRequest, true)
