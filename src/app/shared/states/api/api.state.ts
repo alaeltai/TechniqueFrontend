@@ -261,13 +261,17 @@ export class APIState {
         patchState({ treeFetching: true }); // Mark state requesting status
 
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, null, {
-                responseType: 'json',
-                context: new HttpContext()
-                    // .set(CacheStorage, CacheType.GLOSSARY)
-                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
-                    .set(AuthenticatedRequest, true)
-            })
+            .post<IAPIPhase[]>(
+                `${environment.apiConfig.uri}/v1/Phases/GetPhases`,
+                {},
+                {
+                    responseType: 'json',
+                    context: new HttpContext()
+                        // .set(CacheStorage, CacheType.GLOSSARY)
+                        // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                        .set(AuthenticatedRequest, true)
+                }
+            )
             .pipe(catchError(this.handleError('tree')));
 
         response.subscribe(rawPhases => {
@@ -282,7 +286,7 @@ export class APIState {
     @Action(APIGlossary.List)
     fetchGlossary({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, null, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.GLOSSARY)
@@ -313,13 +317,17 @@ export class APIState {
     @Action(APIFaq.List)
     fetchFaq({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetFaq`, null, {
-                responseType: 'json',
-                context: new HttpContext()
-                    // .set(CacheStorage, CacheType.GLOSSARY)
-                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
-                    .set(AuthenticatedRequest, true)
-            })
+            .post<IAPIPhase[]>(
+                `${environment.apiConfig.uri}/v1/Phases/GetFaq`,
+                {},
+                {
+                    responseType: 'json',
+                    context: new HttpContext()
+                        // .set(CacheStorage, CacheType.GLOSSARY)
+                        // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                        .set(AuthenticatedRequest, true)
+                }
+            )
             .pipe(catchError(this.handleError('faq')));
 
         response.subscribe(rawFaq => {
