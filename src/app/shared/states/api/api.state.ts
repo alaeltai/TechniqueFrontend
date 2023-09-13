@@ -261,10 +261,10 @@ export class APIState {
         patchState({ treeFetching: true }); // Mark state requesting status
 
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetPhases`, null, {
                 responseType: 'json',
                 context: new HttpContext()
-                    // .set(CacheStorage, CacheType.FULL_FRAMEWORK)
+                    // .set(CacheStorage, CacheType.GLOSSARY)
                     // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
                     .set(AuthenticatedRequest, true)
             })
@@ -282,7 +282,7 @@ export class APIState {
     @Action(APIGlossary.List)
     fetchGlossary({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, null, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.GLOSSARY)
@@ -313,7 +313,7 @@ export class APIState {
     @Action(APIFaq.List)
     fetchFaq({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetFaq`, {
+            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetFaq`, null, {
                 responseType: 'json',
                 context: new HttpContext()
                     // .set(CacheStorage, CacheType.GLOSSARY)

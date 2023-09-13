@@ -46,13 +46,13 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
     public relatedJobsTableHeaders: ITableHeader[] = [
         {
-            name: 'Service provider'
+            name: 'Job description'
         },
         {
             name: 'Country'
         },
         {
-            name: 'Job description'
+            name: 'Service provider'
         }
     ];
 
@@ -168,15 +168,14 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
 
         return {
             rows: jobs?.map(job => [
-                // TODO: make it nicer
                 {
-                    name: job.service_provider
+                    name: job.name
                 },
                 {
                     name: job.countries.join(', ')
                 },
                 {
-                    name: job.name
+                    name: job.service_provider
                 }
             ])
         };

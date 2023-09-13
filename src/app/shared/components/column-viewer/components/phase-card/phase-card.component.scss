@@ -15,7 +15,6 @@
 
                 &:hover {
                     background-color: $color;
-
                 }
 
                 &:hover + div {
@@ -28,7 +27,7 @@
                     }
                 }
             }
-        };
+        }
 
         & > div:first-of-type {
             &:hover {
@@ -81,7 +80,7 @@
                     border-color: white !important;
 
                     & > teq-badge {
-                        &  > span {
+                        & > span {
                             background: white !important;
                         }
 
@@ -89,7 +88,7 @@
                             & > span {
                                 color: $color !important;
                             }
-                        };
+                        }
                     }
                 }
 
@@ -155,7 +154,7 @@
                             color: colors.$light-gray2;
 
                             & > teq-badge {
-                                &  > span {
+                                & > span {
                                     background: colors.$light-gray2 !important;
                                 }
                             }
@@ -200,7 +199,7 @@
 
             @include shadows.phase-box-shadow();
 
-            border-bottom-width: .5rem;
+            border-bottom-width: 0.5rem;
 
             transition: ease-out 0.5s all;
 
@@ -310,7 +309,7 @@
             & > div {
                 transition: color, border-color 0.5s ease-out;
 
-                border: .125rem solid transparent;
+                border: 0.125rem solid transparent;
             }
 
             [data-subphases-wrapper] {

@@ -33,24 +33,24 @@
         & > teq-side-list {
             height: 75vh;
 
-            overflow-y: auto;
+            // overflow-y: auto;
 
             min-width: 22.625rem;
 
-            &::-webkit-scrollbar {
-                width: 0.25rem;
-                height: 0.25rem;
-                background: colors.$mid-gray;
-            }
+            // &::-webkit-scrollbar {
+            //     width: 0.25rem;
+            //     height: 0.25rem;
+            //     background: colors.$mid-gray;
+            // }
 
-            &::-webkit-scrollbar-thumb {
-                background: colors.$light-gray2;
-                -webkit-border-radius: 1ex;
-            }
+            // &::-webkit-scrollbar-thumb {
+            //     background: colors.$light-gray2;
+            //     -webkit-border-radius: 1ex;
+            // }
 
-            &::-webkit-scrollbar-corner {
-                background: colors.$mid-gray;
-            }
+            // &::-webkit-scrollbar-corner {
+            //     background: colors.$mid-gray;
+            // }
         }
 
         & > div {
