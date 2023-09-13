@@ -286,13 +286,17 @@ export class APIState {
     @Action(APIGlossary.List)
     fetchGlossary({ patchState }: StateContext<IAPIState>): void {
         const response = this._http
-            .post<IAPIPhase[]>(`${environment.apiConfig.uri}/v1/Phases/GetGlossary`, {
-                responseType: 'json',
-                context: new HttpContext()
-                    // .set(CacheStorage, CacheType.GLOSSARY)
-                    // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
-                    .set(AuthenticatedRequest, true)
-            })
+            .post<IAPIPhase[]>(
+                `${environment.apiConfig.uri}/v1/Phases/GetGlossary`,
+                {},
+                {
+                    responseType: 'json',
+                    context: new HttpContext()
+                        // .set(CacheStorage, CacheType.GLOSSARY)
+                        // .set(CachePolicy, CachingPolicy.STALE_WHILE_REVALIDATE)
+                        .set(AuthenticatedRequest, true)
+                }
+            )
             .pipe(catchError(this.handleError('glossary')));
 
         response.subscribe(rawGlossary => {

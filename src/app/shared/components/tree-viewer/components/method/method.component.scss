@@ -69,8 +69,10 @@
                 padding-left: 0.5rem;
 
                 ::ng-deep > svg {
-                    width: 11px;
-                    height: 11px;
+                    // width: 11px;
+                    // height: 11px;
+                    width: 0.6875rem;
+                    height: 0.6875rem;
                 }
             }
         }

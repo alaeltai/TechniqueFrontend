@@ -3,7 +3,8 @@
 
 :host {
     & [data-dropzone] {
-        height: 100px;
+        // height: 100px;
+        height: 6.25rem;
 
         display: flex;
 
@@ -11,7 +12,8 @@
 
         padding: 2.5rem 1.5rem;
 
-        border: 2px dashed colors.$light-gray;
+        // border: 2px dashed colors.$light-gray;
+        border: 0.125rem dashed colors.$light-gray;
 
         &.invalid {
             border-color: colors.$red;

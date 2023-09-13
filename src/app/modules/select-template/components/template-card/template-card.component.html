@@ -1,0 +1,10 @@
+<div>
+    <div>
+        <h3>{{ template.title }}</h3>
+        <p>{{ template.description }}</p>
+    </div>
+
+    <div>
+        <button (click)="router.navigate(['/'+template.button.link])">{{ template.button.name }}</button>
+    </div>
+</div>

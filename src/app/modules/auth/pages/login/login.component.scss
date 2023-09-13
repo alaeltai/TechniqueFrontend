@@ -20,8 +20,10 @@
         & div:first-of-type {
             display: flex;
             flex-direction: column;
-            width: 460px;
-            height: 208px;
+            // width: 460px;
+            // height: 208px;
+            width: 28.75rem;
+            height: 13rem;
             background-color: colors.$white;
             border: 1px solid;
             border-color: colors.$white-gray;
@@ -38,8 +40,10 @@
 
             button {
                 place-self: center;
-                width: 219px;
-                height: 48px;
+                // width: 219px;
+                // height: 48px;
+                width: 13.6875rem;
+                height: 3rem;
                 padding: 1rem 1.5rem;
                 border: none;
                 cursor: pointer;

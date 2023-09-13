@@ -1,0 +1,99 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 6rem);
+
+    & > div:first-of-type {
+        flex: 0.5;
+    }
+
+    & > div:last-of-type {
+        flex: 1;
+    }
+
+    & > div:first-of-type,
+    & > div:last-of-type {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & > [data-content] {
+        position: relative;
+
+        & > h1 {
+            position: fixed;
+
+            @include typography.apply('heading1');
+
+            color: colors.$dark-gray;
+            background-color: colors.$white;
+            z-index: layers.$pageControlsLayer;
+        }
+
+        teq-color-bar {
+            position: fixed;
+            margin-top: 8.5rem;
+            z-index: layers.$pageControlsLayer;
+        }
+
+        & [data-back-link] {
+            position: fixed;
+            padding-top: 10.5rem;
+            padding-left: 2.5rem;
+            width: 100%;
+
+            left: 0;
+
+            z-index: layers.$fixedContent;
+            background-color: colors.$white;
+        }
+
+        & [data-back-link] > a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: none;
+            text-wrap: nowrap;
+            cursor: pointer;
+            @include typography.apply('bold');
+        }
+
+        & [data-back-link] > a {
+            background-color: transparent;
+            color: colors.$active-link-item-background;
+            gap: 0.5rem;
+            padding-left: 0;
+            text-decoration: none;
+        }
+
+        & > [data-description] {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+
+            padding-top: 4.5rem;
+
+            @include typography.apply('content-l');
+            z-index: layers.$pageControlsLayer;
+            margin-bottom: 1.5rem;
+        }
+
+        & > [data-cards-wrapper] {
+            display: flex;
+            flex-wrap: wrap;
+
+            margin-top: 13.5rem;
+            row-gap: 1.75rem;
+            column-gap: 3.5rem;
+
+            & > [data-break] {
+                flex-basis: 100%;
+                height: 0;
+            }
+        }
+    }
+}

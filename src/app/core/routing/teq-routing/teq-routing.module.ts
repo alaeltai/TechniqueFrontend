@@ -27,6 +27,12 @@ const routes: Routes = [
         loadChildren: async () => (await import('@teq/modules/framework/framework.module')).FrameworkModule
     },
     {
+        path: TeqRoutesEnum.SELECT_TEMPLATE,
+        canActivate: [isAuthenticatedGuard],
+        title: 'Technique - Select template',
+        loadChildren: async () => (await import('@teq/modules/select-template/select-template.module')).SelectTemplateModule
+    },
+    {
         path: TeqRoutesEnum.CREATE,
         canActivate: [isAuthenticatedGuard],
         title: 'Technique - Create',

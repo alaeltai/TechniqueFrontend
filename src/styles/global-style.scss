@@ -32,3 +32,17 @@ body {
     background-color: colors.$orange;
     display: inline-block;
 }
+
+@media (max-width: 1536px) {
+    html,
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 1280px) {
+    html,
+    body {
+        font-size: 12px;
+    }
+}

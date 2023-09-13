@@ -22,14 +22,16 @@
             color: colors.$light-gray2;
         }
 
-        padding-top: 2px;
+        // padding-top: 2px;
+        padding-top: 0.125rem;
 
         @include typography.apply('subphase');
         color: colors.$subphase-title-color;
 
         & > teq-information-provider {
-            margin-left: .5rem;
-            margin-top: -2px;
+            margin-left: 0.5rem;
+            // margin-top: -2px;
+            margin-top: -0.125rem;
 
             & ::ng-deep path {
                 fill: colors.$light-gray;

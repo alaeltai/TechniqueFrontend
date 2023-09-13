@@ -25,14 +25,16 @@
             }
 
             & > [data-tab='true'] {
-                border-bottom: 4px solid colors.$active-link-item-background;
+                // border-bottom: 4px solid colors.$active-link-item-background;
+                border-bottom: 0.25rem solid colors.$active-link-item-background;
                 color: colors.$active-link-item-background;
 
                 animation: tabAnimation 0.5s ease-in;
             }
 
             & > [data-tab='false'] {
-                border-bottom: 4px solid transparent;
+                // border-bottom: 4px solid transparent;
+                border-bottom: 0.25rem solid transparent;
                 color: colors.$light-gray2;
 
                 animation: tabAnimationReverse 0.3s ease-out;

@@ -4,9 +4,16 @@
     span:first-of-type {
         display: flex;
         align-items: center;
-        padding: .125rem .375rem;
-        margin: .25rem 0;
-        border-radius: 2px;
+        padding: 0.125rem 0.375rem;
+        margin: 0.25rem 0;
+        // border-radius: 2px;
+        border-radius: 0.125rem;
         @include typography.apply(normal);
+    }
+
+    @media (max-width: 1536px) {
+        span:first-of-type {
+            padding: 0rem 0.375rem;
+        }
     }
 }

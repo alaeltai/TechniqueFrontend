@@ -139,6 +139,13 @@ export class RolesComponent extends TreeBasedPageComponent implements OnInit {
     }
 
     selectionChanged(selected: string): void {
+        if (selected !== this.selected) {
+            window.scroll({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         this.selected = selected;
     }
 

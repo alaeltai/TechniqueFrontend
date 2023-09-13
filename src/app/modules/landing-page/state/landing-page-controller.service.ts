@@ -18,7 +18,7 @@ export const cards = [
         description: 'Select predefined templates of complexity and tailor the selection to better fit your project needs.',
         button: {
             name: 'Create a new framework',
-            link: '/create'
+            link: '/select-template'
         },
         image: 'assets/img/create.svg'
     },

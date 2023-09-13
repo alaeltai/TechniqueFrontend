@@ -27,12 +27,14 @@
             display: flex;
             flex: 1;
 
-            padding-bottom: 10px;
+            // padding-bottom: 10px;
+            padding-bottom: 0.625rem;
 
             border-bottom: 1px solid colors.$light-gray;
 
             & > div {
-                height: 36px;
+                // height: 36px;
+                height: 2.25rem;
             }
 
             & > [data-back-link] {
@@ -67,9 +69,11 @@
                 align-items: center;
 
                 & > button {
-                    height: 32px;
+                    // height: 32px;
+                    height: 2rem;
 
-                    padding: 8px 16px;
+                    // padding: 8px 16px;
+                    padding: 0.5rem 1rem;
 
                     border-style: solid;
                     border-color: colors.$active-link-item-background;
@@ -90,15 +94,17 @@
     }
 
     & [data-phase-mask] {
-        padding-top: 36px;
+        // padding-top: 36px;
+        padding-top: 2.25rem;
         overflow-x: clip;
 
         & [data-phase-wrapper] {
             display: flex;
 
             transform-origin: top left;
-            transition: transform .15s linear;
-            transform: scale(1,1) translateX(4px);
+            transition: transform 0.15s linear;
+            // transform: scale(1,1) translateX(4px);
+            transform: scale(1, 1) translateX(0.25rem);
 
             & > div {
                 display: flex;
@@ -107,7 +113,8 @@
 
                 & [data-phase] {
                     position: sticky;
-                    top: 143px;
+                    // top: 143px;
+                    top: 8.9375rem;
 
                     transition: top 0 ease-out;
 
@@ -132,7 +139,8 @@
 
                 & [data-subphase] {
                     position: sticky;
-                    top: 222px;
+                    // top: 222px;
+                    top: 13.875px;
 
                     transition: top 0 ease-out;
                 }
@@ -159,7 +167,8 @@
     }
 
     teq-phase {
-        margin-bottom: 8px;
+        // margin-bottom: 8px;
+        margin-bottom: 0.5rem;
     }
 
     teq-subphase {
