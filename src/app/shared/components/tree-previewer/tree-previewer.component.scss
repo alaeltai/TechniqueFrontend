@@ -84,7 +84,7 @@
                     border-style: solid;
                     border-width: 1px;
 
-                    @include typography.apply('condensed', true);
+                    @include typography.apply('condensed');
 
                     &:not(:disabled):hover {
                         cursor: pointer;

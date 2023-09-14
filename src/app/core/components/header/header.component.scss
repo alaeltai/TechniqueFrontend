@@ -38,6 +38,11 @@
             margin-right: auto;
 
             & > [data-logo] {
+                display: flex;
+                align-items: center;
+
+                padding-left: 0;
+
                 & > img {
                     // margin-top: -4px;
                     // padding-right: 6px;
@@ -50,7 +55,7 @@
 
                     letter-spacing: -1%;
 
-                    @include typography.apply('condensed', true);
+                    @include typography.apply('condensed');
                     color: colors.$dark-gray;
                 }
 
@@ -63,7 +68,7 @@
         & > li {
             list-style: none;
 
-            @include typography.apply('bold', true);
+            @include typography.apply('bold');
 
             & > a ~ ul {
                 display: none;

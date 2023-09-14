@@ -33,7 +33,7 @@ $phaseColorImprove: #f12938;
 
 $pageBackground: $white;
 
-$overlayLightColor: rgba($pageBackground, .85);
+$overlayLightColor: rgba($pageBackground, 0.85);
 $overlayDarkColor: rgba($dark-gray, 0.9);
 
 $phases: (
@@ -46,7 +46,7 @@ $phases: (
 @mixin phase-color($attr) {
     @each $phase, $color in $phases {
         &[#{$attr}='#{$phase}'] {
-            @content($color);
+            @content ($color);
         }
     }
 }

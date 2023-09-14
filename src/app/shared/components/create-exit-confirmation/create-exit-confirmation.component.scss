@@ -47,7 +47,7 @@
                     background-color: rgba(colors.$active-link-item-background, 0.85);
                 }
 
-                @include typography.apply('condensed', true);
+                @include typography.apply('condensed');
 
                 &:not(:disabled):hover {
                     cursor: pointer;

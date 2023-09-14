@@ -55,7 +55,7 @@
         // padding: 8px 16px;
         padding: 0.5rem 1rem;
 
-        @include typography.apply('normal', true);
+        @include typography.apply('normal');
 
         color: colors.$active-link-item-background;
 
@@ -70,7 +70,7 @@
     }
 
     span {
-        @include typography.apply('normal', true);
+        @include typography.apply('normal');
         color: colors.$dark-gray;
     }
 }

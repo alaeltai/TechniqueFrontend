@@ -53,7 +53,7 @@
                 border: 1px solid colors.$active-link-item-background;
                 margin-top: 1.25rem;
 
-                @include typography.apply('bold', true);
+                @include typography.apply('bold');
 
                 transition: all 0.3s ease-out;
             }

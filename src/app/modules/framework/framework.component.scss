@@ -79,7 +79,7 @@
                     border-color: colors.$active-link-item-background;
                     border-width: 1px;
 
-                    @include typography.apply('condensed', true);
+                    @include typography.apply('condensed');
                     color: colors.$active-link-item-background;
 
                     background-color: transparent;

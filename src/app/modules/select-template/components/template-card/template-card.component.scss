@@ -52,7 +52,7 @@
                 color: colors.$active-link-item-background;
                 border: 1px solid colors.$active-link-item-background;
 
-                @include typography.apply('bold', true);
+                @include typography.apply('bold');
 
                 transition: all 0.3s ease-out;
             }
