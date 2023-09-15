@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Auth } from './auth.actions';
 import { HttpClient } from '@angular/common/http';
-import type { AuthenticationResult } from '@azure/msal-browser';
+import type { AccountInfo, AuthenticationResult } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from 'environments/environment';
+import { tempUsers } from 'temp-users';
 
 export interface IAuthState {
     token: string;
@@ -52,7 +53,12 @@ export class AuthState {
      */
     @Action(Auth.GetToken)
     getToken({ setState, dispatch }: StateContext<IAuthState>): void {
-        const account = this._msalService.instance.getActiveAccount();
+        let account = this._msalService.instance.getActiveAccount();
+
+        // TO BE DELETED
+        const validUser = account && this.validateUsersList(account);
+        !validUser && (account = null);
+        !validUser && alert("Sorry, you don't have access to this page!");
 
         if (account) {
             void this._msalService.instance
@@ -110,13 +116,16 @@ export class AuthState {
                     scopes: environment.apiConfig.scopes
                 })
                 .subscribe((response: AuthenticationResult) => {
+                    // TO BE DELETED
                     this._msalService.instance.setActiveAccount(response.account);
+                    const validUser = this.validateUsersList(response.account);
 
-                    setState({
-                        expiresOn: response.expiresOn?.getTime() ?? Date.now() + 60 * 1000,
-                        token: response.accessToken,
-                        user: { name: response.account.name ?? '', email: response.account.username }
-                    });
+                    validUser &&
+                        setState({
+                            expiresOn: response.expiresOn?.getTime() ?? Date.now() + 60 * 1000,
+                            token: response.accessToken,
+                            user: { name: response.account.name ?? '', email: response.account.username }
+                        });
                 });
         } else {
             // Don't start the authentication process until the user manually engages
@@ -126,5 +135,9 @@ export class AuthState {
     @Action(Auth.Deauthenticate)
     deauthenticate({ setState }: StateContext<IAuthState>): void {
         setState(defaults);
+    }
+
+    validateUsersList(user: AccountInfo): boolean {
+        return !!tempUsers.find(u => u.toLocaleLowerCase() === user.username.toLocaleLowerCase());
     }
 }
