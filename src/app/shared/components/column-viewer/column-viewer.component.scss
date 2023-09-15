@@ -56,8 +56,8 @@
                 height: 2.25rem;
             }
 
-            & [data-back-link] {
-                flex: 1;
+            & > div:nth-child(2) {
+                margin-left: auto;
             }
 
             & button,

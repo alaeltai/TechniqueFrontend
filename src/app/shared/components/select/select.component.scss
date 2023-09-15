@@ -29,6 +29,10 @@
                 & > span {
                     flex: 1;
                 }
+
+                & > teq-icon {
+                    margin-left: 0.3rem;
+                }
             }
 
             & > [data-input] {

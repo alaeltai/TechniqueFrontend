@@ -28,9 +28,7 @@
                 <teq-checkbox [label]="option.label" [value]="isSelected(option.value)" />
             </div>
 
-            <div *ngIf="!multiple">
-                {{ option.label }}
-            </div>
+            <div *ngIf="!multiple">{{ option.label }}</div>
         </li>
         <!-- TODO: No results message, if searchable and has term -->
     </ul>

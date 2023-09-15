@@ -6,7 +6,7 @@ import type { FiltersValue, IFilters } from '@teq/shared/components/filters/type
 import { SelectComponent } from '@teq/shared/components/select/select.component';
 import { ToggleComponent } from '../toggle/toggle.component';
 import { Observable } from 'rxjs';
-import { FilterType, FiltersService } from '@teq/shared/components/filters/filters.service';
+import { FilterType, FiltersService, MatchAllOfType } from '@teq/shared/components/filters/filters.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -33,6 +33,7 @@ export class FiltersComponent implements OnInit {
     ngOnInit(): void {
         const originalFilters = this._filtersService.addFilters(
             ...[
+                FilterType.SelectLevelOfDetail,
                 ...(this.enableVisibility ? [FilterType.ToggleFilterDisabled] : []),
                 ...(this.enableToggles ? [FilterType.ToggleDisableControl] : []),
                 FilterType.SelectRoles,
@@ -64,7 +65,7 @@ export class FiltersComponent implements OnInit {
         const formControls: Record<string, string | string[] | boolean> = {};
 
         filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
-        filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : '-1'));
+        filters.selects.forEach(s => (formControls[s.controlName] = s.value ?? (s.controlName === FilterType.Search ? '' : MatchAllOfType)));
 
         if (this.complexity) {
             // Ensure enforcing the prior selected complexity for create cases

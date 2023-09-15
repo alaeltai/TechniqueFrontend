@@ -4,12 +4,14 @@ import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { APIService } from '../../states/api/api.service';
 import { IPhase } from '@teq/shared/types/phase.type';
 import { IRole } from '@teq/shared/types/roles.type';
+import { ILevelOfDetail } from '@teq/shared/types/level-of-detail.type';
 import { ICategory } from '@teq/shared/types/category.type';
 import { ITemplate } from '@teq/shared/types/template.type';
 import { IOption } from '../select/types/option.type';
 import { EntityDataType, IApproach, IMethod, ISubphase, ITask } from '@teq/shared/types/types';
+import { LevelOfDetailEnum } from '../../enums/level-of-detail.enum';
 
-const MatchAllOfType = '-1';
+export const MatchAllOfType = '-1';
 
 type EntityPropStringValue = string | undefined | EntityPropStringValue[];
 
@@ -17,15 +19,17 @@ export enum FilterType {
     ToggleFilterDisabled = 1,
     ToggleDisableControl,
     SelectComplexity,
-    SelectRoles,
     SelectCategory,
-    Search
+    SelectRoles,
+    Search,
+    SelectLevelOfDetail
 }
 
 interface IFilterValues {
-    [FilterType.SelectRoles]: IRole[];
+    [FilterType.SelectLevelOfDetail]: ILevelOfDetail[];
     [FilterType.SelectComplexity]: ITemplate[];
     [FilterType.SelectCategory]: ICategory[];
+    [FilterType.SelectRoles]: IRole[];
 }
 
 interface IFilterCriteria {
@@ -38,9 +42,10 @@ interface IFilterCriteria {
 }
 
 const valueExtractableTypes = {
-    [FilterType.SelectRoles]: true,
+    [FilterType.SelectLevelOfDetail]: false,
     [FilterType.SelectComplexity]: true,
-    [FilterType.SelectCategory]: true
+    [FilterType.SelectCategory]: true,
+    [FilterType.SelectRoles]: true
 };
 
 @Injectable({
@@ -108,7 +113,7 @@ export class FiltersService {
                 const formControls: Record<string, string | string[] | boolean> = {};
 
                 filters.toggles.forEach(t => (formControls[t.controlName] = t.value ?? false));
-                filters.selects.forEach(t => (formControls[t.controlName] = t.value ?? t.controlName === FilterType.Search ? '' : MatchAllOfType));
+                filters.selects.forEach(s => (formControls[s.controlName] = s.value ?? (s.controlName === FilterType.Search ? '' : MatchAllOfType)));
 
                 // Cache default criterias in use
                 this._defaultCriterias = this._determineFilterCriterias(formControls);
@@ -357,6 +362,20 @@ export class FiltersService {
 
                     break;
 
+                case FilterType.SelectLevelOfDetail:
+                    filters.selects.push({
+                        controlName: FilterType.SelectLevelOfDetail,
+                        value: LevelOfDetailEnum.MEDIUM,
+                        options: [
+                            ...Object.values(LevelOfDetailEnum).map<IOption>(level => ({
+                                value: level,
+                                label: level
+                            }))
+                        ]
+                    });
+
+                    break;
+
                 case FilterType.SelectComplexity:
                     filters.selects.push({
                         controlName: FilterType.SelectComplexity,
@@ -442,7 +461,10 @@ export class FiltersService {
     filter(filters: Record<string, IFilterCriteria['value']>): void {
         this.term.update(() => filters[6] as string);
 
+        this._collapsedMap = this._setLevelOfDetail(this._originalPhases, filters[FilterType.SelectLevelOfDetail] as string);
+
         const filterCriterias = this._determineFilterCriterias(filters);
+
         const filtered = this._originalPhases.map(p => this._filterInDepth(p, filterCriterias)).filter(Boolean) as IPhase[];
 
         this._filteredMap = {}; // Clear filtered entity lookup map
@@ -739,6 +761,23 @@ export class FiltersService {
         }
 
         return null;
+    }
+
+    private _setLevelOfDetail(phases: IPhase[], levelOfDetail: string): Record<string, boolean> {
+        const newCollapsedMap = { ...this._collapsedMap };
+
+        phases.forEach(p => {
+            p.subphases?.forEach(s => {
+                s.methods.forEach(m => {
+                    newCollapsedMap[m._locator] = levelOfDetail === LevelOfDetailEnum.LOW;
+                    m.approaches.forEach(a => {
+                        newCollapsedMap[a._locator] = levelOfDetail === LevelOfDetailEnum.LOW || levelOfDetail === LevelOfDetailEnum.MEDIUM;
+                    });
+                });
+            });
+        });
+
+        return newCollapsedMap;
     }
 
     private _isAllSearchCase(value: unknown): boolean {
