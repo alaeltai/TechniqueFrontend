@@ -193,7 +193,7 @@
             padding-top: 1.5rem;
             height: 29rem;
 
-            overflow-y: hidden;
+            overflow: visible; // Fix card resizing on tooltip hover
 
             border: 1px solid colors.$white-gray;
 

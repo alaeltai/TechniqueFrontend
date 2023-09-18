@@ -1,5 +1,5 @@
 <div #wrapper data-wrapper [attr.data-phase]="phase.name | lowercase" [attr.data-disabled]="phase.disabled ?? 'false'">
-    <div (mouseenter)="hover = true" (mouseleave)="hover = false">
+    <div data-card-main-contents (mouseenter)="hover = true" (mouseleave)="hover = false">
         <img src="{{ image }}" alt="" />
 
         <div>
@@ -38,7 +38,7 @@
             <div data-roles>
                 <span data-role-name>{{ "Roles" | uppercase }}</span>
 
-                <teq-roles-container [roles]="roles" [phase]="phase" [term]="term" [unlimited]="phase.disabled ?? hover" />
+                <teq-roles-container [roles]="roles" [phase]="phase" [term]="term" [unlimited]="phase.disabled ? phase.disabled : hover" />
             </div>
         </div>
 

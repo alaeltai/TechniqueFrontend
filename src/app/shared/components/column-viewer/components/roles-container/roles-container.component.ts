@@ -75,10 +75,13 @@ export class RolesContainerComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if ('roles' in changes) {
-            const roles = changes['roles'].currentValue as IRoleCount[];
+            const roleChange = changes['roles'];
+            const roles = roleChange.currentValue as IRoleCount[];
 
-            if (roles.map(r => r.role.name).join('|') !== this.roles.map(r => r.role.name).join('|')) {
-                this._computeLength();
+            if (!roleChange.isFirstChange) {
+                if (roles.map(r => r.role.name).join('|') !== this.roles.map(r => r.role.name).join('|')) {
+                    this._computeLength();
+                }
             }
         }
     }

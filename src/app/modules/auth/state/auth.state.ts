@@ -20,6 +20,8 @@ export const defaults: IAuthState = {
 
 export const StoreIdentifier = 'auth';
 
+const SessionTTL = 60 * 1000;
+
 @State<IAuthState>({
     name: StoreIdentifier,
     defaults
@@ -69,7 +71,7 @@ export class AuthState {
                 .then(response => {
                     // Session restored succesfully, preserve data in state
                     setState({
-                        expiresOn: response.expiresOn?.getTime() ?? Date.now() + 60 * 1000,
+                        expiresOn: response.expiresOn?.getTime() ?? Date.now() + SessionTTL,
                         token: response.accessToken,
                         user: { name: response.account.name ?? '', email: response.account.username }
                     });
@@ -99,7 +101,7 @@ export class AuthState {
                         next(response: AuthenticationResult) {
                             // Session restored succesfully, preserve data in state
                             setState({
-                                expiresOn: response.expiresOn?.getTime() ?? Date.now() + 60 * 1000,
+                                expiresOn: response.expiresOn?.getTime() ?? Date.now() + SessionTTL,
                                 token: response.accessToken,
                                 user: { name: response.account.name ?? '', email: response.account.username }
                             });

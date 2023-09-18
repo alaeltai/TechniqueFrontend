@@ -1,5 +1,3 @@
-import { APIState } from '@teq/shared/states/api/api.state';
-import { IAPIRole } from '@teq/shared/types/api/role.type';
 import type { IRole, RoleType } from '@teq/shared/types/roles.type';
 import { environment } from 'environments/environment';
 
@@ -25,17 +23,6 @@ const rolesMap: RolesMap = {
     Manager: { color: '#EB5757' }
 };
 
-export function mockRole(name: RoleType): IRole {
-    return determineRoleColor({
-        id: name,
-        description: '',
-        skills: '',
-        related_jobs: [],
-        name,
-        color: ''
-    });
-}
-
 export function normalizeName(name: string): RoleType {
     if (name in rolesMap) {
         return name as RoleType;
@@ -45,24 +32,12 @@ export function normalizeName(name: string): RoleType {
         console.warn(`Unrecognized role type: ${name}`);
     }
 
-    return 'Unknown';
+    return name as RoleType;
 }
 
 export function determineRoleColor(role: IRole): IRole {
     return {
         ...role,
-        color: rolesMap[role.name].color
+        color: (rolesMap[role.name] ?? rolesMap.Unknown).color
     };
-}
-
-export function convertRole(role: IAPIRole): IRole {
-    const name = normalizeName(role.name);
-
-    return determineRoleColor({
-        id: role.id,
-        name,
-        description: role.description,
-        skills: role.skills,
-        related_jobs: []
-    });
 }
