@@ -40,34 +40,69 @@
             z-index: layers.$pageControlsLayer;
         }
 
-        & [data-back-link] {
+        & > [data-controls] {
+            display: flex;
+            align-items: center;
+
             position: fixed;
+
             padding-top: 10.5rem;
-            padding-left: 2.5rem;
             width: 100%;
 
-            left: 0;
+            & [data-back-link] {
+                left: 0;
 
-            z-index: layers.$fixedContent;
-            background-color: colors.$white;
-        }
+                z-index: layers.$fixedContent;
+                background-color: colors.$white;
+            }
 
-        & [data-back-link] > a {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border: none;
-            text-wrap: nowrap;
-            cursor: pointer;
-            @include typography.apply('bold');
-        }
+            & [data-back-link] > a {
+                display: inline-flex;
+                align-items: center;
 
-        & [data-back-link] > a {
-            background-color: transparent;
-            color: colors.$active-link-item-background;
-            gap: 0.5rem;
-            padding-left: 0;
-            text-decoration: none;
+                padding: 0.5rem 0;
+                gap: 0.5rem;
+
+                border: none;
+                text-wrap: nowrap;
+                cursor: pointer;
+
+                background-color: transparent;
+                color: colors.$active-link-item-background;
+                text-decoration: none;
+
+                @include typography.apply('bold');
+            }
+
+            & > [data-divider] {
+                width: 1px;
+                height: 2rem;
+                margin: 0 2.25rem;
+
+                background: colors.$mid-gray;
+            }
+
+            & > button {
+                display: flex;
+                align-items: center;
+
+                height: 2rem;
+                padding: 1rem 1.5rem;
+                cursor: pointer;
+
+                background-color: colors.$white;
+                color: colors.$active-link-item-background;
+                border: 1px solid colors.$active-link-item-background;
+
+                @include typography.apply('bold');
+
+                transition: all 0.3s ease-out;
+            }
+
+            & > button:hover {
+                background-color: colors.$button-hover-color-primary;
+                color: colors.$active-link-item-color;
+            }
         }
 
         & > [data-description] {

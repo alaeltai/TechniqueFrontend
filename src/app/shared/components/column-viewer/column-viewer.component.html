@@ -67,9 +67,14 @@
 
     <div data-content @fadeIn>
         <div [attr.data-placeholder]="page !== 0"></div>
-        <div data-subphases>
-            <div *ngFor="let subphase of (phases$ | async)?.[page!]?.subphases">
-                <div *ngFor="let method of subphase?.methods" data-method>
+        <div data-subphases *ngIf="(phases$ | async)?.[page!] as phase">
+            <div *ngFor="let subphase of phase?.subphases">
+                <div
+                    *ngFor="let method of subphase?.methods"
+                    data-method
+                    [attr.data-color]="phase.name.toLowerCase()"
+                    [attr.data-method-collapsed]="method.collapsed"
+                >
                     <teq-method
                         *ngIf="!(method.disabled && filterDisabled)"
                         [filterDisabled]="filterDisabled"

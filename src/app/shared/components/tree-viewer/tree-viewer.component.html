@@ -12,7 +12,12 @@
         <div data-content>
             <div *ngFor="let phase of filteredPhases">
                 <div *ngFor="let subphase of phase?.subphases">
-                    <div *ngFor="let method of subphase?.methods" data-method>
+                    <div
+                        *ngFor="let method of subphase?.methods"
+                        data-method
+                        [attr.data-color]="phase.name.toLowerCase()"
+                        [attr.data-method-collapsed]="method.collapsed"
+                    >
                         <teq-method [method]="method" *ngIf="!(method.disabled && filterDisabled)" [filterDisabled]="filterDisabled"></teq-method>
                     </div>
                 </div>

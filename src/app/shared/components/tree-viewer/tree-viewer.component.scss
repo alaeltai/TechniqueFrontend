@@ -5,7 +5,7 @@
 
 $minPhaseWidth: 78rem;
 $transformOrigin: top left;
-$transitionType: transform .15s linear;
+$transitionType: transform 0.15s linear;
 
 :host {
     // Define CSS 3 variables for transformations
@@ -29,12 +29,12 @@ $transitionType: transform .15s linear;
 
     & [data-heading-mask='left'] {
         left: 0;
-        background: linear-gradient(90deg, rgba(255,255,255,1) 95%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 1) 95%, rgba(255, 255, 255, 0) 100%);
     }
 
     & [data-heading-mask='right'] {
         right: 0;
-        background: linear-gradient(95deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 5%);
+        background: linear-gradient(95deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 5%);
     }
 
     & [data-phase-mask] {
@@ -56,11 +56,11 @@ $transitionType: transform .15s linear;
 
                 transform-origin: $transformOrigin;
                 transition: $transitionType;
-                transform: scale(var(--scale),var(--scale)) translateX(var(--translateX));
+                transform: scale(var(--scale), var(--scale)) translateX(var(--translateX));
 
                 padding-top: 1rem;
 
-                z-index: layers.$treeViewFloatingContent;;
+                z-index: layers.$treeViewFloatingContent;
 
                 & > div {
                     display: flex;
@@ -84,7 +84,7 @@ $transitionType: transform .15s linear;
 
                 transform-origin: $transformOrigin;
                 transition: $transitionType;
-                transform: scale(var(--scale),var(--scale)) translateX(var(--translateX));
+                transform: scale(var(--scale), var(--scale)) translateX(var(--translateX));
 
                 align-items: flex-start;
 
@@ -101,6 +101,24 @@ $transitionType: transform .15s linear;
 
                     & > div {
                         flex: 1;
+                    }
+                }
+
+                & [data-color]:not([data-method-collapsed='false']) {
+                    & > teq-method {
+                        border: 1px solid transparent;
+
+                        transition: border 0.5s ease-in-out;
+                    }
+                }
+
+                & [data-color]:not([data-method-collapsed='true']) {
+                    @include colors.phase-color(data-color) using ($color) {
+                        & > teq-method {
+                            border: 1px solid rgba($color, 0.3);
+
+                            transition: border 0.5s ease-in-out;
+                        }
                     }
                 }
             }

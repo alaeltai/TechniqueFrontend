@@ -9,11 +9,17 @@
 
     <teq-color-bar @bottomFadeIn></teq-color-bar>
 
-    <div data-back-link>
-        <a [routerLink]="['/landing-page']">
-            <teq-icon type="arrow" />
-            Go back
-        </a>
+    <div data-controls>
+        <div data-back-link>
+            <a [routerLink]="['/landing-page']">
+                <teq-icon type="arrow" />
+                Go back
+            </a>
+        </div>
+
+        <div data-divider></div>
+
+        <button (click)="startFullFramework()">Start with full framework</button>
     </div>
 
     <div data-cards-wrapper @fadeIn>

@@ -226,6 +226,24 @@
             }
         }
 
+        & [data-color]:not([data-method-collapsed='false']) {
+            & > teq-method {
+                border: 1px solid transparent;
+
+                transition: border 0.5s ease-in-out;
+            }
+        }
+
+        & [data-color]:not([data-method-collapsed='true']) {
+            @include colors.phase-color(data-color) using ($color) {
+                & > teq-method {
+                    border: 1px solid rgba($color, 0.3);
+
+                    transition: border 0.5s ease-in-out;
+                }
+            }
+        }
+
         & > [data-placeholder='true'] {
             flex: 1;
             margin: 0 1rem;
