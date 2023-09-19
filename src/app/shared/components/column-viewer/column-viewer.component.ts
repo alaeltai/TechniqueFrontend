@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { PhaseComponent } from '../tree-viewer/components/phase/phase.component';
 import { MethodComponent } from '../tree-viewer/components/method/method.component';
 import { commitPreviewState, removePreviewState } from '@teq/shared/lib/preview-storage.lib';
-import { OverlayService, OverlayTemplate, OverlayType } from '@teq/shared/services/overlay.service';
+import { OverlayService } from '@teq/shared/services/overlay.service';
 
 @UntilDestroy()
 @Component({

@@ -11,9 +11,12 @@ export const environment: EnvironmentTypeModel = {
     },
     msalConfig: {
         auth: {
-               clientId: '70f4d3b4-24ee-4742-aea6-43808b2a391d',
-               authority: 'https://login.microsoftonline.com/8e656664-5f36-4a5b-954c-c5405fd29206'
+            clientId: '70f4d3b4-24ee-4742-aea6-43808b2a391d',
+            authority: 'https://login.microsoftonline.com/8e656664-5f36-4a5b-954c-c5405fd29206'
         }
+    },
+    exportService: {
+        url: 'https://technique.qa.spctrm.computacenter.com/export'
     },
     apiConfig: {
         scopes: ['api://70f4d3b4-24ee-4742-aea6-43808b2a391d/Read'],

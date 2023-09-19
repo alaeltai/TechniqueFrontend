@@ -10,7 +10,7 @@ import { ISubphase } from '@teq/shared/types/subphase.type';
 import { IMethod } from '@teq/shared/types/method.type';
 import { IApproach } from '@teq/shared/types/approach.type';
 import { IAPIRelatedJob, IAPIRole } from '@teq/shared/types/api/role.type';
-import { IRole, IRoleRelatedJobs } from '@teq/shared/types/roles.type';
+import { IRelatedJob, IRole, IRoleRelatedJobs } from '@teq/shared/types/roles.type';
 import { determineRoleColor, normalizeName } from '@teq/shared/lib/roles.lib';
 import { IAPITask } from '@teq/shared/types/api/task.type';
 import { ITask } from '@teq/shared/types/task.type';
@@ -223,7 +223,7 @@ export class APIState {
     }
 
     public static convertRelatedJobs(relatedJobs: IAPIRelatedJob[], roleId: string): IRoleRelatedJobs {
-        const jobs = relatedJobs?.map(job => ({
+        const jobs = relatedJobs?.map<IRelatedJob>(job => ({
             id: job.id,
             name: job.name,
             countries: job.country,
@@ -233,7 +233,7 @@ export class APIState {
         return {
             role_id: roleId,
             jobs
-        };
+        } satisfies IRoleRelatedJobs;
     }
 
     public static convertGlossary(glossary: IAPIGlossary): IGlossary {

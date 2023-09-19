@@ -1,24 +1,26 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { TreeViewerComponent } from '../tree-viewer/tree-viewer.component';
-import { PaginationService } from './components/pagination/pagination.service';
-import { SVGRendererService } from './components/svg/svg.service';
-import { OverlayService, OverlayType } from '@teq/shared/services/overlay.service';
-import { fadeIn } from '@teq/shared/animations/animations.lib';
-import { IPagination } from '@teq/shared/types/pagination.type';
-import { generateResource } from '@teq/shared/lib/resource.lib';
-import { PaginationComponent } from './components/pagination/pagination.component';
-import { SVGRendererComponent } from './components/svg/svg.component';
 import { CommonModule } from '@angular/common';
-import { IPhase } from '@teq/shared/types/phase.type';
-import { ToggleComponent } from '../toggle/toggle.component';
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import type { OnChanges, SimpleChanges } from '@angular/core';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { fadeIn } from '@teq/shared/animations/animations.lib';
+import { generateResource } from '@teq/shared/lib/resource.lib';
+import { OverlayService, OverlayType } from '@teq/shared/services/overlay.service';
+import type { IPagination } from '@teq/shared/types/pagination.type';
+import type { IPhase } from '@teq/shared/types/phase.type';
+
 import { FiltersService } from '../filters/filters.service';
+import { ToggleComponent } from '../toggle/toggle.component';
+import { TreeViewerComponent } from '../tree-viewer/tree-viewer.component';
+
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { PaginationService } from './components/pagination/pagination.service';
+import { ExportService } from './export.service';
 
 @UntilDestroy()
 @Component({
     selector: 'teq-tree-previewer',
     standalone: true,
-    imports: [CommonModule, TreeViewerComponent, PaginationComponent, SVGRendererComponent, ToggleComponent],
+    imports: [CommonModule, TreeViewerComponent, PaginationComponent, ToggleComponent],
     templateUrl: './tree-previewer.component.html',
     styleUrls: ['./tree-previewer.component.scss'],
     animations: [fadeIn]
@@ -36,15 +38,13 @@ export class TreePreviewerComponent implements OnChanges {
 
     @Output() filterDisabledChanged = new EventEmitter<boolean>();
 
-    public readonly svgOptions$ = this._svgRenderingService.options$;
-
     private _scale = 1;
 
     private _resourceGenerationOverlay!: number;
 
     constructor(
         private readonly _paginationService: PaginationService,
-        private readonly _svgRenderingService: SVGRendererService,
+        private readonly _exportService: ExportService,
         private readonly _overlayService: OverlayService,
         private readonly _element: ElementRef<HTMLElement>
     ) {}
@@ -73,43 +73,11 @@ export class TreePreviewerComponent implements OnChanges {
     }
 
     generateSVG(): void {
-        // Enforce filtering while generating the SVG
-        const filterDisabled = this.filterDisabled;
-        this.filterDisabled = true;
+        return this._generateExport('svg');
+    }
 
-        const wrapper = this._element.nativeElement.querySelector('[data-phase-wrapper]') as HTMLDivElement;
-        const headingsWrapper = this._element.nativeElement.querySelector('[data-phase-wrapper] [data-heading]') as HTMLDivElement;
-        const contentWrapper = this._element.nativeElement.querySelector('[data-phase-wrapper] [data-content]') as HTMLDivElement;
-
-        if (wrapper && contentWrapper && headingsWrapper) {
-            // Set loading status
-            this._resourceGenerationOverlay = this._overlayService.add(OverlayType.Loading, {
-                message: 'Generating SVG...'
-            });
-
-            setTimeout(() => {
-                this._svgRenderingService.setOptions(this._svgRenderingService.computeOptions(this._scale, wrapper, headingsWrapper, contentWrapper));
-
-                setTimeout(() => {
-                    const svg = this._element.nativeElement.querySelector('[data-svg-renderer] > svg') as HTMLElement;
-
-                    if (svg) {
-                        generateResource(svg, {
-                            type: 'image/svg+xml',
-                            hint: this.preview ? this._generateName('svg') : 'full-framework.svg',
-                            download: true
-                        });
-                    }
-
-                    // Restore filtering status
-                    this.filterDisabled = filterDisabled;
-
-                    setTimeout(() => {
-                        this._overlayService.remove(this._resourceGenerationOverlay);
-                    }, 250);
-                }, 1000);
-            }, 250);
-        }
+    generatePDF(): void {
+        return this._generateExport('pdf');
     }
 
     generateTeq(): void {
@@ -128,7 +96,36 @@ export class TreePreviewerComponent implements OnChanges {
         }, 500);
     }
 
-    private _generateName(type: 'svg' | 'teq'): string {
+    private _generateExport(type: 'svg' | 'pdf'): void {
+        // Disallow filtering while generating export
+        const isSVG = type === 'svg';
+        const filterDisabled = this.filterDisabled;
+        this.filterDisabled = true;
+
+        // Set loading status
+        this._resourceGenerationOverlay = this._overlayService.add(OverlayType.Loading, {
+            message: `Generating ${type.toUpperCase()}...`
+        });
+
+        this._exportService[isSVG ? 'exportSVG' : 'exportPDF'](this.phases ?? []).subscribe(generated => {
+            console.log(generated);
+
+            if (generated) {
+                generateResource(generated, {
+                    type: isSVG ? 'image/svg+xml' : 'application/pdf',
+                    hint: this.preview ? this._generateName(isSVG ? 'svg' : 'pdf') : `full-framework.${type}`,
+                    download: true
+                });
+            }
+
+            // Restore filtering status
+            this.filterDisabled = filterDisabled;
+
+            this._overlayService.remove(this._resourceGenerationOverlay);
+        });
+    }
+
+    private _generateName(type: 'svg' | 'pdf' | 'teq'): string {
         return `framework-${new Date().toLocaleDateString()}.${type}`;
     }
 

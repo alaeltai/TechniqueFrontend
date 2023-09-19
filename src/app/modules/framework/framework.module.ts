@@ -6,7 +6,6 @@ import { NgxsModule } from '@ngxs/store';
 import { LabelComponent } from '@teq/shared/components/label/label.component';
 import { BadgeComponent } from '@teq/shared/components/badge/badge.component';
 import { PaginationComponent } from '@teq/shared/components/tree-previewer/components/pagination/pagination.component';
-import { SVGRendererComponent } from '@teq/shared/components/tree-previewer/components/svg/svg.component';
 import { APIService } from '@teq/shared/states/api/api.service';
 import { APIState } from '@teq/shared/states/api/api.state';
 import { TreeViewerComponent } from '@teq/shared/components/tree-viewer/tree-viewer.component';
@@ -23,7 +22,6 @@ import { TreePreviewerComponent } from '@teq/shared/components/tree-previewer/tr
         LabelComponent,
         BadgeComponent,
         PaginationComponent,
-        SVGRendererComponent,
         IconComponent,
         TreeViewerComponent,
         OverlayComponent,

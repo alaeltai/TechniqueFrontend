@@ -10,7 +10,8 @@ module.exports = {
                 ecmaVersion: 'latest',
                 project: ['tsconfig.json'],
                 tsconfigRootDir: __dirname,
-                sourceType: 'module'
+                sourceType: 'module',
+                emitDecoratorMetadata: true
             },
             extends: [
                 'plugin:@angular-eslint/recommended',
@@ -62,6 +63,37 @@ module.exports = {
                         style: 'kebab-case'
                     }
                 ]
+                // 'import/order': [
+                //     'error',
+                //     {
+                //         pathGroups: [
+                //             {
+                //                 pattern: '@teq/**/*',
+                //                 group: 'sibling',
+                //                 position: 'before'
+                //             },
+                //             {
+                //                 pattern: 'environments/*',
+                //                 group: 'sibling',
+                //                 position: 'before'
+                //             }
+                //         ],
+                //         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
+                //         alphabetize: {
+                //             order: 'asc',
+                //             caseInsensitive: true
+                //         },
+                //         distinctGroup: true,
+                //         'newlines-between': 'always'
+                //     }
+                // ],
+                // '@typescript-eslint/consistent-type-exports': ['error'],
+                // '@typescript-eslint/consistent-type-imports': [
+                //     'error',
+                //     {
+                //         fixStyle: 'separate-type-imports'
+                //     }
+                // ]
             }
         },
         {

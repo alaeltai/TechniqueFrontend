@@ -1,4 +1,4 @@
-type ResourceType = 'image/svg+xml' | 'application/json';
+type ResourceType = 'image/svg+xml' | 'application/json' | 'application/pdf';
 
 export function generateResource(
     content: string | HTMLElement | Record<string | number | symbol, unknown> | unknown[],

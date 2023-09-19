@@ -16,6 +16,9 @@ export interface EnvironmentTypeModel {
             authority: string;
         };
     };
+    exportService: {
+        url: string;
+    };
     apiConfig: {
         scopes: MSALScope[];
         uri: string;
