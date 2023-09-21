@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import type { IAPIApproach } from '@teq/shared/types/api/approach.type';
 import type { IAPIArtefact } from '@teq/shared/types/api/artefact.type';
@@ -19,16 +19,22 @@ import type { Observable } from 'rxjs';
 export class ExportService {
     constructor(private readonly _http: HttpClient) {}
 
-    exportPDF(subtree: EntityDataType[]): Observable<string> {
+    exportPDF(subtree: EntityDataType[]): Observable<Blob> {
         const data = this._invertSubtree(subtree);
 
-        return this._http.post<string>(`${environment.exportService.url}/getpdf`, data);
+        return this._http.post(`${environment.exportService.url}/getpdf`, data, {
+            responseType: 'blob',
+            headers: new HttpHeaders().append('Content-Type', 'application/pdf')
+        });
     }
 
-    exportSVG(subtree: EntityDataType[]): Observable<string> {
+    exportSVG(subtree: EntityDataType[]): Observable<Blob> {
         const data = this._invertSubtree(subtree);
 
-        return this._http.post<string>(`${environment.exportService.url}/getsvg`, data);
+        return this._http.post(`${environment.exportService.url}/getsvg`, data, {
+            responseType: 'blob',
+            headers: new HttpHeaders().append('Content-Type', 'image/svg+xml')
+        });
     }
 
     private _invertSubtree(entities: EntityDataType[]): APIEntityDataType[] {
