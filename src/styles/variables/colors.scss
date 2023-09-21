@@ -1,0 +1,52 @@
+$dark-gray: #333333;
+$mid-gray: #e8e5e5;
+$white-gray: #f5f5f5;
+$light-gray: #bdbcbc;
+$light-gray2: #706f6f;
+$gray: #bdbdbd;
+$method-divider-gray: #d9d9d9;
+$light-blue: #009ddc;
+$green: #8fd400;
+$orange: #ff7900;
+$red: #f12938;
+$white: #ffffff;
+$black: #000000;
+$tint: #848fb7;
+
+$phase-title-color: #ffffff;
+$subphase-title-color: $dark-gray;
+$method-title-color: $dark-gray;
+
+$active-link-item-background: #24387f;
+$active-link-item-color: white;
+
+$text-color-dark: #1e1e1e;
+
+$b-shadow-color: #33333314;
+$button-hover-color-primary: $tint; // (tint)
+$button-hover-color: $white-gray; // (almost white)
+
+$phaseColorUnderstand: #009ddc;
+$phaseColorInnovate: #8fd400;
+$phaseColorExecute: #ff7900;
+$phaseColorImprove: #f12938;
+
+$pageBackground: $white;
+
+$overlayLightColor: rgba($pageBackground, 0.85);
+$overlayDarkColor: rgba($dark-gray, 0.9);
+
+$phases: (
+    'understand': #009ddc,
+    'innovate': #8fd400,
+    'execute': #ff7900,
+    'improve': #f12938
+);
+
+@mixin phase-color($attr) {
+    @each $phase, $color in $phases {
+        &[#{$attr}='#{$phase}'] {
+            @content ($color);
+        }
+    }
+}

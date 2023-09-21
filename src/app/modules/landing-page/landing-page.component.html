@@ -1,0 +1,11 @@
+<div></div>
+<div data-content>
+    <h1 @fadeIn>{{ greeting }}, {{ user }}</h1>
+
+    <teq-color-bar @bottomFadeIn></teq-color-bar>
+
+    <div @fadeIn>
+        <teq-landing-card *ngFor="let card of cards$ | async" [card]="card"></teq-landing-card>
+    </div>
+</div>
+<div></div>

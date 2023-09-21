@@ -1,0 +1,16 @@
+<table>
+    <thead data-table-head>
+        <tr>
+            <th *ngFor="let header of tableHeaders; index as i">
+                <span>{{ header.name }}</span>
+                <teq-icon *ngIf="sort" type="sort" [attr.data-sort]="header.sortDirection" (click)="sortColumn(i)"></teq-icon>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let row of data?.rows">
+            <td *ngFor="let cell of row">{{ cell.name }}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,37 @@
+<div>
+    <div>
+        <teq-label [borderColor]="task.responsible.color" [color]="task.responsible.color" [bold]="true" [attr.title]="task.responsible.name">
+            <div data-role>
+                <span [innerHTML]="responsible | highlighter: term"></span>
+            </div>
+        </teq-label>
+
+        <teq-label data-validation-stage [inverse]="true" [bold]="true" [attr.title]="task.category.name">
+            <div>
+                <span [innerHTML]="category | highlighter: term"></span>
+            </div>
+        </teq-label>
+    </div>
+
+    <div>
+        <span [innerHTML]="task.name | highlighter: term"></span>
+    </div>
+</div>
+
+<div>
+    <div data-icon-container>
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M8.06049 1.93997C6.72049 0.59997 4.71382 0.326636 3.10049 1.1133L5.52049 3.5333C5.78049 3.7933 5.78049 4.2133 5.52049 4.4733L4.46049 5.5333C4.20049 5.79997 3.78049 5.79997 3.52049 5.5333L1.10049 3.1133C0.320491 4.7333 0.593824 6.72664 1.93382 8.06664C3.17382 9.30664 4.98716 9.6333 6.52716 9.0533L11.8338 14.36C12.5205 15.0466 13.6272 15.0466 14.3072 14.36C14.9938 13.6733 14.9938 12.5666 14.3072 11.8866L9.02716 6.59997C9.64049 5.03997 9.32049 3.19997 8.06049 1.93997Z"
+                fill="#333333"
+            />
+        </svg>
+    </div>
+
+    <div data-artefacts-container>
+        <div [innerHTML]=" artefacts | highlighter: term"></div>
+        <!-- <span *ngFor="let artefact of task.artefacts; index as i">{{ i > 0 ? '; ' + artefact.name : artefact.name }}</span> -->
+
+        <span *ngIf="!task.artefacts?.length">No specific artefact</span>
+    </div>
+</div>

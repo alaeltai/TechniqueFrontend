@@ -1,0 +1,19 @@
+<form [formGroup]="filtersForm">
+    <teq-toggle *ngFor="let toggle of (filters | async)?.toggles" formControlName="{{toggle.controlName}}" [value]="toggle.value" [label]="toggle.label" [attr.data-for]="toggle.controlName"></teq-toggle>
+
+    <div *ngIf="(filters | async)?.toggles?.length" class="v-divider"></div>
+
+    <teq-select
+        *ngFor="let select of (filters | async)?.selects"
+        formControlName="{{select.controlName}}"
+        [value]="select.value"
+        [label]="select.label"
+        [searchable]="select.searchable"
+        [options]="select.options"
+        [attr.data-for]="select.controlName"
+        [searchIcon]="select.searchIcon"
+        [multiple]="select.multiple"
+    ></teq-select>
+
+    <!-- <teq-search [searchText]="filtersData.searchText"></teq-search> -->
+</form>

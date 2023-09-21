@@ -1,0 +1,35 @@
+<h1 data-title>Roles</h1>
+
+<div data-content>
+    <teq-side-list
+        [items]="computedItems"
+        [value]="selected"
+        [lazyRequest]="true"
+        [requestFn]="getRelatedJobDescription"
+        (valueChange)="selectionChanged($event)"
+    ></teq-side-list>
+
+    <div *ngIf="currentAggregation" @fadeIn>
+        <teq-tabs [tabs]="tabs" [item]="selected" [tableHeaders]="relatedJobsTableHeaders"></teq-tabs>
+
+        <div>
+            <h3>{{ "Phases contributing to" | uppercase }}</h3>
+            <div data-phase-wrapper>
+                <teq-phase-tab *ngFor="let phase of currentAggregation.phases" [phase]="phase"></teq-phase-tab>
+            </div>
+        </div>
+
+        <div>
+            <h3>{{ "Subphases contributing to" | uppercase }}</h3>
+            <div data-subphases-wrapper>
+                <teq-subphase-tab *ngFor="let subphase of currentAggregation.subphases" [subphase]="subphase"></teq-subphase-tab>
+            </div>
+        </div>
+
+        <div>
+            <h3>{{ "Tasks responsible for" | uppercase }}</h3>
+        </div>
+
+        <teq-table [tableHeaders]="tableHeaders" [data]="currentAggregation" [sort]="true"></teq-table>
+    </div>
+</div>

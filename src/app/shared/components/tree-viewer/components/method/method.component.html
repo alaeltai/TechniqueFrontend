@@ -1,0 +1,25 @@
+<div data-method-title>
+    <span [innerHTML]=" method.name | highlighter: term"></span>
+
+    <teq-information-provider data-svg-ignore-all [id]="method.id" [type]="'method'" [entity]="method" [innerMatch]="method.matches?.innerMatch" />
+
+    <div data-controls data-svg-ignore-all>
+        <teq-toggle *ngIf="disableable" [value]="!(method.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+        <teq-expand-collapse-button [collapsed]="method.collapsed" (click)="toggleCollapseState()"></teq-expand-collapse-button>
+    </div>
+</div>
+
+<teq-entity-collapse [collapse]="!method.collapsed!" data-svg-ignore>
+    <div data-approach-container [attr.data-collapsed]="method.collapsed">
+        <div *ngFor="let approach of method?.approaches">
+            <teq-approach
+                [attr.data-approach]="method.collapsed"
+                *ngIf="!(filterDisabled && approach.disabled)"
+                [approach]="approach"
+                [disableable]="disableable"
+                [disabled]="disabled"
+                [term]="term"
+            ></teq-approach>
+        </div>
+    </div>
+</teq-entity-collapse>

@@ -1,0 +1,66 @@
+@use 'typography' as typography;
+@use 'variables/shadows' as shadows;
+@use 'variables/colors' as colors;
+
+:host {
+    display: flex;
+    flex-direction: column;
+
+    // min-width: 338px;
+    min-width: 21.125rem;
+
+    & > :hover {
+        transition: all 0.2s ease-out;
+        transform: scale(1.01);
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        width: 21.125rem;
+        height: 100%;
+        padding: 3rem 2rem 2.5rem 2rem;
+        @include shadows.phase-box-shadow();
+        border: 1px solid colors.$white-gray;
+
+        & > div:first-of-type {
+            flex-grow: 1;
+
+            & > h3 {
+                margin-bottom: 1rem;
+                @include typography.apply('side-list');
+            }
+
+            & > p {
+                margin: 0;
+                @include typography.apply('content-l');
+            }
+        }
+
+        & > div:last-of-type {
+            margin-top: 1.5rem;
+
+            & > button {
+                display: flex;
+                align-items: center;
+
+                height: 3rem;
+                padding: 1rem 1.5rem;
+                cursor: pointer;
+
+                background-color: colors.$white;
+                color: colors.$active-link-item-background;
+                border: 1px solid colors.$active-link-item-background;
+
+                @include typography.apply('bold');
+
+                transition: all 0.3s ease-out;
+            }
+
+            & > button:hover {
+                background-color: colors.$button-hover-color-primary;
+                color: colors.$active-link-item-color;
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+
+    max-height: 44.75rem;
+    height: fit-content;
+
+    &[data-size='small'] {
+        width: 31.25rem;
+        max-height: 44.75rem;
+        height: fit-content;
+    }
+
+    &[data-size='normal'] {
+        width: 61.25rem;
+    }
+
+    &[data-size='large'] {
+        width: 90%;
+    }
+
+    padding: 1.5rem;
+
+    background: colors.$white;
+
+    position: relative;
+
+    & > article {
+        & > section {
+            min-height: 17.5rem;
+            max-height: 34.6875rem;
+            height: fit-content;
+
+            overflow-y: auto;
+            overflow-wrap: break-word;
+        }
+
+        & > header {
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+
+            & > teq-icon ::ng-deep svg {
+                & path {
+                    fill: colors.$black !important;
+                }
+
+                cursor: pointer;
+                width: 1.75rem;
+                height: 1.75rem;
+
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+
+            & > h2 {
+                @include typography.apply('login');
+            }
+        }
+    }
+}

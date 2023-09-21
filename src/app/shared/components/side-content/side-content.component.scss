@@ -1,0 +1,12 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+
+:host {
+    & > div {
+        padding: 1.5rem;
+
+        background-color: colors.$white-gray;
+
+        @include typography.apply('content-l');
+    }
+}

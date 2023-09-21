@@ -1,0 +1,10 @@
+<article>
+    <header>
+        <h2 [innerHTML]="title | highlighter: term"></h2>
+        <teq-icon type="cancel" (click)="close()"></teq-icon>
+    </header>
+
+    <section>
+        <ng-content></ng-content>
+    </section>
+</article>

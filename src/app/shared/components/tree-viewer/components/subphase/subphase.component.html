@@ -1,0 +1,8 @@
+<div [attr.data-disabled]="disabled || subphase.disabled">
+    <span [innerHTML]=" subphase.name | highlighter: term"></span>
+    <teq-information-provider data-svg-ignore-all [id]="subphase.id" [type]="'subphase'" [entity]="subphase" [innerMatch]="subphase.matches?.innerMatch" />
+
+    <!-- <div data-controls data-svg-ignore-all>
+        <teq-toggle *ngIf="disableable" [value]="!(subphase.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+    </div> -->
+</div>

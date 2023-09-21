@@ -1,0 +1,61 @@
+@use 'variables/colors' as colors;
+@use 'variables/page' as page;
+
+* {
+    box-sizing: border-box;
+    outline: none;
+}
+
+html,
+body {
+    height: 100%;
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arial';
+    font-style: normal;
+}
+
+.h-divider {
+    height: 1px;
+    background: colors.$mid-gray;
+}
+
+.v-divider {
+    width: 1px;
+    background: colors.$mid-gray;
+    margin: 0 2rem;
+}
+
+.highlighted-text {
+    background-color: colors.$orange;
+    display: inline-block;
+}
+
+:root {
+    --page-scaling-factor: 1;
+}
+
+@media (max-width: page.$laptop-medium) {
+    html,
+    body {
+        font-size: 14px;
+    }
+
+    :root {
+        --page-scaling-factor: 0.875;
+    }
+}
+
+@media (max-width: page.$laptop-small) {
+    html,
+    body {
+        font-size: 12px;
+    }
+
+    :root {
+        --page-scaling-factor: 0.75;
+    }
+}

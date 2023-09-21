@@ -1,0 +1,35 @@
+<div data-container>
+    <div data-value (click)="toggleOptionsView()">
+        <div data-input *ngIf="searchable">
+            <svg *ngIf="searchIcon" width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M4.45146 6.46154C4.45146 9.74946 7.14405 12.4231 10.4757 12.4231C13.8074 12.4231 16.5 9.74946 16.5 6.46154C16.5 3.17362 13.8074 0.5 10.4757 0.5C7.14405 0.5 4.45146 3.17362 4.45146 6.46154Z"
+                    stroke="#333333"
+                />
+                <path d="M5.9707 10.9231L0.999829 16" stroke="#333333" />
+            </svg>
+
+            <input type="search" [attr.placeholder]="label" [(ngModel)]="displayLabel" (input)="onInput($event)" />
+
+            <teq-icon *ngIf="options.length" [type]="'caret'" [orientation]="opened() ? 'top' : 'bottom'" />
+            <teq-icon *ngIf="!options.length" [attr.data-visible]="!!(!options.length && displayLabel.length)" [type]="'cancel'" (click)="clearTerm()" />
+        </div>
+
+        <div data-label *ngIf="!searchable">
+            <span>{{ displayLabel || label }}</span>
+
+            <teq-icon [type]="'caret'" [orientation]="opened() ? 'top' : 'bottom'" />
+        </div>
+    </div>
+
+    <ul *ngIf="opened()" data-options>
+        <li *ngFor="let option of filteredOptions$ | async" (click)="change(option)">
+            <div *ngIf="multiple">
+                <teq-checkbox [label]="option.label" [value]="isSelected(option.value)" />
+            </div>
+
+            <div *ngIf="!multiple">{{ option.label }}</div>
+        </li>
+        <!-- TODO: No results message, if searchable and has term -->
+    </ul>
+</div>

@@ -1,0 +1,70 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    table {
+        margin-top: 1rem;
+        text-align: left;
+        width: 100%;
+
+        [data-table-head] {
+            @include typography.apply('bold');
+
+            background-color: colors.$white-gray;
+        }
+
+        th,
+        td {
+            padding: 1rem 0.5rem 1rem 1rem;
+
+            border-bottom: 1px solid colors.$mid-gray;
+        }
+
+        th {
+            height: 3rem;
+
+            min-width: 7rem;
+
+            position: relative;
+
+            & > teq-icon {
+                position: absolute;
+                // right: 18.6px;
+                right: 1.1625rem;
+                top: 1.125rem;
+
+                cursor: pointer;
+
+                &[data-sort='unsorted'] ::ng-deep path {
+                    opacity: 0.5;
+                }
+
+                &[data-sort='ascending'] ::ng-deep {
+                    & path:first-of-type {
+                        opacity: 1;
+                    }
+
+                    & path:last-of-type {
+                        opacity: 0.5;
+                    }
+                }
+
+                &[data-sort='descending'] ::ng-deep {
+                    & path:first-of-type {
+                        opacity: 0.5;
+                    }
+
+                    & path:last-of-type {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        td {
+            @include typography.apply('content+');
+        }
+    }
+}

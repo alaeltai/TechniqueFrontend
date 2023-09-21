@@ -1,0 +1,28 @@
+<div data-controls @fadeIn>
+    <div>
+        <div data-back-link></div>
+
+        <div data-pagination>
+            <teq-toggle *ngIf="enableVisibility" (change)="toggleVisibilityFilter()" formControlName="" [value]="filterDisabled" [label]="'Hide disabled'" [attr.data-for]="''"></teq-toggle>
+
+            <teq-pagination [pagination]="pagination" (paginationChanged)="paginationChanged($event)" [maxPages]="phases?.length || 1" />
+        </div>
+
+        <div data-printing>
+            <div data-button-like *ngIf="!preview">
+                Export full framework
+                <button data-button-secondary (click)="generateSVG()">SVG</button>
+                <button data-button-secondary (click)="generatePDF()">PDF</button>
+            </div>
+
+            <div data-button-like *ngIf="preview">
+                Save for printing
+                <button data-button-secondary (click)="generateSVG()">SVG</button>
+                <button data-button-secondary (click)="generatePDF()">PDF</button>
+            </div>
+            <button data-button-primary *ngIf="preview" (click)="generateTeq()">Export .TEQ file</button>
+        </div>
+    </div>
+</div>
+
+<teq-tree-viewer [zoom]="pagination.zoom" [page]="pagination.page" [phases]="phases" (scaleChanged)="scaleChanged($event)" [filterDisabled]="filterDisabled"></teq-tree-viewer>

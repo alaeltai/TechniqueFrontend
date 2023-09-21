@@ -1,0 +1,15 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+
+:host {
+    & > [data-container] {
+        padding: 7.357rem 18.5625rem 2rem 18.5625rem;
+
+        & > h1 {
+            @include typography.apply('heading1');
+            color: colors.$text-color-dark;
+
+            margin-bottom: 1.5rem;
+        }
+    }
+}

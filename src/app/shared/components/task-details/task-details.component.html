@@ -1,0 +1,34 @@
+<div data-content>
+    <div data-role>
+        <div data-section-title>{{ 'Responsible Role' | uppercase }}</div>
+        <teq-label [borderColor]="task.responsible.color">
+            <div data-role-name [innerHTML]="task.responsible.name | highlighter: term"></div>
+        </teq-label>
+    </div>
+
+    <div data-purpose>
+        <div data-section-title>{{ 'Purpose' | uppercase }}</div>
+        <p data-section-text [innerHTML]="task.purpose | highlighter: term"></p>
+    </div>
+
+    <div data-how>
+        <div data-section-title>{{ 'How' | uppercase }}</div>
+        <ng-container *ngFor="let howToken of task.how.split('. ')">
+            <p data-section-text [innerHTML]="howToken | highlighter: term"></p>
+        </ng-container>
+    </div>
+
+    <div data-wyn>
+        <div data-section-title>{{ 'What you need' | uppercase }}</div>
+        <ng-container *ngFor="let artefact of task.inputArtefacts">
+            <teq-collapsible [title]="artefact.name" [content]="artefact.description" [url]="artefact.url" [term]="term"></teq-collapsible>
+        </ng-container>
+    </div>
+
+    <div data-results>
+        <div data-section-title>{{ 'Results' | uppercase }}</div>
+        <ng-container *ngFor="let artefact of task.artefacts">
+            <teq-collapsible [title]="artefact.name" [content]="artefact.description" [url]="artefact.url" [term]="term"></teq-collapsible>
+        </ng-container>
+    </div>
+</div>

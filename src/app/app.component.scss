@@ -1,0 +1,20 @@
+@use 'variables/page' as page;
+
+:host {
+    position: relative;
+    display: flex;
+
+    min-height: 100%;
+
+    & > div {
+        display: block;
+
+        width: 100%;
+        padding: page.$page-vertical-margin page.$page-horizontal-margin;
+
+        & > main {
+            // padding-top: 96px;
+            padding-top: 6rem;
+        }
+    }
+}

@@ -1,0 +1,4 @@
+<div [attr.data-phase]="phase.name.toLowerCase()">
+    <span [innerHTML]=" phase.name | highlighter: term"></span>
+    <teq-information-provider [id]="phase.id" [type]="'phase'" [entity]="phase" [innerMatch]="phase.matches?.innerMatch" />
+</div>

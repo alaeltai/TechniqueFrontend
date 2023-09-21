@@ -1,0 +1,20 @@
+<h1 data-title>FAQ</h1>
+
+<div data-controls>
+    <teq-select [formControl]="term" [label]="'Search...'" [searchable]="true" [options]="[]" [attr.data-for]="'term'" [searchIcon]="true" [multiple]="false" />
+</div>
+
+<div data-divider-wrapper>
+    <div data-divider></div>
+</div>
+
+<div data-content>
+    <teq-side-list
+        [items]="(computedItems$ | async) || []"
+        [value]="selected"
+        [term]="term.value ?? ''"
+        (valueChange)="selectionChanged($event)"
+    ></teq-side-list>
+
+    <teq-side-content *ngIf="current" [content]="current.answer" [title]="current.question" [term]="term.value ?? ''"></teq-side-content>
+</div>

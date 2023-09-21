@@ -1,0 +1,7 @@
+<div *ngIf="evaluatedSession" @fadeIn>
+    <teq-color-bar [@expandAndShrink]="stateName" (@expandAndShrink.done)="onLoginAnimationDone()"></teq-color-bar>
+    <div [@fadeOutState]="stateName">
+        <h3>Welcome to Technique</h3>
+        <button (click)="login()">Log In using your CC account</button>
+    </div>
+</div>

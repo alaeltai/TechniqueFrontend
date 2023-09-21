@@ -1,0 +1,99 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: block;
+    margin-bottom: 2.5rem;
+
+    &[data-disabled='true'] {
+        & [data-method-title] {
+            & > span {
+                transition: color, background-color 0.5s linear;
+                background: colors.$mid-gray;
+                color: colors.$light-gray;
+            }
+        }
+    }
+
+    &[data-collapsed='true'] {
+        margin-bottom: 0;
+        transition: 0.5s ease-in-out margin;
+    }
+
+    &[data-collapsed='false'] {
+        transition: 0.5s ease-in-out margin;
+    }
+
+    & [data-method-title] {
+        display: flex;
+        align-items: center;
+
+        flex: 1;
+
+        padding: 0.625rem 1rem;
+        margin-bottom: 0.5rem;
+
+        background: colors.$mid-gray;
+
+        & > span {
+            @include typography.apply('method');
+            color: colors.$method-title-color;
+        }
+
+        & > teq-information-provider {
+            margin-left: 0.5rem;
+
+            & ::ng-deep path {
+                fill: colors.$light-gray2;
+            }
+        }
+
+        & [data-controls] {
+            display: flex;
+
+            flex: 1;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
+
+                gap: 0;
+            }
+
+            & > teq-icon {
+                margin-left: 0.5rem;
+                padding-left: 0.5rem;
+
+                ::ng-deep > svg {
+                    // width: 11px;
+                    // height: 11px;
+                    width: 0.6875rem;
+                    height: 0.6875rem;
+                }
+            }
+        }
+    }
+
+    & > teq-entity-collapse {
+        @include shadows.card-b-shadow();
+
+        & [data-approach-container] {
+            & > div > teq-approach {
+                border-top: 1px solid colors.$method-divider-gray;
+                padding-bottom: 2rem;
+            }
+
+            & > div:nth-of-type(1) > teq-approach {
+                border-color: colors.$white-gray;
+            }
+
+            & > div:last-of-type > teq-approach {
+                padding-bottom: 1rem;
+            }
+        }
+    }
+}

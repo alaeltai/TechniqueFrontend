@@ -1,0 +1,17 @@
+$rem: 16px;
+
+@function toFixedUnits($value) {
+    @if unit($value) == 'rem' {
+        @return round(toUnitless($value) * $rem);
+    }
+
+    @return $value;
+}
+
+@function toUnitless($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+        @return $number / ($number * 0 + 1);
+    }
+
+    @return $number;
+}

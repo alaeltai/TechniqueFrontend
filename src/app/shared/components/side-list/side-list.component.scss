@@ -1,0 +1,44 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    & > ul {
+        display: flex;
+        flex-direction: column;
+
+        padding: 0;
+        margin: 0;
+
+        & > li {
+            display: block;
+            flex: 1;
+
+            padding: 1.5rem 1rem;
+
+            cursor: pointer;
+
+            height: 4.875rem;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid colors.$mid-gray;
+            }
+
+            @include typography.apply('side-list');
+
+            &[data-active='true'] {
+                background-color: colors.$active-link-item-background;
+                color: colors.$white;
+            }
+        }
+
+        & > li[data-active='false']:hover {
+            background-color: colors.$mid-gray;
+            transition: background-color 0s ease-in-out;
+        }
+        & > li:not(:hover) {
+            transition: background-color 0.1s ease-in-out;
+        }
+    }
+}

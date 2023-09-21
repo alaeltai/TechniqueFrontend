@@ -1,0 +1,69 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+
+:host {
+    & > [data-progress] {
+        position: relative;
+
+        height: 0.5rem;
+        margin-bottom: 1rem;
+
+        background-color: colors.$white-gray;
+
+        & > [data-progress-bar] {
+            position: absolute;
+
+            height: 100%;
+
+            background-color: colors.$green;
+            animation: progress-animation 2s forwards;
+        }
+
+        @keyframes progress-animation {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    }
+
+    & > [data-content] {
+        display: flex;
+        align-items: center;
+
+        height: 1rem;
+
+        gap: 0.2rem;
+
+        & > [data-percentage],
+        & > [data-name] {
+            @include typography.apply(bold);
+        }
+
+        & > [data-action] {
+            @include typography.apply(normal);
+        }
+
+        & > [data-percentage] {
+            display: flex;
+            flex-direction: column;
+
+            height: 100%;
+
+            overflow: hidden;
+
+            & > span {
+                --ch: -99;
+                animation: scroll 2s 0s linear forwards;
+            }
+
+            @keyframes scroll {
+                to {
+                    transform: translateY(calc(var(--ch) * 100%));
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+<div #wrapper data-wrapper [attr.data-phase]="phase.name | lowercase" [attr.data-disabled]="phase.disabled ?? 'false'">
+    <div data-card-main-contents (mouseenter)="hover = true" (mouseleave)="hover = false">
+        <img src="{{ image }}" alt="" />
+
+        <div>
+            <div>
+                <div data-title>
+                    <h4 [innerHTML]=" phase.name | highlighter: term"></h4>
+                    <teq-information-provider
+                        [type]="'phase'"
+                        [id]="phase.id"
+                        [entity]="phase"
+                        [innerMatch]="phase.matches?.innerMatch"
+                    ></teq-information-provider>
+                </div>
+                <div data-completion>
+                    <div>
+                        <div>
+                            <span>{{ methodsCount }}</span>
+                            <span>/{{ methodsCountAll }}</span>
+                        </div>
+                        <div>
+                            <span>{{ approachesCount }}</span>
+                            <span>/{{ approachesCountAll }}</span>
+                        </div>
+                    </div>
+                    <div data-labels>
+                        <div>
+                            <span>Methods</span>
+                        </div>
+                        <div>
+                            <span>Approaches</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-roles>
+                <span data-role-name>{{ "Roles" | uppercase }}</span>
+
+                <teq-roles-container [roles]="roles" [phase]="phase" [term]="term" [unlimited]="phase.disabled ? phase.disabled : hover" />
+            </div>
+        </div>
+
+        <div data-cta *ngIf="!phase.disabled">
+            <ng-content select="[cta]"></ng-content>
+            <img src="/assets/img/caret-outlined.svg" alt="" />
+        </div>
+        <div data-cta *ngIf="phase.disabled">
+            <div data-controls>
+                <div>Enable this phase</div>
+                <teq-toggle *ngIf="disableable" [value]="!(phase.disabled)" (change)="toggleDisableState($event)" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h3>{{ "Subphases" | uppercase }}</h3>
+        <div data-subphases-wrapper>
+            <teq-subphase-tab *ngFor="let subphase of phase.subphases" [subphase]="subphase" [term]="term"></teq-subphase-tab>
+        </div>
+    </div>
+</div>

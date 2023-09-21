@@ -1,0 +1,235 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+@mixin hidden() {
+    transition: all 0.5s ease-out !important;
+    min-height: 0px !important;
+
+    height: 0px;
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+:host {
+    display: block;
+    position: relative;
+
+    & [data-controls] {
+        position: fixed;
+        display: flex;
+
+        top: 6rem;
+
+        width: 100%;
+
+        padding: 0 page.$page-horizontal-margin;
+        margin: 0 page.$page-horizontal-margin * -1;
+
+        z-index: layers.$pageControlsLayer;
+
+        background-color: colors.$white;
+
+        &[data-page] {
+            @include colors.phase-color(data-page) using ($color) {
+                & > div {
+                    border-width: 0.25rem;
+                    border-color: $color;
+                }
+            }
+        }
+
+        & > div {
+            display: flex;
+            flex: 1;
+
+            padding-bottom: 0.625rem;
+
+            border-bottom: 1px solid colors.$light-gray;
+            transition: border-color, border-width 0.25s linear;
+
+            & > div {
+                height: 2.26rem;
+            }
+
+            & [data-back-link] {
+                flex: 1;
+            }
+
+            & button,
+            & [data-back-link] > a {
+                display: flex;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                border: none;
+                cursor: pointer;
+                @include typography.apply('bold');
+            }
+
+            & [data-back-link] > a {
+                background-color: transparent;
+                color: colors.$active-link-item-background;
+                gap: 0.5rem;
+                padding-left: 0;
+                text-decoration: none;
+            }
+
+            & button:last-child {
+                background-color: colors.$active-link-item-background;
+                color: colors.$active-link-item-color;
+            }
+        }
+    }
+
+    & > h3 {
+        @include typography.apply('title');
+        color: colors.$light-gray;
+        margin: 1.5rem 0 1rem 0;
+        padding-top: 3rem;
+    }
+
+    & > h3:nth-child(2) {
+        margin-top: 2.625rem;
+    }
+
+    & > [data-phases] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    & [data-phase-navigation] {
+        display: flex;
+        position: fixed;
+        width: 100%;
+
+        top: calc(9rem - 1px);
+        left: 0;
+
+        gap: 1.5rem;
+
+        z-index: layers.$treeViewFloatingContent;
+
+        padding: 1rem 2.5rem 0 2.5rem;
+
+        background-color: colors.$pageBackground;
+
+        & > [data-phase-nav-item] {
+            flex: 1;
+
+            background-color: colors.$white;
+
+            & > [data-phase] {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            &[data-selected='true'] {
+                flex: 4;
+                transition: ease-in 0.5s all;
+            }
+
+            &[data-selected='false'] {
+                width: 0;
+                overflow: hidden;
+                position: absolute;
+                transition: ease-out 0.5s all;
+
+                & > teq-phase {
+                    ::ng-deep {
+                        & [data-phase] {
+                            cursor: pointer;
+                        }
+
+                        & [data-subphase] {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            &[data-selected='false']:has(+ [data-selected='true']) {
+                width: initial;
+                overflow: inherit;
+                position: relative;
+
+                & > teq-phase ::ng-deep [data-phase] {
+                    teq-icon {
+                        order: 1;
+                        margin-right: auto;
+
+                        path {
+                            fill: colors.$white;
+                        }
+                    }
+
+                    span {
+                        order: 2;
+                    }
+
+                    teq-information-provider {
+                        order: 3;
+                    }
+                }
+            }
+
+            &[data-selected='true'] + [data-selected='false'] {
+                width: initial;
+                overflow: inherit;
+                position: relative;
+
+                & > teq-phase ::ng-deep [data-phase] {
+                    teq-icon {
+                        transform: rotate(180deg);
+                        margin-left: auto;
+
+                        path {
+                            fill: colors.$white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ::ng-deep {
+        [data-heading] {
+            top: calc(9rem - 1px) !important;
+        }
+    }
+
+    & [data-content] {
+        display: flex;
+        padding-top: 12.5rem;
+
+        & > [data-subphases] {
+            display: flex;
+
+            flex: 4;
+
+            & > div {
+                flex: 1;
+            }
+
+            & > div:first-of-type {
+                padding: 0 0.75rem 0 2rem;
+            }
+
+            & > div:last-of-type {
+                padding: 0 2rem 0 0.75rem;
+            }
+        }
+
+        & > [data-placeholder='true'] {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        & > [data-placeholder='false'] {
+            flex: 0;
+            width: 0;
+        }
+    }
+}

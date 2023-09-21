@@ -1,0 +1,26 @@
+@use 'variables/colors' as colors;
+
+// @mixin box-shadow($x-axis: 0, $y-axis: 15px, $blur: 25px, $color: $default) {
+@mixin box-shadow($x-axis: 0, $y-axis: 0.9375rem, $blur: 1.5625rem, $color: $default) {
+    box-shadow: $x-axis $y-axis $blur $color;
+}
+
+@mixin phase-b-shadow() {
+    // box-shadow: 0 15px 25px colors.$b-shadow-color;
+    box-shadow: 0 0.9375rem 1.5625rem colors.$b-shadow-color;
+}
+
+@mixin card-b-shadow() {
+    // // box-shadow: 0 15px 15px 0 colors.$b-shadow-color;
+    box-shadow: 0 0.9375rem 0.9375rem 0 colors.$b-shadow-color;
+}
+
+@mixin phase-box-shadow() {
+    // box-shadow: 0 15px 25px 0 #33333326;
+    box-shadow: 0 0.9375rem 1.5625rem 0 #33333326;
+}
+
+@mixin subphase-box-shadow() {
+    // // box-shadow: 0 15px 15px 0 colors.$b-shadow-color;
+    box-shadow: 0 0.9375rem 0.9375rem 0 colors.$b-shadow-color;
+}

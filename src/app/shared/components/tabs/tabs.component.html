@@ -1,0 +1,19 @@
+<div data-tabs>
+    <ul data-tab-group>
+        <li *ngFor="let tab of tabs; trackBy: trackTabName, index as i" [attr.data-tab]="i === selectedIndex" (click)="changeTab(i)">{{ tab.title }}</li>
+    </ul>
+
+    <div [attr.data-tab-content-group]="animateContent">
+        <div
+            *ngIf="tabs[selectedIndex].content"
+            data-tab-content
+            [innerHTML]="tabs[selectedIndex].content! | lineBreak | replaceChar: ['- ', '&#x2022; ']"
+        ></div>
+
+        <div *ngIf="tabs[selectedIndex].contentTable" data-tab-content>
+            <teq-table [tableHeaders]="tableHeaders" [data]="tabs[selectedIndex].contentTable!"></teq-table>
+        </div>
+
+        <div *ngIf="!tabs[selectedIndex].contentTable && !tabs[selectedIndex].content" data-tab-content>No specific data</div>
+    </div>
+</div>

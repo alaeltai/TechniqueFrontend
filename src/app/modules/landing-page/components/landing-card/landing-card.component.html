@@ -1,0 +1,11 @@
+<div>
+    <div>
+        <img src="{{ card.image }}" alt="{{ card.title + 'image'}}" />
+        <h3>{{ card.title | uppercase }}</h3>
+        <p>{{ card.description }}</p>
+    </div>
+
+    <div>
+        <button (click)="router.navigate(['/'+card.button.link])">{{ card.button.name }}</button>
+    </div>
+</div>

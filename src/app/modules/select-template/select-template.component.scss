@@ -1,0 +1,134 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 6rem);
+
+    & > div:first-of-type {
+        flex: 0.5;
+    }
+
+    & > div:last-of-type {
+        flex: 1;
+    }
+
+    & > div:first-of-type,
+    & > div:last-of-type {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & > [data-content] {
+        position: relative;
+
+        & > h1 {
+            position: fixed;
+
+            @include typography.apply('heading1');
+
+            color: colors.$dark-gray;
+            background-color: colors.$white;
+            z-index: layers.$pageControlsLayer;
+        }
+
+        teq-color-bar {
+            position: fixed;
+            margin-top: 8.5rem;
+            z-index: layers.$pageControlsLayer;
+        }
+
+        & > [data-controls] {
+            display: flex;
+            align-items: center;
+
+            position: fixed;
+
+            padding-top: 10.5rem;
+            width: 100%;
+
+            & [data-back-link] {
+                left: 0;
+
+                z-index: layers.$fixedContent;
+                background-color: colors.$white;
+            }
+
+            & [data-back-link] > a {
+                display: inline-flex;
+                align-items: center;
+
+                padding: 0.5rem 0;
+                gap: 0.5rem;
+
+                border: none;
+                text-wrap: nowrap;
+                cursor: pointer;
+
+                background-color: transparent;
+                color: colors.$active-link-item-background;
+                text-decoration: none;
+
+                @include typography.apply('bold');
+            }
+
+            & > [data-divider] {
+                width: 1px;
+                height: 2rem;
+                margin: 0 2.25rem;
+
+                background: colors.$mid-gray;
+            }
+
+            & > button {
+                display: flex;
+                align-items: center;
+
+                height: 2rem;
+                padding: 1rem 1.5rem;
+                cursor: pointer;
+
+                background-color: colors.$white;
+                color: colors.$active-link-item-background;
+                border: 1px solid colors.$active-link-item-background;
+
+                @include typography.apply('bold');
+
+                transition: all 0.3s ease-out;
+            }
+
+            & > button:hover {
+                background-color: colors.$button-hover-color-primary;
+                color: colors.$active-link-item-color;
+            }
+        }
+
+        & > [data-description] {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+
+            padding-top: 4.5rem;
+
+            @include typography.apply('content-l');
+            z-index: layers.$pageControlsLayer;
+            margin-bottom: 1.5rem;
+        }
+
+        & > [data-cards-wrapper] {
+            display: flex;
+            flex-wrap: wrap;
+
+            margin-top: 13.5rem;
+            row-gap: 1.75rem;
+            column-gap: 3.5rem;
+
+            & > [data-break] {
+                flex-basis: 100%;
+                height: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+<div data-container>
+    <h1>UPLOAD</h1>
+
+    <teq-dropzone (file)="fileDropped($event)" *ngIf="!file"></teq-dropzone>
+    <teq-progress-bar *ngIf="file" [fileName]="file.name" [progress]="progress"></teq-progress-bar>
+</div>

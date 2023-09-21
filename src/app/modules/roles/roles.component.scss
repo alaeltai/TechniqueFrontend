@@ -1,0 +1,114 @@
+@use 'variables/colors' as colors;
+@use 'variables/layers' as layers;
+@use 'variables/page' as page;
+@use 'typography' as typography;
+
+:host {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 8rem;
+
+    [data-title] {
+        position: fixed;
+        width: 100%;
+
+        padding-top: 1.375rem;
+        padding-bottom: 1rem;
+
+        z-index: layers.$fixedContent;
+
+        background: colors.$white;
+        @include typography.apply('heading1');
+    }
+
+    & > [data-content] {
+        display: flex;
+
+        gap: 1.5rem;
+
+        margin-top: 6.875rem;
+        margin-bottom: 2rem;
+
+        & > teq-side-list {
+            min-width: 22.625rem;
+
+            // height: 75vh;
+
+            // overflow-y: auto;
+
+            // &::-webkit-scrollbar {
+            //     width: 0.25rem;
+            //     height: 0.25rem;
+            //     background: colors.$mid-gray;
+            // }
+
+            // &::-webkit-scrollbar-thumb {
+            //     background: colors.$light-gray2;
+            //     -webkit-border-radius: 1ex;
+            // }
+
+            // &::-webkit-scrollbar-corner {
+            //     background: colors.$mid-gray;
+            // }
+        }
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            & > teq-tabs {
+                display: block;
+
+                ::ng-deep teq-table ::ng-deep {
+                    table {
+                        margin-top: 0;
+                    }
+
+                    td,
+                    th {
+                        height: 1.5rem;
+                        padding: 0.5rem;
+                    }
+                }
+            }
+
+            & > div {
+                margin-top: 2.5rem;
+
+                & > h3 {
+                    @include typography.apply('title');
+                    color: colors.$light-gray;
+                }
+
+                & > [data-subphases-wrapper],
+                & > [data-phase-wrapper] {
+                    display: flex;
+                    margin-top: 1rem;
+                    gap: 1rem;
+
+                    & > teq-subphase-tab,
+                    & > teq-phase-tab {
+                        display: flex;
+                        max-width: 10rem;
+
+                        ::ng-deep {
+                            height: 3rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1600px) {
+        padding: 0 4rem;
+
+        & > [data-content] {
+            & > teq-side-list {
+                height: 65vh;
+            }
+        }
+    }
+}

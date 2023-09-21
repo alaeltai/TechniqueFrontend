@@ -1,0 +1,125 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+
+:host {
+    display: block;
+    padding: 1.5rem 1rem 1rem 1rem;
+
+    &[data-disabled='true'] {
+        transition: color, background-color 0.5s linear;
+        background-color: colors.$mid-gray;
+
+        & > [data-approach-title] {
+            color: colors.$light-gray2;
+        }
+
+        & > [data-approach-roles-wrapper] {
+            & > teq-label {
+                & ::ng-deep {
+                    & > div {
+                        border-color: colors.$light-gray2 !important;
+
+                        & > div > span {
+                            color: colors.$light-gray2 !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &[data-collapsed='true'] {
+        padding-bottom: 0 !important;
+        transition: 0.5s ease-in-out padding;
+    }
+
+    &[data-collapsed='false'] {
+        transition: 0.5s ease-in-out padding;
+    }
+
+    & > [data-approach-title] {
+        display: flex;
+        align-items: center;
+
+        padding-bottom: 1rem;
+
+        @include typography.apply('bold');
+        color: colors.$dark-gray;
+
+        & > teq-information-provider {
+            margin-left: 0.5rem;
+
+            & ::ng-deep path {
+                fill: colors.$light-gray2;
+            }
+        }
+
+        & [data-controls] {
+            display: flex;
+
+            flex: 1;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
+
+                gap: 0;
+            }
+
+            & > teq-icon {
+                margin-left: 0.5rem;
+                padding-left: 0.5rem;
+
+                ::ng-deep > svg {
+                    // width: 11px;
+                    // height: 11px;
+                    width: 0.6875rem;
+                    height: 0.6875rem;
+                }
+            }
+        }
+    }
+
+    & > [data-approach-roles-wrapper] {
+        display: flex;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+
+        flex-wrap: wrap;
+
+        & > teq-label {
+            @include typography.apply('content+');
+
+            cursor: default;
+
+            & div {
+                padding: 0.25rem 0.125rem;
+                display: flex;
+                justify-content: center;
+
+                & > span {
+                    text-wrap: nowrap;
+                }
+            }
+        }
+    }
+
+    & > teq-entity-collapse {
+        & > [data-approach-tasks] {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            & > div {
+                position: relative;
+
+                & > teq-search-ellipse-notification::ng-deep {
+                    border-color: colors.$white;
+                }
+            }
+        }
+    }
+}

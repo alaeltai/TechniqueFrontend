@@ -1,0 +1,138 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+@use 'variables/page' as page;
+@use 'variables/layers' as layers;
+
+:host {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    display: block;
+
+    z-index: layers.$navigationLayer;
+
+    width: 100%;
+
+    padding: 0 page.$page-horizontal-margin;
+    // padding-bottom: 48px;
+    padding-bottom: 3rem;
+
+    background-color: colors.$white;
+
+    nav {
+        position: relative;
+
+        display: flex;
+        flex-direction: row;
+
+        // height: 48px;
+        height: 3rem;
+        align-items: center;
+
+        & > li:first-of-type {
+            display: flex;
+
+            align-items: center;
+
+            margin-right: auto;
+
+            & > [data-logo] {
+                display: flex;
+                align-items: center;
+
+                padding-left: 0;
+
+                & > img {
+                    // margin-top: -4px;
+                    // padding-right: 6px;
+                    margin-top: -0.25rem;
+                    padding-right: 0.375rem;
+                }
+
+                & > h1 {
+                    display: inline-flex;
+
+                    letter-spacing: -1%;
+
+                    @include typography.apply('condensed');
+                    color: colors.$dark-gray;
+                }
+
+                &:hover {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        & > li {
+            list-style: none;
+
+            @include typography.apply('bold');
+
+            & > a ~ ul {
+                display: none;
+                position: absolute;
+
+                min-width: 7.125rem;
+                width: max-content;
+
+                top: 100%;
+                right: 0;
+
+                list-style: none;
+
+                padding: 0;
+                margin: 0;
+            }
+
+            & > a,
+            & > ul > li > a {
+                display: block;
+
+                // height: 48px;
+                height: 3rem;
+
+                box-sizing: border-box;
+
+                // padding: 16px 24px;
+                padding: 1rem 1.5rem;
+
+                text-decoration: none;
+                color: colors.$dark-gray;
+            }
+
+            & > a:hover {
+                background-color: rgba(colors.$button-hover-color-primary, 0.25);
+                transition: ease-in-out 0.3s;
+            }
+
+            & > ul > li > a,
+            & > a.active {
+                background-color: colors.$active-link-item-background;
+                color: colors.$active-link-item-color;
+            }
+
+            & > a.active ~ ul {
+                position: absolute;
+
+                display: block;
+            }
+
+            & > nav {
+                li:last-of-type:hover ul {
+                    display: block;
+
+                    & > li:hover a {
+                        background-color: colors.$button-hover-color-primary;
+                        transition: background-color 0.15s ease-in-out;
+                    }
+                    & > li:not(:hover) a {
+                        background-color: colors.$active-link-item-background;
+                        transition: background-color 0.3s ease-in-out;
+                    }
+                }
+            }
+        }
+    }
+}

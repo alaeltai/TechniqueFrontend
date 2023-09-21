@@ -1,0 +1,77 @@
+@use 'variables/shadows' as shadows;
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+@use 'variables/layers' as layers;
+
+:host {
+    display: inline-flex;
+
+    position: relative;
+
+    &:hover {
+        cursor: pointer;
+
+        & teq-icon {
+            opacity: 0.75;
+        }
+
+        & > [data-modal] {
+            display: flex;
+            opacity: 1;
+        }
+    }
+
+    & teq-icon {
+        width: 100%;
+        transition: opacity 0.25s linear;
+
+        & ::ng-deep svg > g > path {
+            transition: fill 0.25s linear;
+        }
+    }
+
+    & teq-search-ellipse-notification::ng-deep {
+        top: -0.05rem;
+        right: -0.05rem;
+    }
+
+    & [data-modal] {
+        position: absolute;
+
+        display: none;
+
+        flex-direction: column;
+        gap: 0.5rem;
+
+        opacity: 0;
+
+        transition: opacity 0.5s ease-out;
+
+        @include shadows.card-b-shadow();
+
+        top: calc(-1rem + 1px);
+        left: calc(100% + 0.5rem);
+
+        min-width: 16rem;
+        height: fit-content;
+
+        padding: 1rem;
+
+        border: 1px solid colors.$white-gray;
+
+        background-color: colors.$white;
+        color: colors.$dark-gray;
+
+        text-transform: initial;
+
+        z-index: layers.$treeViewFloatingContent;
+
+        & > h3 {
+            @include typography.apply('bold');
+        }
+
+        & > div {
+            @include typography.apply('content+');
+        }
+    }
+}

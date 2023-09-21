@@ -1,0 +1,28 @@
+<div data-approach-title>
+    <span [innerHTML]=" approach.name | highlighter: term"></span>
+
+    <teq-information-provider data-svg-ignore-all [id]="approach.id" [type]="'approach'" [entity]="approach" [innerMatch]="approach.matches?.innerMatch" />
+
+    <div data-controls data-svg-ignore-all>
+        <teq-toggle *ngIf="disableable" [value]="!(approach.disabled)" (change)="toggleDisableState()" [disabled]="disabled" />
+        <teq-expand-collapse-button [collapsed]="approach.collapsed" (click)="toggleCollapseState()"></teq-expand-collapse-button>
+    </div>
+</div>
+
+<div data-approach-roles-wrapper>
+    <teq-label *ngFor="let role of approach?.roles" [borderColor]="role.color">
+        <div>
+            <span [innerHTML]=" role.name | highlighter: term"></span>
+        </div>
+    </teq-label>
+</div>
+
+<teq-entity-collapse [collapse]="!approach.collapsed!" data-svg-ignore>
+    <div data-approach-tasks [attr.data-collapsed]="approach.collapsed">
+        <div *ngFor="let task of approach?.tasks">
+            <teq-search-ellipse-notification *ngIf="term.length > 2 && task.matches?.innerMatch"></teq-search-ellipse-notification>
+            <div></div>
+            <teq-task [task]="task" [disabled]="disabled || approach.disabled" [term]="term"></teq-task>
+        </div>
+    </div>
+</teq-entity-collapse>

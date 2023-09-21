@@ -1,0 +1,145 @@
+@use 'variables/colors' as colors;
+@use 'typography' as typography;
+@use 'variables/layers' as layers;
+
+:host {
+    position: relative;
+
+    [data-container] {
+        position: relative;
+
+        width: 100%;
+        height: fit-content;
+
+        & [data-value] {
+            height: 2.25rem;
+            min-width: 6rem;
+            padding: 0.5rem 1rem 0.5rem 1rem;
+
+            color: colors.$dark-gray;
+            border: 1px solid colors.$mid-gray;
+
+            cursor: pointer;
+
+            @include typography.apply('content+');
+
+            & > [data-label] {
+                display: flex;
+
+                & > span {
+                    flex: 1;
+                }
+
+                & > teq-icon {
+                    margin-left: 0.3rem;
+                }
+            }
+
+            & > [data-input] {
+                display: flex;
+                flex: 1;
+                align-items: center;
+
+                & > svg {
+                    margin-left: -0.5rem;
+                    margin-right: 0.5rem;
+                }
+
+                & > input {
+                    border: none;
+                    @include typography.apply('content+');
+
+                    width: 100%;
+
+                    margin-right: -0.5rem;
+                }
+
+                & > input[type='search']::-webkit-search-cancel-button {
+                    -webkit-appearance: none;
+                }
+
+                & [data-visible] {
+                    transition: opacity 0.25s linear;
+                    cursor: initial;
+
+                    & ::ng-deep path {
+                        fill: colors.$light-gray; // TODO: Discuss not introducing a new color here?!
+                    }
+                }
+
+                & [data-visible='true'] {
+                    opacity: 1;
+
+                    &:hover {
+                        opacity: 0.75;
+
+                        & ::ng-deep path {
+                            fill: initial;
+                        }
+                    }
+                }
+
+                & [data-visible='false'] {
+                    opacity: 0;
+                }
+            }
+        }
+
+        & [data-options] {
+            position: absolute;
+            top: 100%;
+            left: 0;
+
+            max-height: 20.8rem;
+            min-width: 100%;
+
+            overflow-y: auto;
+
+            z-index: layers.$navigationLayer;
+
+            list-style: none;
+
+            margin: 0;
+            padding-left: 0;
+
+            &::-webkit-scrollbar {
+                width: 0.25rem;
+                height: 0.25rem;
+                background: colors.$mid-gray;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: colors.$light-gray2;
+                -webkit-border-radius: 1ex;
+            }
+
+            &::-webkit-scrollbar-corner {
+                background: colors.$mid-gray;
+            }
+
+            & li {
+                display: block;
+
+                color: colors.$dark-gray;
+                background-color: colors.$pageBackground;
+
+                border: 1px solid colors.$mid-gray;
+                border-top: none;
+
+                padding: 0.5rem 1rem 0.5rem 1rem;
+
+                cursor: pointer;
+
+                @include typography.apply('content+');
+
+                &:first-of-type {
+                    border-top: none;
+                }
+
+                &:hover {
+                    background-color: colors.$white-gray;
+                }
+            }
+        }
+    }
+}

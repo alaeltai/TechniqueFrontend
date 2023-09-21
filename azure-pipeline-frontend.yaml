@@ -1,0 +1,35 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: Technique.Azure-Pipelines.Templates
+      ref: refs/heads/main
+
+trigger:
+  tags:
+    include:
+    - '*'
+  branches:
+    include:
+    - develop
+    - test
+    - main
+    - feature/*
+
+pool: 'Linux'
+
+extends:
+  template: frontend/frontend-ionos-template.yaml@templates
+  parameters:
+    projectKey: "technique.frontend "
+    projectName: "technique-frontend"
+    repositoryName: "technique-frontend"
+    containerize: true
+    imageName: "technique-frontend"
+    containerRegistry: "spctrm.cr.de-fra.ionos.com"
+    containerRegistryServiceName: "Ionos Container Registry"

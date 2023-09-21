@@ -1,0 +1,75 @@
+@use 'typography' as typography;
+@use 'variables/colors' as colors;
+@use 'variables/shadows' as shadows;
+
+:host {
+    display: flex;
+
+    flex-direction: column;
+
+    & [data-subphase] {
+        display: flex;
+
+        & > div {
+            flex: 1;
+        }
+    }
+
+    & [data-phase] {
+        display: flex;
+
+        transition: background-color 0.25s linear;
+
+        align-items: center;
+
+        margin-bottom: 0.5rem;
+        padding: 1rem 1.5rem;
+
+        @include typography.apply('phase');
+
+        color: colors.$phase-title-color;
+
+        @include shadows.phase-box-shadow();
+
+        @include colors.phase-color(data-phase) using ($color) {
+            background-color: $color;
+        }
+
+        &[data-disabled='true'] {
+            background-color: #e8e5e5; // Todo: Determine if this case actually exists
+        }
+
+        & > span {
+            // padding-top: 3.5px;
+            padding-top: 0.21875rem;
+        }
+
+        & > teq-information-provider {
+            margin-left: 0.5rem;
+
+            & ::ng-deep path {
+                fill: colors.$white;
+            }
+        }
+
+        & [data-controls] {
+            display: flex;
+
+            flex: 1;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            & > teq-toggle ::ng-deep > label {
+                border: none;
+                padding: 0;
+            }
+        }
+    }
+
+    & [data-subphase] {
+        &:first-of-type {
+            border-right: 1px solid colors.$light-gray;
+        }
+    }
+}
